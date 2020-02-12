@@ -14,7 +14,7 @@ const demoLevel = new Demo();
 renderer.setActiveCamera(camera);
 renderer.setupLevel(demoLevel);
 
-camera.position.z = 5;
+camera.position.z = 3;
 
 const updateables: ReadonlyArray<Updateable> = [
   demoLevel,
@@ -32,7 +32,7 @@ export default function App() {
   const displayRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (displayRef.current !== undefined) {
+    if (displayRef.current !== null) {
       displayRef.current.appendChild(renderer.getDOMElement());
     }
   }, [displayRef]);

@@ -6,6 +6,8 @@
   "main": "src/index.js",
   "dependencies": {
     "@types/cannon": "0.1.4",
+    "@types/react": "^16.9.19",
+    "@types/react-dom": "^16.9.5",
     "@types/three": "0.103.2",
     "cannon": "0.6.2",
     "react": "16.12.0",

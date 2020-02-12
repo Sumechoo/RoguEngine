@@ -1,6 +1,4 @@
-export interface IGameState {
-  levelName: string;
-}
+export interface IGameState {}
 
 export interface IForce {
   x: number;

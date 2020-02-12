@@ -1,12 +1,15 @@
 import { WebGLRenderer, Camera, Scene } from "three";
 import { Updateable } from "../../types";
 import { Level } from "../Level";
+import { World, NaiveBroadphase } from "cannon";
 
 export class Renderer implements Updateable {
   protected renderer: WebGLRenderer;
-  protected camera: Camera;
+  protected physics: World;
+
   protected scene: Scene;
-  protected level: Level;
+  protected camera?: Camera;
+  protected level?: Level;
 
   constructor() {
     this.renderer = new WebGLRenderer();
@@ -14,14 +17,20 @@ export class Renderer implements Updateable {
     this.renderer.setSize(200, 200);
     this.renderer.setClearColor(0xeeeeee);
 
+    this.physics = new World();
+    this.physics.gravity.set(0, -0.005, 0);
+    this.physics.broadphase = new NaiveBroadphase();
+
     this.scene = new Scene();
   }
 
   update(frame: number) {
-    if (this.camera) {
-      this.renderer.render(this.scene, this.camera);
+    if (!this.level || !this.camera) {
+      return;
     }
 
+    this.renderer.render(this.scene, this.camera);
+    this.physics.step(1);
     this.level.update(frame);
   }
 
@@ -30,11 +39,14 @@ export class Renderer implements Updateable {
   }
 
   setupLevel(level: Level) {
+    level.init();
+
     this.scene.remove(...this.scene.children);
     this.scene.add(level);
-    this.level = level;
 
-    level.init();
+    level.rigidbodies.forEach((item) => this.physics.addBody(item));
+
+    this.level = level;
   }
 
   getDOMElement() {

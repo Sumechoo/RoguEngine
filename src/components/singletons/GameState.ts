@@ -9,6 +9,8 @@ export class GameState {
       throw new Error("Game state instance allready exist");
     }
 
+    this.state = {};
+
     GameState.instance = this;
   }
 
