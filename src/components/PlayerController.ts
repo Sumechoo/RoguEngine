@@ -1,8 +1,8 @@
-import { Object3D } from "three";
 import { IForce, Updateable } from "../types";
+import { GameObject } from "./GameObject";
 
 export class PlayerController implements Updateable {
-  protected readonly body: Object3D;
+  protected readonly body: GameObject;
   protected readonly element: HTMLElement;
 
   protected baseMovementSpeed: number = 0.05;
@@ -16,9 +16,14 @@ export class PlayerController implements Updateable {
     rx: 0
   };
 
-  constructor(body: Object3D, element: HTMLElement) {
+  constructor(body: GameObject, element: HTMLElement) {
     this.body = body;
     this.element = element;
+
+    if(this.body.rigidbody) {
+      this.body.rigidbody.fixedRotation = true;
+    }
+
     this.setupListeners();
   }
 
@@ -39,10 +44,10 @@ export class PlayerController implements Updateable {
         this.speed.z = this.baseMovementSpeed;
         break;
       case "a":
-        this.speed.ry = this.baseRotationSpeed;
+        this.speed.x = -this.baseMovementSpeed;
         break;
       case "d":
-        this.speed.ry = -this.baseRotationSpeed;
+        this.speed.x = this.baseMovementSpeed;
         break;
       case "e":
         this.speed.rx = -this.baseRotationSpeed;
@@ -61,7 +66,7 @@ export class PlayerController implements Updateable {
         break;
       case "a":
       case "d":
-        this.speed.ry = 0;
+        this.speed.x = 0;
         break;
       case "q":
       case "e":
@@ -71,8 +76,14 @@ export class PlayerController implements Updateable {
   }
 
   public update() {
-    this.body.translateZ(this.speed.z);
-    this.body.rotateY(this.speed.ry);
-    this.body.rotateX(this.speed.rx);
+    // this.body.translateZ(this.speed.z);
+    if (this.body.rigidbody) {
+      this.body.rigidbody.velocity.z = this.speed.z;
+      this.body.rigidbody.velocity.x = this.speed.x;
+
+      this.body.rigidbody.angularVelocity.x = this.speed.rx;
+    }
+    // .rotateY(this.speed.ry);
+    // this.body.rotateX(this.speed.rx);
   }
 }
