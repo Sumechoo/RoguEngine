@@ -7,7 +7,7 @@ import { Demo } from "./components/levels/Demo";
 import { Box, Vec3 } from "cannon";
 import { Cube } from "./components/gameobjects/primitives/Cube";
 import { Level } from "./components/Level";
-import { Demo2 } from "./components/levels/Demo2";
+import { MainDisplay } from "./ui/MainDisplay";
 
 const camera = new PerspectiveCamera(75, 320 / 240, 0.1, 1000);
 const playerBody = new Cube(new Vec3(0, 0, 3), 1, false, 0xff0000);
@@ -17,15 +17,12 @@ playerBody.add(camera);
 const renderer = new Renderer();
 const controller = new PlayerController(playerBody, document.body);
 
-const demoLevel = new Demo();
-
-demoLevel.add(playerBody);
+const currentLevel = new Demo();
 
 renderer.setActiveCamera(camera);
-renderer.setupLevel(demoLevel);
 
 const updateables: ReadonlyArray<Updateable> = [
-  demoLevel,
+  currentLevel,
   controller,
   renderer
 ];
@@ -56,15 +53,15 @@ export default function App() {
     }
   }, [displayRef]);
 
-  const loadLevel = useCallback(() => {
-    switchLevel(new Demo2());
+  const loadLevel = useCallback((levelConstructor: typeof Level) => {
+    switchLevel(new levelConstructor());
   }, []);
 
   return (
     <>
-      <div onClick={lockPointer} className="App" ref={displayRef} />
-      <p>Movement: WASD</p>
-      <button onClick={loadLevel}>Transit to Demo2 level</button>
+      <div onClick={lockPointer} className="App" ref={displayRef}>
+        <MainDisplay onSwitchLevel={loadLevel} />
+      </div>
     </>
   );
 }
