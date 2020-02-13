@@ -1,4 +1,8 @@
-import { WebGLRenderer, Camera, Scene } from "three";
+import { WebGLRenderer, Camera, Scene, Vector2 } from "three";
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass';
+import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader';
 import { Updateable } from "../../types";
 import { Level } from "../Level";
 import { World, NaiveBroadphase } from "cannon";
@@ -11,8 +15,11 @@ export class Renderer implements Updateable {
   protected camera?: Camera;
   protected level?: Level;
 
+  private composer: any;
+
   constructor() {
     this.renderer = new WebGLRenderer();
+    this.composer = new EffectComposer(this.renderer);
 
     this.renderer.setSize(320, 240);
     this.renderer.setClearColor(0xeeeeee);
@@ -29,7 +36,7 @@ export class Renderer implements Updateable {
       return;
     }
 
-    this.renderer.render(this.scene, this.camera);
+    this.composer.render(this.scene, this.camera);
     this.physics.step(0.5);
     this.level.update(frame);
   }
@@ -49,6 +56,11 @@ export class Renderer implements Updateable {
     level.rigidbodies.forEach((item) => this.physics.addBody(item));
 
     this.level = level;
+
+    if (this.camera) {
+      this.composer.addPass(new RenderPass(this.scene, this.camera));
+      this.composer.addPass(new ShaderPass(FXAAShader));
+    }
   }
 
   getDOMElement() {

@@ -4,7 +4,7 @@ import { PlayerController } from "./components/PlayerController";
 import { Updateable } from "./types";
 import { Renderer } from "./components/singletons/Renderer";
 import { Demo } from "./components/levels/Demo";
-import { Box, Vec3 } from "cannon";
+import { Vec3 } from "cannon";
 import { Cube } from "./components/gameobjects/primitives/Cube";
 import { Level } from "./components/Level";
 import { MainDisplay } from "./ui/MainDisplay";
