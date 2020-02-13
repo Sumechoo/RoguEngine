@@ -10,7 +10,7 @@ import { Level } from "./components/Level";
 import { MainDisplay } from "./ui/MainDisplay";
 
 const camera = new PerspectiveCamera(75, 320 / 240, 0.1, 1000);
-const playerBody = new Cube(new Vec3(0, 0, 3), 1, false, 0xff0000);
+const playerBody = new Cube(new Vec3(0, 0, 3), 0.5, false, 0xff0000);
 
 playerBody.add(camera);
 
