@@ -1,9 +1,11 @@
 import { IForce, Updateable } from "../types";
 import { GameObject } from "./GameObject";
 import { Vec3, Quaternion } from "cannon";
+import { Camera } from "three";
 
 export class PlayerController implements Updateable {
   protected readonly body: GameObject;
+  protected readonly camera: Camera;
   protected readonly element: HTMLElement;
 
   protected baseMovementSpeed: number = 0.05;
@@ -17,8 +19,9 @@ export class PlayerController implements Updateable {
     rx: 0
   };
 
-  constructor(body: GameObject, element: HTMLElement) {
+  constructor(body: GameObject, camera: Camera, element: HTMLElement) {
     this.body = body;
+    this.camera = camera;
     this.element = element;
 
     if(this.body.rigidbody) {
@@ -37,7 +40,10 @@ export class PlayerController implements Updateable {
 
   private listenMouse(e: MouseEvent) {
     const movementX = -(e.movementX / 200);
+    const movementY = -(e.movementY / 200);
     const {rigidbody} = this.body;
+
+    this.camera.rotateX(movementY);
 
     if(rigidbody) {
       const oldRotation = new Vec3();

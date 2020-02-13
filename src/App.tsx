@@ -15,7 +15,7 @@ const playerBody = new Cube(new Vec3(0, 0, 3), 1, false, 0xff0000);
 playerBody.add(camera);
 
 const renderer = new Renderer();
-const controller = new PlayerController(playerBody, document.body);
+const controller = new PlayerController(playerBody, camera, document.body);
 
 const currentLevel = new Demo();
 
@@ -59,7 +59,7 @@ export default function App() {
 
   return (
     <>
-      <div onClick={lockPointer} className="App" ref={displayRef}>
+      <div style={{position: 'absolute', top: 0, left: 0}} onClick={lockPointer} ref={displayRef}>
         <MainDisplay onSwitchLevel={loadLevel} />
       </div>
     </>
