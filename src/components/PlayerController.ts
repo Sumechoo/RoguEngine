@@ -1,12 +1,13 @@
 import { IForce, Updateable } from "../types";
 import { GameObject } from "./GameObject";
+import { Vec3, Quaternion } from "cannon";
 
 export class PlayerController implements Updateable {
   protected readonly body: GameObject;
   protected readonly element: HTMLElement;
 
   protected baseMovementSpeed: number = 0.05;
-  protected baseRotationSpeed: number = 0.04;
+  protected baseRotationSpeed: number = 0.1;
 
   private speed: IForce = {
     x: 0,
@@ -22,18 +23,29 @@ export class PlayerController implements Updateable {
 
     if(this.body.rigidbody) {
       this.body.rigidbody.fixedRotation = true;
+      this.body.rigidbody.updateMassProperties();
     }
 
     this.setupListeners();
   }
 
   private setupListeners() {
-    this.element.addEventListener("mousedown", this.listenMouse.bind(this));
+    this.element.addEventListener("mousemove", this.listenMouse.bind(this));
     this.element.addEventListener("keydown", this.listenKeyDown.bind(this));
     this.element.addEventListener("keyup", this.listenKeyUp.bind(this));
   }
 
-  private listenMouse() {}
+  private listenMouse(e: MouseEvent) {
+    const movementX = -(e.movementX / 200);
+    const {rigidbody} = this.body;
+
+    if(rigidbody) {
+      const oldRotation = new Vec3();
+      rigidbody.quaternion.toEuler(oldRotation);
+      oldRotation.y += movementX;
+      rigidbody.quaternion.setFromEuler(oldRotation.x, oldRotation.y, oldRotation.z);
+    }
+  }
 
   private listenKeyDown(e: KeyboardEvent) {
     switch (e.key) {
@@ -50,10 +62,10 @@ export class PlayerController implements Updateable {
         this.speed.x = this.baseMovementSpeed;
         break;
       case "e":
-        this.speed.rx = -this.baseRotationSpeed;
+        this.speed.ry = -this.baseRotationSpeed;
         break;
       case "q":
-        this.speed.rx = this.baseRotationSpeed;
+        this.speed.ry = this.baseRotationSpeed;
         break;
     }
   }
@@ -70,20 +82,23 @@ export class PlayerController implements Updateable {
         break;
       case "q":
       case "e":
-        this.speed.rx = 0;
+        this.speed.ry = 0;
         break;
     }
   }
 
   public update() {
-    // this.body.translateZ(this.speed.z);
-    if (this.body.rigidbody) {
-      this.body.rigidbody.velocity.z = this.speed.z;
-      this.body.rigidbody.velocity.x = this.speed.x;
+    const {rigidbody} = this.body;
 
-      this.body.rigidbody.angularVelocity.x = this.speed.rx;
+    if (rigidbody) {
+      const newVelocity = new Vec3(this.speed.x, this.speed.y, this.speed.z);
+      newVelocity.y = rigidbody.velocity.y;
+
+      rigidbody.velocity = rigidbody.vectorToWorldFrame(newVelocity);
+
+      // rigidbody.angularVelocity.x = 0;
+      // rigidbody.angularVelocity.y = 0;
+      // rigidbody.angularVelocity.z = 0;
     }
-    // .rotateY(this.speed.ry);
-    // this.body.rotateX(this.speed.rx);
   }
 }

@@ -14,7 +14,7 @@ export class Renderer implements Updateable {
   constructor() {
     this.renderer = new WebGLRenderer();
 
-    this.renderer.setSize(200, 200);
+    this.renderer.setSize(320, 240);
     this.renderer.setClearColor(0xeeeeee);
 
     this.physics = new World();
@@ -30,7 +30,7 @@ export class Renderer implements Updateable {
     }
 
     this.renderer.render(this.scene, this.camera);
-    this.physics.step(1);
+    this.physics.step(0.5);
     this.level.update(frame);
   }
 
@@ -43,6 +43,8 @@ export class Renderer implements Updateable {
 
     this.scene.remove(...this.scene.children);
     this.scene.add(level);
+
+    this.physics.bodies = [];
 
     level.rigidbodies.forEach((item) => this.physics.addBody(item));
 

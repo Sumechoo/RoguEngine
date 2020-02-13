@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useCallback } from "react";
 import { PerspectiveCamera } from "three";
 import { PlayerController } from "./components/PlayerController";
 import { Updateable } from "./types";
@@ -6,9 +6,11 @@ import { Renderer } from "./components/singletons/Renderer";
 import { Demo } from "./components/levels/Demo";
 import { Box, Vec3 } from "cannon";
 import { Cube } from "./components/gameobjects/primitives/Cube";
+import { Level } from "./components/Level";
+import { Demo2 } from "./components/levels/Demo2";
 
-const camera = new PerspectiveCamera(75, 1, 0.1, 1000);
-const playerBody = new Cube(new Vec3(0, 0, 2), 0.5, false, 0xff0000);
+const camera = new PerspectiveCamera(75, 320 / 240, 0.1, 1000);
+const playerBody = new Cube(new Vec3(0, 0, 3), 1, false, 0xff0000);
 
 playerBody.add(camera);
 
@@ -22,13 +24,16 @@ demoLevel.add(playerBody);
 renderer.setActiveCamera(camera);
 renderer.setupLevel(demoLevel);
 
-// camera.position.z = 4;
-
 const updateables: ReadonlyArray<Updateable> = [
   demoLevel,
   controller,
   renderer
 ];
+
+function switchLevel(level: Level) {
+  level.add(playerBody);
+  renderer.setupLevel(level);
+}
 
 function animate(frameNum: number) {
   requestAnimationFrame(animate);
@@ -45,11 +50,21 @@ export default function App() {
     }
   }, [displayRef]);
 
+  const lockPointer = useCallback(() => {
+    if(displayRef.current) {
+      (displayRef.current as any).requestPointerLock();
+    }
+  }, [displayRef]);
+
+  const loadLevel = useCallback(() => {
+    switchLevel(new Demo2());
+  }, []);
+
   return (
     <>
-      <div className="App" ref={displayRef} />
+      <div onClick={lockPointer} className="App" ref={displayRef} />
       <p>Movement: WASD</p>
-      <p>Look Up/Down: Q/E</p>
+      <button onClick={loadLevel}>Transit to Demo2 level</button>
     </>
   );
 }
