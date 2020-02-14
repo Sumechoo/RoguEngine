@@ -34,7 +34,7 @@ export class Editor extends Level {
       body.material.map = tex;
     }
 
-    console.info('texture set');
+    console.info('texture set', );
   }
 
   init() {

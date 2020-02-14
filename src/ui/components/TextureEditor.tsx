@@ -47,7 +47,7 @@ export const TextureEditor: React.FC<Props> = (props) => {
             if (drawing && texture) {
                 ctx.stroke();
 
-                setCubeTexture(texture);
+                // setCubeTexture(texture);
         
                 texture.needsUpdate = true;
             }
@@ -73,7 +73,7 @@ export const TextureEditor: React.FC<Props> = (props) => {
             canvasRef.current.addEventListener('mousedown', startDraw);
             canvasRef.current.addEventListener('mouseup', endDraw);
 
-            const newTexture = new CanvasTexture(canvasRef.current);
+            const newTexture = new CanvasTexture(ctx.canvas);
 
             setTexture(newTexture);
 
