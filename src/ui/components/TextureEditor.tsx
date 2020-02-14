@@ -1,10 +1,12 @@
 import React, { useRef, useEffect, useCallback, useState } from 'react';
 import { Styles } from '../../types';
+import { CanvasTexture, Texture } from 'three';
 
 const TEXTURE_SIZE = 32;
 
 interface Props {
     setCubeColor: (color: number) => void;
+    setCubeTexture: (texture: Texture) => void;
 }
 
 const styles: Styles = {
@@ -21,12 +23,15 @@ const styles: Styles = {
 export const TextureEditor: React.FC<Props> = (props) => {
     const {
         setCubeColor,
+        setCubeTexture,
     } = props;
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const setRandomColor = useCallback(() => {
         setCubeColor(Math.random() * 16777215);
     }, []);
     const [drawing, setDrawing] = useState(false);
+
+    const [texture, setTexture] = useState<CanvasTexture | undefined>();
 
     const draw = (e: MouseEvent) => {
         if (canvasRef.current) {
@@ -39,11 +44,13 @@ export const TextureEditor: React.FC<Props> = (props) => {
             ctx.moveTo(e.offsetX - e.movementX, e.offsetY - e.movementY);
             ctx.lineTo(e.offsetX, e.offsetY);
 
-            if (drawing) {
+            if (drawing && texture) {
                 ctx.stroke();
-            }
 
-            console.info('drawing?:', drawing);
+                setCubeTexture(texture);
+        
+                texture.needsUpdate = true;
+            }
         }
     };
 
@@ -65,6 +72,12 @@ export const TextureEditor: React.FC<Props> = (props) => {
             canvasRef.current.addEventListener('mousemove', draw);
             canvasRef.current.addEventListener('mousedown', startDraw);
             canvasRef.current.addEventListener('mouseup', endDraw);
+
+            const newTexture = new CanvasTexture(canvasRef.current);
+
+            setTexture(newTexture);
+
+            newTexture.needsUpdate = true;
         }
     }, [canvasRef, startDraw, drawing]);
 

@@ -2,7 +2,7 @@ import { Level } from "../Level";
 import { Cube } from "../gameobjects/primitives/Cube";
 import { Vec3 } from "cannon";
 import { TextureEditor } from "../../ui/components/TextureEditor";
-import { Color } from "three";
+import { Color, Texture } from "three";
 
 export class Editor extends Level {
   private targetCube: Cube = new Cube(new Vec3(1, 1, 0), 1, false, 0x126490);
@@ -14,6 +14,7 @@ export class Editor extends Level {
       Component: TextureEditor,
       props: {
         setCubeColor: this.setCubeColor,
+        setCubeTexture: this.setCubeTexture,
       }
     };
   }
@@ -24,6 +25,16 @@ export class Editor extends Level {
     if(body && body.material) {
       body.material.color = new Color(color);
     }
+  }
+
+  setCubeTexture = (tex: Texture) => {
+    const {body} = this.targetCube;
+
+    if(body && body.material) {
+      body.material.map = tex;
+    }
+
+    console.info('texture set');
   }
 
   init() {
