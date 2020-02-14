@@ -32,7 +32,7 @@ export class Cube extends GameObject {
     texture.needsUpdate = true;
 
     const geometry = new BoxGeometry(size, size, size);
-    const material = new MeshPhysicalMaterial({ map: texture, roughnessMap: texture, metalnessMap: texture });
+    const material = new MeshPhysicalMaterial({ map: texture, roughnessMap: texture, bumpMap: texture });
     const body = new Mesh(geometry, material);
 
     body.castShadow = true;

@@ -32,6 +32,7 @@ export class Editor extends Level {
 
     if(body && body.material) {
       body.material.map = tex;
+      body.material.bumpMap = tex;
     }
 
     console.info('texture set', );

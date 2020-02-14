@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useCallback, useState } from 'react';
 import { Styles } from '../../types';
-import { CanvasTexture, Texture } from 'three';
+import { CanvasTexture, Texture, NearestFilter } from 'three';
 
 const TEXTURE_SIZE = 32;
 
@@ -13,10 +13,11 @@ const styles: Styles = {
     mainContainer: {
         display: 'flex',
         flexDirection: 'row',
+        justifyContent: 'center',
     },
     canvas: {
-        // width: 100,
-        // height: 100,
+        width: 128,
+        height: 128,
     }
 }
 
@@ -41,13 +42,11 @@ export const TextureEditor: React.FC<Props> = (props) => {
                 return;
             }
 
-            ctx.moveTo(e.offsetX - e.movementX, e.offsetY - e.movementY);
-            ctx.lineTo(e.offsetX, e.offsetY);
+            ctx.moveTo((e.offsetX - e.movementX) / 4, (e.offsetY - e.movementY) / 4);
+            ctx.lineTo(e.offsetX / 4, e.offsetY / 4);
 
             if (drawing && texture) {
                 ctx.stroke();
-
-                // setCubeTexture(texture);
         
                 texture.needsUpdate = true;
             }
@@ -55,7 +54,12 @@ export const TextureEditor: React.FC<Props> = (props) => {
     };
 
     const startDraw = useCallback(() => { setDrawing(true) }, [setDrawing]);
-    const endDraw = useCallback(() => { setDrawing(false) }, [setDrawing]);
+    const endDraw = () => { 
+        setDrawing(false);
+        if(texture) {
+            setCubeTexture(texture);
+        }
+    };
 
     useEffect(() => {
         if(canvasRef.current) {
@@ -65,7 +69,7 @@ export const TextureEditor: React.FC<Props> = (props) => {
                 return;
             }
 
-            ctx.fillStyle = 'white';
+            ctx.fillStyle = 'black';
             ctx.strokeStyle = 'red';
             ctx.fillRect(0,0,TEXTURE_SIZE,TEXTURE_SIZE);
 
@@ -75,6 +79,8 @@ export const TextureEditor: React.FC<Props> = (props) => {
 
             const newTexture = new CanvasTexture(ctx.canvas);
 
+            newTexture.magFilter = NearestFilter;
+
             setTexture(newTexture);
 
             newTexture.needsUpdate = true;
@@ -83,7 +89,6 @@ export const TextureEditor: React.FC<Props> = (props) => {
 
     return (
         <div style={styles.mainContainer}>
-            <button onClick={setRandomColor}>Set random color</button>
             <canvas style={styles.canvas} width={TEXTURE_SIZE} height={TEXTURE_SIZE} ref={canvasRef}/>
         </div>
     )

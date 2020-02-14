@@ -23,7 +23,7 @@ export class Renderer implements Updateable {
     this.renderer = new WebGLRenderer();
     this.composer = new EffectComposer(this.renderer);
 
-    this.renderer.setSize(320, 240);
+    this.renderer.setSize(800, 600);
     this.renderer.setClearColor(0xeeeeee);
 
     this.renderer.shadowMap.type = PCFSoftShadowMap;
@@ -71,15 +71,15 @@ export class Renderer implements Updateable {
 
     this.renderer.shadowMapEnabled = true;
 
-    const light = new DirectionalLight(0xffffff, 1);
+    const light = new DirectionalLight(0xffbbaa, 1);
     const ambient = new AmbientLight(0x12345678, 1);
 
     light.castShadow = true;
     light.shadow.bias = 0;
     light.shadowMapHeight = 2048;
     light.shadowMapWidth = 2048;
-    light.position.x = 1;
-    light.position.z = 0.3;
+    light.position.x = 2;
+    light.position.z = 3;
 
     light.setRotationFromEuler(new Euler(45,45,45));
 
