@@ -45,7 +45,7 @@ export const MainDisplay: React.FC<Props> = (props) => {
                     style={styles.button}
                     onClick={() => onSwitchLevel(item)}
                 >
-                    Level #{index + 1}
+                    {item.name}
                 </button>
             ))}
         </div>

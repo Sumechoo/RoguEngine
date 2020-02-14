@@ -40,7 +40,7 @@ export class Renderer implements Updateable {
       return;
     }
 
-    this.composer.render(this.scene, this.camera);
+    this.renderer.render(this.scene, this.camera);
     this.physics.step(0.5);
     this.level.update(frame);
   }
