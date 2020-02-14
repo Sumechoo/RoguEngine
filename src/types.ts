@@ -1,3 +1,6 @@
+import { MeshPhysicalMaterial, Mesh } from "three";
+import React, { CSSProperties } from 'react';
+
 export interface IGameState {}
 
 export interface IForce {
@@ -15,4 +18,17 @@ export interface Updateable {
 
 export interface Initable {
   init: () => void;
+}
+
+export interface WithMaterial {
+  material?: MeshPhysicalMaterial;
+}
+
+export type Object3dWithMaterial = Mesh & WithMaterial;
+
+export type Styles = {[key: string]: CSSProperties};
+
+export interface UIScope {
+  Component: React.FC<any>;
+  props: any;
 }

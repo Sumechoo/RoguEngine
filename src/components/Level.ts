@@ -1,11 +1,13 @@
 import { Object3D } from "three";
 import { GameObject } from "./GameObject";
-import { Updateable, Initable } from "../types";
+import { Updateable, Initable, UIScope } from "../types";
 import { Body } from "cannon";
 
 export class Level extends Object3D implements Updateable, Initable {
   public readonly objects: Array<GameObject> = [];
   public readonly rigidbodies: Array<Body> = [];
+
+  public ui?: UIScope;
 
   public update(frameNum: number) {
     this.objects.forEach(object => object.update(frameNum));

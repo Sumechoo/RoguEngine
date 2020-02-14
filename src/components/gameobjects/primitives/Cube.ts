@@ -1,6 +1,7 @@
 import { BoxGeometry, MeshPhysicalMaterial, Mesh } from "three";
 import { GameObject } from "../../GameObject";
 import { Vec3, Body, Box } from "cannon";
+import { Object3dWithMaterial } from "../../../types";
 
 export class Cube extends GameObject {
   constructor(pos: Vec3, size = 1, kinematic = false, color = 0x88aa55) {
@@ -14,6 +15,7 @@ export class Cube extends GameObject {
     body.receiveShadow = true;
 
     this.add(body);
+    this.body = body as Object3dWithMaterial;
     
     this.rigidbody = new Body({
       mass: 1,

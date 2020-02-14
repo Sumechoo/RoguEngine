@@ -26,7 +26,7 @@ export class Renderer implements Updateable {
     this.renderer.setSize(320, 240);
     this.renderer.setClearColor(0xeeeeee);
 
-    this.renderer.shadowMapType = PCFSoftShadowMap;
+    this.renderer.shadowMap.type = PCFSoftShadowMap;
 
     this.physics = new World();
     this.physics.gravity.set(0, -0.005, 0);

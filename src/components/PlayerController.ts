@@ -1,6 +1,6 @@
 import { IForce, Updateable } from "../types";
 import { GameObject } from "./GameObject";
-import { Vec3, Quaternion } from "cannon";
+import { Vec3 } from "cannon";
 import { Camera } from "three";
 
 export class PlayerController implements Updateable {

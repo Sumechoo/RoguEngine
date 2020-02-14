@@ -3,6 +3,7 @@ import { CSSProperties } from "react"
 import { Level } from '../components/Level';
 import { Demo } from '../components/levels/Demo';
 import { Demo2 } from '../components/levels/Demo2';
+import { Editor } from '../components/levels/Editor';
 import { Columns } from '../components/levels/Columns';
 
 const styles: {[key: string]: CSSProperties} = {
@@ -29,7 +30,7 @@ interface Props {
 }
 
 const levelsList: ReadonlyArray<typeof Level> = [
-    Demo, Demo2, Columns,
+    Demo, Demo2, Columns, Editor
 ];
 
 export const MainDisplay: React.FC<Props> = (props) => {

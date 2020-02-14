@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, useCallback } from "react";
+import React, { useEffect, useRef, useCallback, useState } from "react";
 import { PerspectiveCamera } from "three";
 import { PlayerController } from "./components/PlayerController";
-import { Updateable } from "./types";
+import { Updateable, UIScope } from "./types";
 import { Renderer } from "./components/singletons/Renderer";
-import { Demo } from "./components/levels/Demo";
 import { Vec3 } from "cannon";
 import { Cube } from "./components/gameobjects/primitives/Cube";
 import { Level } from "./components/Level";
@@ -17,12 +16,9 @@ playerBody.add(camera);
 const renderer = new Renderer();
 const controller = new PlayerController(playerBody, camera, document.body);
 
-const currentLevel = new Demo();
-
 renderer.setActiveCamera(camera);
 
 const updateables: ReadonlyArray<Updateable> = [
-  currentLevel,
   controller,
   renderer
 ];
@@ -40,6 +36,7 @@ animate(0);
 
 export default function App() {
   const displayRef = useRef<HTMLDivElement>(null);
+  const [Ui, setUi] = useState<UIScope | undefined>();
 
   useEffect(() => {
     if (displayRef.current !== null) {
@@ -47,20 +44,26 @@ export default function App() {
     }
   }, [displayRef]);
 
-  const lockPointer = useCallback(() => {
+  const loadLevel = useCallback((levelConstructor: typeof Level) => {
+    const level = new levelConstructor();
+    setUi(level.ui)
+
+    switchLevel(level);
+
     if(displayRef.current) {
       (displayRef.current as any).requestPointerLock();
     }
-  }, [displayRef]);
-
-  const loadLevel = useCallback((levelConstructor: typeof Level) => {
-    switchLevel(new levelConstructor());
   }, []);
 
   return (
     <>
-      <div style={{position: 'absolute', top: 0, left: 0}} onClick={lockPointer} ref={displayRef}>
+      <div style={{position: 'absolute', top: 0, left: 0}} ref={displayRef}>
         <MainDisplay onSwitchLevel={loadLevel} />
+        <div style={{position: 'absolute', top: 0, left: 0}}>
+          {Ui && <Ui.Component 
+            {...Ui.props}
+          />}
+        </div>
       </div>
     </>
   );
