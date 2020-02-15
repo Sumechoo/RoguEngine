@@ -5,6 +5,7 @@ import { Demo } from '../components/levels/Demo';
 import { Demo2 } from '../components/levels/Demo2';
 import { Editor } from '../components/levels/Editor';
 import { Columns } from '../components/levels/Columns';
+import { Dungeon } from '../components/levels/Dungeon';
 
 const styles: {[key: string]: CSSProperties} = {
     container: {
@@ -14,7 +15,7 @@ const styles: {[key: string]: CSSProperties} = {
         right: 0,
         bottom: 0,
         display: 'flex',
-        alignItems: 'flex-end',
+        alignItems: 'flex-start',
         justifyContent: 'center',
     },
     button: {
@@ -30,7 +31,7 @@ interface Props {
 }
 
 const levelsList: ReadonlyArray<typeof Level> = [
-    Demo, Demo2, Columns, Editor
+    Demo, Demo2, Columns, Editor, Dungeon
 ];
 
 export const MainDisplay: React.FC<Props> = (props) => {

@@ -24,6 +24,8 @@ export class PlayerController implements Updateable {
     this.camera = camera;
     this.element = element;
 
+    this.body.children.forEach((child) => child.castShadow = false);
+
     if(this.body.rigidbody) {
       this.body.rigidbody.fixedRotation = true;
       this.body.rigidbody.updateMassProperties();
@@ -54,7 +56,12 @@ export class PlayerController implements Updateable {
   }
 
   private listenKeyDown(e: KeyboardEvent) {
+    console.info('KEY:', e.key);
+    
     switch (e.key) {
+      case " ":
+        this.doJump();
+        break;
       case "w":
         this.speed.z = -this.baseMovementSpeed;
         break;
@@ -73,6 +80,14 @@ export class PlayerController implements Updateable {
       case "q":
         this.speed.ry = this.baseRotationSpeed;
         break;
+    }
+  }
+
+  private doJump() {
+    const {rigidbody} = this.body;
+
+    if (rigidbody) {
+      rigidbody.velocity.y += 0.1;
     }
   }
 

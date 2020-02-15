@@ -50,10 +50,16 @@ export default function App() {
 
     switchLevel(level);
 
+    document.addEventListener('click', lockPointer);
+
+    // lockPointer();
+  }, []);
+
+  const lockPointer = () => {
     if(displayRef.current) {
       (displayRef.current as any).requestPointerLock();
     }
-  }, []);
+  }
 
   return (
     <>

@@ -1,8 +1,8 @@
 import { WebGLRenderer, Camera, Scene, DirectionalLight, Euler, AmbientLight, PCFSoftShadowMap, Vector2 } from "three";
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
-import { SMAAPass } from 'three/examples/jsm/postprocessing/SMAAPass';
-import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { SSAOPass } from 'three/examples/jsm/postprocessing/SSAOPass';
 import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader';
 import { Updateable } from "../../types";
@@ -23,7 +23,9 @@ export class Renderer implements Updateable {
     this.renderer = new WebGLRenderer();
     this.composer = new EffectComposer(this.renderer);
 
-    this.renderer.setSize(800, 600);
+    const {outerHeight, outerWidth} = window;
+
+    this.renderer.setSize(outerWidth, outerHeight);
     this.renderer.setClearColor(0xeeeeee);
 
     this.renderer.shadowMap.type = PCFSoftShadowMap;
@@ -33,6 +35,8 @@ export class Renderer implements Updateable {
     this.physics.broadphase = new NaiveBroadphase();
 
     this.scene = new Scene();
+
+    this.composer.setSize(outerWidth / 2, outerHeight / 2);
   }
 
   update(frame: number) {
@@ -40,7 +44,7 @@ export class Renderer implements Updateable {
       return;
     }
 
-    this.renderer.render(this.scene, this.camera);
+    this.composer.render(this.scene, this.camera);
     this.physics.step(0.5);
     this.level.update(frame);
   }
@@ -52,6 +56,8 @@ export class Renderer implements Updateable {
   setupLevel(level: Level) {
     level.init();
 
+    this.composer.passes = [];
+
     this.scene.remove(...this.scene.children);
     this.scene.add(level);
 
@@ -61,12 +67,14 @@ export class Renderer implements Updateable {
 
     this.level = level;
 
+
     if (this.camera) {
-      // this.composer.addPass(new RenderPass(this.scene, this.camera));
-      this.composer.addPass(new SSAOPass(this.scene, this.camera, 0.5, 0.5));
-      this.composer.addPass(new UnrealBloomPass(new Vector2(256, 256), 0.3, 1, 0.3));
-      this.composer.addPass(new SMAAPass(10,10));
-      // this.composer.addPass(new ShaderPass(FXAAShader));
+      this.composer.addPass(new RenderPass(this.scene, this.camera));
+      this.composer.addPass(new SSAOPass(this.scene, this.camera, 200, 200));
+      // this.composer.addPass(new SAOPass(this.scene, this.camera, false, false, new Vector2(2048, 2048)));
+      this.composer.addPass(new UnrealBloomPass(new Vector2(256, 256), 0.1, 1, 0.3));
+      // this.composer.addPass(new SMAAPass(10,10));
+      this.composer.addPass(new ShaderPass(FXAAShader));
     }
 
     this.renderer.shadowMapEnabled = true;
