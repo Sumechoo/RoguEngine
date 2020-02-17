@@ -1,5 +1,6 @@
-import { MeshPhysicalMaterial, Mesh } from "three";
+import { MeshPhysicalMaterial, Mesh, Object3D } from "three";
 import React, { CSSProperties } from 'react';
+import { GameObject } from "./components/GameObject";
 
 export interface IGameState {}
 
@@ -24,7 +25,8 @@ export interface WithMaterial {
   material?: MeshPhysicalMaterial;
 }
 
-export type Object3dWithMaterial = Mesh & WithMaterial;
+export type Object3dWithMaterial = GameObject & WithMaterial;
+export type MeshWithMaterial = Mesh & WithMaterial;
 
 export type Styles = {[key: string]: CSSProperties};
 

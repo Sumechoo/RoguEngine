@@ -1,10 +1,10 @@
 import { Object3D } from "three";
-import { Updateable, Object3dWithMaterial } from "../types";
+import { Updateable, Object3dWithMaterial, MeshWithMaterial } from "../types";
 import { Body, Vec3 } from "cannon";
 
 export class GameObject extends Object3D implements Updateable {
   public rigidbody?: Body;
-  public body?: Object3dWithMaterial;
+  public body?: Object3dWithMaterial | MeshWithMaterial;
 
   public update(frameNum: number) {
     if(this.rigidbody) {

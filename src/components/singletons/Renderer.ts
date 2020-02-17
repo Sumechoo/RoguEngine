@@ -11,6 +11,8 @@ import { Level } from "../Level";
 import { World, NaiveBroadphase } from "cannon";
 
 export class Renderer implements Updateable {
+  protected static instance: Renderer;
+
   protected renderer: WebGLRenderer;
   protected physics: World;
 
@@ -38,6 +40,16 @@ export class Renderer implements Updateable {
     this.scene = new Scene();
 
     this.composer.setSize(outerWidth / 2, outerHeight / 2);
+
+    if (Renderer.instance !== undefined) {
+      throw new Error("Renderer instance allready exist");
+    }
+
+    Renderer.instance = this;
+  }
+
+  public static getInstance() {
+    return Renderer.instance;
   }
 
   update(frame: number) {

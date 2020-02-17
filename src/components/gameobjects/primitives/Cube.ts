@@ -1,7 +1,7 @@
 import { BoxGeometry, MeshPhysicalMaterial, Mesh, CanvasTexture, Color, NearestFilter, Texture } from "three";
 import { GameObject } from "../../GameObject";
 import { Vec3, Body, Box } from "cannon";
-import { Object3dWithMaterial } from "../../../types";
+import { Object3dWithMaterial, MeshWithMaterial } from "../../../types";
 
 // const material = new MeshPhysicalMaterial({ });
 
@@ -41,7 +41,7 @@ export class Cube extends GameObject {
     body.receiveShadow = true;
 
     this.add(body);
-    this.body = body as Object3dWithMaterial;
+    this.body = body as MeshWithMaterial;
     
     this.rigidbody = new Body({
       mass: 1,

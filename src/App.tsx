@@ -1,30 +1,17 @@
 import React, { useEffect, useRef, useCallback, useState } from "react";
-import { PerspectiveCamera } from "three";
-import { PlayerController } from "./components/PlayerController";
 import { Updateable, UIScope } from "./types";
 import { Renderer } from "./components/singletons/Renderer";
-import { Vec3 } from "cannon";
-import { Cube } from "./components/gameobjects/primitives/Cube";
 import { Level } from "./components/Level";
 import { MainDisplay } from "./ui/MainDisplay";
-
-const camera = new PerspectiveCamera(75, 320 / 240, 0.1, 1000);
-const playerBody = new Cube(new Vec3(0, 0, 3), 1, false, 0xff0000);
-
-playerBody.add(camera);
+import { Player } from "./components/gameobjects/Player";
 
 const renderer = new Renderer();
-const controller = new PlayerController(playerBody, camera, document.body);
-
-renderer.setActiveCamera(camera);
 
 const updateables: ReadonlyArray<Updateable> = [
-  controller,
   renderer
 ];
 
 function switchLevel(level: Level) {
-  level.add(playerBody);
   renderer.setupLevel(level);
 }
 

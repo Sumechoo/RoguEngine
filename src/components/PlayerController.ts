@@ -1,10 +1,9 @@
-import { IForce, Updateable } from "../types";
-import { GameObject } from "./GameObject";
+import { IForce, Updateable, Object3dWithMaterial } from "../types";
 import { Vec3 } from "cannon";
 import { Camera, Raycaster, Mesh } from "three";
 
 export class PlayerController implements Updateable {
-  protected readonly body: GameObject;
+  protected readonly body: Object3dWithMaterial;
   protected readonly camera: Camera;
   protected readonly element: HTMLElement;
 
@@ -12,8 +11,6 @@ export class PlayerController implements Updateable {
 
   protected baseMovementSpeed: number = 0.05;
   protected baseRotationSpeed: number = 0.1;
-
-  private intersectedObject: any;
 
   private speed: IForce = {
     x: 0,
@@ -23,7 +20,7 @@ export class PlayerController implements Updateable {
     rx: 0
   };
 
-  constructor(body: GameObject, camera: Camera, element: HTMLElement) {
+  constructor(body: Object3dWithMaterial, camera: Camera, element: HTMLElement) {
     this.body = body;
     this.camera = camera;
     this.element = element;
