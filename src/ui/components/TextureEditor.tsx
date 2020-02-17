@@ -1,12 +1,11 @@
 import React, { useRef, useEffect, useCallback, useState } from 'react';
 import { Styles } from '../../types';
-import { CanvasTexture, Texture, NearestFilter } from 'three';
+import { Texture } from 'three';
 
 const TEXTURE_SIZE = 32;
 
 interface Props {
-    setCubeColor: (color: number) => void;
-    setCubeTexture: (texture: Texture) => void;
+    setCubeTexture: (ctx: CanvasRenderingContext2D) => void;
 }
 
 const styles: Styles = {
@@ -18,23 +17,18 @@ const styles: Styles = {
     canvas: {
         width: 128,
         height: 128,
+        imageRendering: 'pixelated',
     }
 }
 
 export const TextureEditor: React.FC<Props> = (props) => {
     const {
-        setCubeColor,
         setCubeTexture,
     } = props;
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const setRandomColor = useCallback(() => {
-        setCubeColor(Math.random() * 16777215);
-    }, []);
     const [drawing, setDrawing] = useState(false);
 
-    const [texture, setTexture] = useState<CanvasTexture | undefined>();
-
-    const draw = (e: MouseEvent) => {
+    const draw = useCallback((e: MouseEvent) => {
         if (canvasRef.current) {
             const ctx = canvasRef.current.getContext('2d');
 
@@ -42,24 +36,25 @@ export const TextureEditor: React.FC<Props> = (props) => {
                 return;
             }
 
-            ctx.moveTo((e.offsetX - e.movementX) / 4, (e.offsetY - e.movementY) / 4);
-            ctx.lineTo(e.offsetX / 4, e.offsetY / 4);
+            if (drawing) {
+                ctx.moveTo((e.offsetX - e.movementX) / 4, (e.offsetY - e.movementY) / 4);
+                ctx.lineTo(e.offsetX / 4, e.offsetY / 4);
+            }
+            ctx.stroke();
+        }
+    }, [canvasRef, drawing]);
 
-            if (drawing && texture) {
-                ctx.stroke();
-        
-                texture.needsUpdate = true;
+    const startDraw = useCallback(() => { setDrawing(true) }, []);
+    const endDraw = useCallback(() => { 
+        setDrawing(false);
+
+        if (canvasRef.current) {
+            const ctx = canvasRef.current.getContext('2d');
+            if (ctx) {
+                setCubeTexture(ctx);
             }
         }
-    };
-
-    const startDraw = useCallback(() => { setDrawing(true) }, [setDrawing]);
-    const endDraw = () => { 
-        setDrawing(false);
-        if(texture) {
-            setCubeTexture(texture);
-        }
-    };
+     }, [canvasRef]);
 
     useEffect(() => {
         if(canvasRef.current) {
@@ -76,16 +71,20 @@ export const TextureEditor: React.FC<Props> = (props) => {
             canvasRef.current.addEventListener('mousemove', draw);
             canvasRef.current.addEventListener('mousedown', startDraw);
             canvasRef.current.addEventListener('mouseup', endDraw);
-
-            const newTexture = new CanvasTexture(ctx.canvas);
-
-            newTexture.magFilter = NearestFilter;
-
-            setTexture(newTexture);
-
-            newTexture.needsUpdate = true;
         }
-    }, [canvasRef, startDraw, drawing]);
+
+        return () => {
+            if(canvasRef.current) {
+                canvasRef.current.removeEventListener('mousemove', draw);
+                canvasRef.current.removeEventListener('mousedown', startDraw);
+                canvasRef.current.removeEventListener('mouseup', endDraw);
+
+                const ctx = canvasRef.current.getContext('2d');
+
+                ctx && ctx.stroke();
+            }
+        }
+    }, [canvasRef, startDraw, endDraw, draw]);
 
     return (
         <div style={styles.mainContainer}>

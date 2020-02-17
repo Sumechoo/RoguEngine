@@ -15,7 +15,7 @@ const styles: {[key: string]: CSSProperties} = {
         right: 0,
         bottom: 0,
         display: 'flex',
-        alignItems: 'flex-start',
+        alignItems: 'flex-end',
         justifyContent: 'center',
     },
     button: {

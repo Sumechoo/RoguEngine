@@ -35,6 +35,8 @@ export class PlayerController implements Updateable {
     this.raycaster.far = 100;
 
     this.setupListeners();
+
+    (element as any).requestPointerLock();
   }
 
   private setupListeners() {

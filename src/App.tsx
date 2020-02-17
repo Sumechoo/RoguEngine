@@ -1,15 +1,10 @@
 import React, { useEffect, useRef, useCallback, useState } from "react";
-import { Updateable, UIScope } from "./types";
+import { UIScope } from "./types";
 import { Renderer } from "./components/singletons/Renderer";
 import { Level } from "./components/Level";
 import { MainDisplay } from "./ui/MainDisplay";
-import { Player } from "./components/gameobjects/Player";
 
 const renderer = new Renderer();
-
-const updateables: ReadonlyArray<Updateable> = [
-  renderer
-];
 
 function switchLevel(level: Level) {
   renderer.setupLevel(level);
@@ -17,7 +12,7 @@ function switchLevel(level: Level) {
 
 function animate(frameNum: number) {
   requestAnimationFrame(animate);
-  updateables.forEach(item => item.update(frameNum));
+  renderer.update(frameNum);
 }
 animate(0);
 
@@ -36,8 +31,6 @@ export default function App() {
     setUi(level.ui)
 
     switchLevel(level);
-
-    document.addEventListener('click', lockPointer);
   }, []);
 
   const lockPointer = () => {
@@ -54,6 +47,7 @@ export default function App() {
           {Ui && <Ui.Component 
             {...Ui.props}
           />}
+          <button onClick={lockPointer}>Lock my mouse!</button>
         </div>
       </div>
     </>

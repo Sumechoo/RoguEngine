@@ -1,4 +1,4 @@
-import { Object3D } from "three";
+import { Object3D, Vector3, PerspectiveCamera } from "three";
 import { GameObject } from "./GameObject";
 import { Updateable, Initable, UIScope } from "../types";
 import { Body } from "cannon";
@@ -14,13 +14,22 @@ export class Level extends Object3D implements Updateable, Initable {
   constructor() {
     super();
 
+    const levelCamera =  new PerspectiveCamera(75, 320 / 240, 0.1, 1000);
+
+    levelCamera.position.y = 5;
+    levelCamera.lookAt(new Vector3(0,0,0));
+
+    Renderer.getInstance().setActiveCamera(levelCamera);
+  }
+
+  protected spawnPlayer = (point = new Vector3(0,0,0)) => {
     const playerObject = new Player();
     const playerComponents = playerObject.getPlayerConponents();
 
     this.add(playerComponents.body);
     this.objects.push(playerComponents.controller);
 
-    Renderer.getInstance().setActiveCamera(playerComponents.camera);
+    playerObject.position.set(point.x, point.y, point.z);
   }
 
   public update(frameNum: number) {
