@@ -51,8 +51,6 @@ export default function App() {
     switchLevel(level);
 
     document.addEventListener('click', lockPointer);
-
-    // lockPointer();
   }, []);
 
   const lockPointer = () => {

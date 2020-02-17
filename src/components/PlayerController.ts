@@ -1,15 +1,19 @@
 import { IForce, Updateable } from "../types";
 import { GameObject } from "./GameObject";
 import { Vec3 } from "cannon";
-import { Camera } from "three";
+import { Camera, Raycaster, Mesh } from "three";
 
 export class PlayerController implements Updateable {
   protected readonly body: GameObject;
   protected readonly camera: Camera;
   protected readonly element: HTMLElement;
 
+  protected raycaster: Raycaster = new Raycaster();
+
   protected baseMovementSpeed: number = 0.05;
   protected baseRotationSpeed: number = 0.1;
+
+  private intersectedObject: any;
 
   private speed: IForce = {
     x: 0,
@@ -31,16 +35,33 @@ export class PlayerController implements Updateable {
       this.body.rigidbody.updateMassProperties();
     }
 
+    this.raycaster.far = 100;
+
     this.setupListeners();
   }
 
   private setupListeners() {
-    this.element.addEventListener("mousemove", this.listenMouse.bind(this));
-    this.element.addEventListener("keydown", this.listenKeyDown.bind(this));
-    this.element.addEventListener("keyup", this.listenKeyUp.bind(this));
+    this.element.addEventListener("mousedown", this.listenClick);
+    this.element.addEventListener("mousemove", this.listenMouse);
+    this.element.addEventListener("keydown", this.listenKeyDown);
+    this.element.addEventListener("keyup", this.listenKeyUp);
   }
 
-  private listenMouse(e: MouseEvent) {
+  private listenClick = () => {
+    const target = this.doRaycast()[0];
+
+    if (target) {
+      const object: any = target.object;
+
+      if(!object) {
+        return;
+      }
+
+      object.material.setValues({color: '#FF0000'});
+    }
+  }
+
+  private listenMouse = (e: MouseEvent) => {
     const movementX = -(e.movementX / 200);
     const movementY = -(e.movementY / 200);
     const {rigidbody} = this.body;
@@ -55,9 +76,7 @@ export class PlayerController implements Updateable {
     }
   }
 
-  private listenKeyDown(e: KeyboardEvent) {
-    console.info('KEY:', e.key);
-    
+  private listenKeyDown = (e: KeyboardEvent) => {
     switch (e.key) {
       case " ":
         this.doJump();
@@ -91,7 +110,7 @@ export class PlayerController implements Updateable {
     }
   }
 
-  private listenKeyUp(e: KeyboardEvent) {
+  private listenKeyUp = (e: KeyboardEvent) => {
     switch (e.key) {
       case "w":
       case "s":
@@ -108,6 +127,23 @@ export class PlayerController implements Updateable {
     }
   }
 
+  private doRaycast = () => {
+    const {parent} = this.body;
+
+    if(!parent) {
+      return [];
+    }
+  
+    this.raycaster.setFromCamera({x: 0, y: 0}, this.camera);
+    const intersects = this.raycaster.intersectObjects(parent.children, true);
+
+    if (intersects.length > 0) {
+      return intersects;
+    }
+
+    return [];
+  }
+
   public update() {
     const {rigidbody} = this.body;
 
@@ -116,10 +152,6 @@ export class PlayerController implements Updateable {
       newVelocity.y = rigidbody.velocity.y;
 
       rigidbody.velocity = rigidbody.vectorToWorldFrame(newVelocity);
-
-      // rigidbody.angularVelocity.x = 0;
-      // rigidbody.angularVelocity.y = 0;
-      // rigidbody.angularVelocity.z = 0;
     }
   }
 }

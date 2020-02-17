@@ -3,7 +3,7 @@ import { GameObject } from "../../GameObject";
 import { Vec3, Body, Box } from "cannon";
 import { Object3dWithMaterial } from "../../../types";
 
-const material = new MeshPhysicalMaterial({ });
+// const material = new MeshPhysicalMaterial({ });
 
 export class Cube extends GameObject {
   constructor(pos: Vec3, size = 1, kinematic = false, color = 0x88aa55) {
@@ -34,7 +34,7 @@ export class Cube extends GameObject {
     // texture.needsUpdate = true;
 
     const geometry = new BoxGeometry(size, size, size);
-    // const material = new MeshPhysicalMaterial({ map: texture, roughnessMap: texture, bumpMap: texture });
+    const material = new MeshPhysicalMaterial({ color });
     const body = new Mesh(geometry, material);
 
     body.castShadow = true;

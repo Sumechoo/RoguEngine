@@ -4,6 +4,7 @@ import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { SSAOPass } from 'three/examples/jsm/postprocessing/SSAOPass';
+import { DotScreenPass } from 'three/examples/jsm/postprocessing/DotScreenPass';
 import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader';
 import { Updateable } from "../../types";
 import { Level } from "../Level";
@@ -25,7 +26,7 @@ export class Renderer implements Updateable {
 
     const {outerHeight, outerWidth} = window;
 
-    this.renderer.setSize(outerWidth, outerHeight);
+    this.renderer.setSize(outerWidth / 5, outerHeight / 5);
     this.renderer.setClearColor(0xeeeeee);
 
     this.renderer.shadowMap.type = PCFSoftShadowMap;
@@ -44,7 +45,7 @@ export class Renderer implements Updateable {
       return;
     }
 
-    this.composer.render(this.scene, this.camera);
+    this.renderer.render(this.scene, this.camera);
     this.physics.step(0.5);
     this.level.update(frame);
   }
@@ -70,11 +71,12 @@ export class Renderer implements Updateable {
 
     if (this.camera) {
       this.composer.addPass(new RenderPass(this.scene, this.camera));
-      this.composer.addPass(new SSAOPass(this.scene, this.camera, 200, 200));
+      this.composer.addPass(new DotScreenPass());
+      // this.composer.addPass(new SSAOPass(this.scene, this.camera, 200, 200));
       // this.composer.addPass(new SAOPass(this.scene, this.camera, false, false, new Vector2(2048, 2048)));
-      this.composer.addPass(new UnrealBloomPass(new Vector2(256, 256), 0.1, 1, 0.3));
+      // this.composer.addPass(new UnrealBloomPass(new Vector2(256, 256), 0.1, 1, 0.3));
       // this.composer.addPass(new SMAAPass(10,10));
-      this.composer.addPass(new ShaderPass(FXAAShader));
+      // this.composer.addPass(new ShaderPass(FXAAShader));
     }
 
     this.renderer.shadowMapEnabled = true;
