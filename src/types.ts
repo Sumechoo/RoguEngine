@@ -30,7 +30,7 @@ export type MeshWithMaterial = Mesh & WithMaterial;
 
 export type Styles = {[key: string]: CSSProperties};
 
-export interface UIScope {
-  Component: React.FC<any>;
-  props: any;
+export interface UIScope<T> {
+  Component: React.FC<T>;
+  props: T;
 }

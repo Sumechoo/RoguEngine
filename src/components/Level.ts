@@ -9,14 +9,15 @@ export class Level extends Object3D implements Updateable, Initable {
   public readonly objects: Array<Updateable> = [];
   public readonly rigidbodies: Array<Body> = [];
 
-  public ui?: UIScope;
+  public ui?: UIScope<any>;
 
   constructor() {
     super();
 
-    const levelCamera =  new PerspectiveCamera(75, 320 / 240, 0.1, 1000);
+    const levelCamera =  new PerspectiveCamera(75, Renderer.getInstance().aspect, 0.1, 1000);
 
     levelCamera.position.y = 5;
+    levelCamera.position.x = 5;
     levelCamera.lookAt(new Vector3(0,0,0));
 
     Renderer.getInstance().setActiveCamera(levelCamera);

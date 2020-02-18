@@ -3,38 +3,34 @@ import { GameObject } from "../../GameObject";
 import { Vec3, Body, Box } from "cannon";
 import { Object3dWithMaterial, MeshWithMaterial } from "../../../types";
 
-// const material = new MeshPhysicalMaterial({ });
-
 export class Cube extends GameObject {
   constructor(pos: Vec3, size = 1, kinematic = false, color = 0x88aa55) {
     super();
 
-    // const canvas: HTMLCanvasElement = document.createElement('canvas');
+    const canvas: HTMLCanvasElement = document.createElement('canvas');
 
-    // canvas.height = 20;
-    // canvas.width = 20;
+    canvas.height = 20;
+    canvas.width = 20;
 
-    // const ctx = canvas.getContext('2d');
-    // const texture = new CanvasTexture(canvas);
+    const ctx = canvas.getContext('2d');
+    const texture = new CanvasTexture(canvas);
 
-    // texture.magFilter = NearestFilter;
+    texture.magFilter = NearestFilter;
 
-    // console.info('some stuff:', new Color(color).getHexString());
+    if(ctx) {
+      ctx.fillStyle = `#${new Color(color).getHexString()}`;
+      ctx.fillRect(0, 0, 20, 20);
+      ctx.fill();
+      ctx.strokeStyle = 'black';
+      ctx.fillStyle = 'white';
+      ctx.fillRect(2, 2, 16, 16);
+      ctx.fill();
+    }
 
-    // if(ctx) {
-    //   ctx.fillStyle = `#${new Color(color).getHexString()}`;
-    //   ctx.fillRect(0, 0, 20, 20);
-    //   ctx.fill();
-    //   ctx.strokeStyle = 'black';
-    //   ctx.fillStyle = 'white';
-    //   ctx.fillRect(5, 5, Math.random() * 10, Math.random() * 10);
-    //   ctx.fill();
-    // }
-
-    // texture.needsUpdate = true;
+    texture.needsUpdate = true;
 
     const geometry = new BoxGeometry(size, size, size);
-    const material = new MeshPhysicalMaterial({ color });
+    const material = new MeshPhysicalMaterial({ map: texture, roughnessMap: texture });
     const body = new Mesh(geometry, material);
 
     body.castShadow = true;

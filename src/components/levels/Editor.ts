@@ -2,10 +2,10 @@ import { Level } from "../Level";
 import { Cube } from "../gameobjects/primitives/Cube";
 import { Vec3 } from "cannon";
 import { TextureEditor } from "../../ui/components/TextureEditor";
-import { Color, Texture, CanvasTexture } from "three";
+import { CanvasTexture, Texture } from "three";
 
 export class Editor extends Level {
-  private targetCube: Cube = new Cube(new Vec3(1, 1, 0), 1, false, 0x126490);
+  private targetCube: Cube = new Cube(new Vec3(0, 0, 0), 2, false, 0x126490);
 
   constructor() {
     super();
@@ -18,14 +18,14 @@ export class Editor extends Level {
     };
   }
 
-  setCubeTexture = (ctx: CanvasRenderingContext2D) => {
+  setCubeTexture = (texture: Texture) => {
     const {body} = this.targetCube;
-    const texture = new CanvasTexture(ctx.canvas);
 
     if(body && body.material) {
       body.material.map = texture;
-      body.material.bumpMap = texture;
     }
+
+    texture.needsUpdate = true;
   }
 
   init() {

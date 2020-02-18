@@ -4,19 +4,19 @@ import { Vec3 } from "cannon";
 import { TextureEditor } from "../../ui/components/TextureEditor";
 import { Color, Texture, Vector3 } from "three";
 
-const size = 20;
+const size = 30;
 
 export class Dungeon extends Level {
   constructor() {
     super();
 
-    this.spawnPlayer();
+    this.spawnPlayer(new Vector3(15, 1, 15));
   }
 
   init() {
     for (let i = 0; i < size; i++) {
       for (let j = 0; j < size; j++) {
-        this.add(new Cube(new Vec3(i, -2 + Math.random(), j), 1, true, Math.random() * 0xffffff));
+        this.add(new Cube(new Vec3(i, -2 + (Math.random() / 2), j), 1, true, Math.random() * 0xffffff));
       }
     }
   }

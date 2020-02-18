@@ -18,7 +18,7 @@ animate(0);
 
 export default function App() {
   const displayRef = useRef<HTMLDivElement>(null);
-  const [Ui, setUi] = useState<UIScope | undefined>();
+  const [Ui, setUi] = useState<UIScope<any> | undefined>();
 
   useEffect(() => {
     if (displayRef.current !== null) {
