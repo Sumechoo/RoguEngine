@@ -2,7 +2,9 @@ import { MeshPhysicalMaterial, Mesh, Object3D } from "three";
 import React, { CSSProperties } from 'react';
 import { GameObject } from "./components/GameObject";
 
-export interface IGameState {}
+export interface IGameState {
+  items: Array<string>;
+}
 
 export interface IForce {
   x: number;

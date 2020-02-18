@@ -1,10 +1,9 @@
 import { Level } from "../Level";
 import { Cube } from "../gameobjects/primitives/Cube";
 import { Vec3 } from "cannon";
-import { TextureEditor } from "../../ui/components/TextureEditor";
-import { Color, Texture, Vector3 } from "three";
+import { Vector3 } from "three";
 
-const size = 30;
+const size = 10;
 
 export class Dungeon extends Level {
   constructor() {

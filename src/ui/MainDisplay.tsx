@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { CSSProperties } from "react"
 import { Level } from '../components/Level';
 import { Demo } from '../components/levels/Demo';
@@ -6,6 +6,9 @@ import { Demo2 } from '../components/levels/Demo2';
 import { Editor } from '../components/levels/Editor';
 import { Columns } from '../components/levels/Columns';
 import { Dungeon } from '../components/levels/Dungeon';
+import { HUD } from './components/HUD';
+import { GameState } from '../components/singletons/GameState';
+import { GameStateEditor } from '../components/levels/GameStateEditor';
 
 const styles: {[key: string]: CSSProperties} = {
     container: {
@@ -17,6 +20,10 @@ const styles: {[key: string]: CSSProperties} = {
         display: 'flex',
         alignItems: 'flex-end',
         justifyContent: 'center',
+    },
+    hud: {
+        display: 'flex',
+        flexDirection: 'column',
     },
     button: {
         backgroundColor: 'coral',
@@ -31,25 +38,39 @@ interface Props {
 }
 
 const levelsList: ReadonlyArray<typeof Level> = [
-    Demo, Demo2, Columns, Editor, Dungeon
+    Demo, Demo2, Columns, Editor, Dungeon, GameStateEditor
 ];
 
 export const MainDisplay: React.FC<Props> = (props) => {
     const {
         onSwitchLevel,
     } = props;
+    const [updateIndex, setIndex] = useState(0);
+
+    const incrementIndex = useCallback(() => {
+        setIndex(updateIndex + 1);
+    }, [updateIndex]);
+
+    useEffect(() => {
+        GameState.getInstance().addListener(incrementIndex);
+    }, [incrementIndex])
     
     return (
-        <div style={styles.container}>
-            {levelsList.map((item, index) => (
-                <button
-                    key={index}
-                    style={styles.button}
-                    onClick={() => onSwitchLevel(item)}
-                >
-                    {item.name}
-                </button>
-            ))}
+        <div key={updateIndex} style={styles.container}>
+            <div style={styles.hud}>
+                <div>
+                    {levelsList.map((item, index) => (
+                        <button
+                            key={index}
+                            style={styles.button}
+                            onClick={() => onSwitchLevel(item)}
+                        >
+                            {item.name}
+                        </button>
+                    ))}
+                </div>
+                <HUD items={GameState.getState().items}/>
+            </div>
         </div>
     )
 }

@@ -3,8 +3,10 @@ import { UIScope } from "./types";
 import { Renderer } from "./components/singletons/Renderer";
 import { Level } from "./components/Level";
 import { MainDisplay } from "./ui/MainDisplay";
+import { GameState } from "./components/singletons/GameState";
 
 const renderer = new Renderer();
+const state = new GameState();
 
 function switchLevel(level: Level) {
   renderer.setupLevel(level);

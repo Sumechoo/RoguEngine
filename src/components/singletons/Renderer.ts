@@ -101,7 +101,7 @@ export class Renderer implements Updateable {
 
     this.renderer.shadowMapEnabled = true;
 
-    const light = new DirectionalLight(0xFFBD6D, 1.5);
+    const light = new DirectionalLight(0xFFBD6D, 2);
     const ambient = new AmbientLight(0x12345678, 1);
 
     light.castShadow = true;
