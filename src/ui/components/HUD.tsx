@@ -1,5 +1,6 @@
 import React from 'react';
 import { Styles } from '../../types';
+import { GameState } from '../../components/singletons/GameState';
 
 const styles: Styles = {
     mainContainer: {
@@ -8,12 +9,8 @@ const styles: Styles = {
     },
 }
 
-interface Props {
-    items: Array<string>;
-}
-
-export const HUD: React.FC<Props> = (props) => {
-    const {items} = props;
+export const HUD: React.FC = (props) => {
+    const {items} = GameState.getState();
 
     return(
         <div style={styles.mainContainer}>

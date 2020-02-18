@@ -69,7 +69,7 @@ export const MainDisplay: React.FC<Props> = (props) => {
                         </button>
                     ))}
                 </div>
-                <HUD items={GameState.getState().items}/>
+                <HUD />
             </div>
         </div>
     )
