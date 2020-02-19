@@ -1,10 +1,13 @@
-import { MeshPhysicalMaterial, Mesh, Object3D } from "three";
+import { MeshPhysicalMaterial, Mesh } from "three";
 import React, { CSSProperties } from 'react';
 import { GameObject } from "./components/GameObject";
 
 export interface IGameState {
   items: Array<string>;
+  activeItem: number;
 }
+
+export type GameInputEvent = MouseEvent | KeyboardEvent;
 
 export interface IForce {
   x: number;

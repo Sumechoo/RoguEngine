@@ -1,11 +1,15 @@
-import { IForce, Updateable, Object3dWithMaterial } from "../types";
+import { IForce, Updateable, Object3dWithMaterial, GameInputEvent } from "../types";
 import { Vec3 } from "cannon";
-import { Camera, Raycaster, Mesh } from "three";
+import { Camera, Raycaster } from "three";
+import { GameState } from "./singletons/GameState";
+import { InputHandler } from "./singletons/InputHandler";
+import { isKeyboardEvent } from "../typeguards";
 
 export class PlayerController implements Updateable {
   protected readonly body: Object3dWithMaterial;
   protected readonly camera: Camera;
   protected readonly element: HTMLElement;
+  protected inputHandler?: InputHandler<any>;
 
   protected raycaster: Raycaster = new Raycaster();
 
@@ -40,10 +44,20 @@ export class PlayerController implements Updateable {
   }
 
   private setupListeners() {
-    this.element.addEventListener("mousedown", this.listenClick);
-    this.element.addEventListener("mousemove", this.listenMouse);
-    this.element.addEventListener("keydown", this.listenKeyDown);
-    this.element.addEventListener("keyup", this.listenKeyUp);
+    this.inputHandler = new InputHandler(this.element, {
+      'mousedown': this.listenClick,
+      'mousemove': this.listenMouse,
+      'keydown': this.listenKeyDown,
+      'keyup': this.listenKeyUp,
+    });
+
+    document.addEventListener("wheel", this.listenWheel);
+  }
+
+  private listenWheel = (e: WheelEvent) => {
+    const {activeItem} = GameState.getState();
+
+    GameState.setState({activeItem: activeItem + (Math.sign(e.deltaY))})
   }
 
   private listenClick = () => {
@@ -60,7 +74,11 @@ export class PlayerController implements Updateable {
     }
   }
 
-  private listenMouse = (e: MouseEvent) => {
+  private listenMouse = (e: GameInputEvent) => {
+    if (isKeyboardEvent(e)) {
+      return;
+    }
+
     const movementX = -(e.movementX / 200);
     const movementY = -(e.movementY / 200);
     const {rigidbody} = this.body;
@@ -69,13 +87,22 @@ export class PlayerController implements Updateable {
 
     if(rigidbody) {
       const oldRotation = new Vec3();
+
       rigidbody.quaternion.toEuler(oldRotation);
       oldRotation.y += movementX;
       rigidbody.quaternion.setFromEuler(oldRotation.x, oldRotation.y, oldRotation.z);
     }
   }
 
-  private listenKeyDown = (e: KeyboardEvent) => {
+  private listenKeyDown = (e: GameInputEvent) => {
+    if (!isKeyboardEvent(e)) {
+      return;
+    }
+
+    if (e.key !== ' ' && !isNaN(Number(e.key))) {
+      GameState.setState({activeItem: Number(e.key) - 1});
+    }
+
     switch (e.key) {
       case " ":
         this.doJump();
@@ -109,7 +136,11 @@ export class PlayerController implements Updateable {
     }
   }
 
-  private listenKeyUp = (e: KeyboardEvent) => {
+  private listenKeyUp = (e: GameInputEvent) => {
+    if (!isKeyboardEvent(e)) {
+      return;
+    }
+
     switch (e.key) {
       case "w":
       case "s":
@@ -151,6 +182,12 @@ export class PlayerController implements Updateable {
       newVelocity.y = rigidbody.velocity.y;
 
       rigidbody.velocity = rigidbody.vectorToWorldFrame(newVelocity);
+    }
+  }
+
+  public cleanup() {
+    if (this.inputHandler) {
+      this.inputHandler.cleanup();
     }
   }
 }

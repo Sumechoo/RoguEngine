@@ -13,6 +13,7 @@ export class GameState {
 
     this.state = {
       items: [],
+      activeItem: 0,
     };
 
     GameState.instance = this;
@@ -31,6 +32,8 @@ export class GameState {
   }
 
   public static setState(state: Partial<IGameState>) {
+    console.warn('num of delegates:', GameState.instance.listeners.length);
+
     GameState.instance.state = {
       ...this.instance.state,
       ...state,

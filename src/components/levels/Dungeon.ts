@@ -15,7 +15,7 @@ export class Dungeon extends Level {
   init() {
     for (let i = 0; i < size; i++) {
       for (let j = 0; j < size; j++) {
-        this.add(new Cube(new Vec3(i, -2 + (Math.random() / 2), j), 1, true, Math.random() * 0xffffff));
+        this.add(new Cube(new Vec3(i, -2 + Math.ceil(Math.random() * 2), j), 1, true, Math.random() * 0xffffff));
       }
     }
   }

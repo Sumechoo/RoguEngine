@@ -1,7 +1,7 @@
-import { BoxGeometry, MeshPhysicalMaterial, Mesh, CanvasTexture, Color, NearestFilter, Texture } from "three";
+import { BoxGeometry, MeshPhysicalMaterial, Mesh, CanvasTexture, Color, NearestFilter } from "three";
 import { GameObject } from "../../GameObject";
 import { Vec3, Body, Box } from "cannon";
-import { Object3dWithMaterial, MeshWithMaterial } from "../../../types";
+import { MeshWithMaterial } from "../../../types";
 
 export class Cube extends GameObject {
   constructor(pos: Vec3, size = 1, kinematic = false, color = 0x88aa55) {
@@ -30,7 +30,7 @@ export class Cube extends GameObject {
     texture.needsUpdate = true;
 
     const geometry = new BoxGeometry(size, size, size);
-    const material = new MeshPhysicalMaterial({ map: texture, roughnessMap: texture });
+    const material = new MeshPhysicalMaterial({ map: texture, roughnessMap: texture, bumpMap: texture });
     const body = new Mesh(geometry, material);
 
     body.castShadow = true;

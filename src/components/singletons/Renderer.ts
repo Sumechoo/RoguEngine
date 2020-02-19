@@ -1,4 +1,4 @@
-import { WebGLRenderer, Camera, Scene, DirectionalLight, Euler, AmbientLight, PCFSoftShadowMap, Vector3, Vector2, FogExp2 } from "three";
+import { WebGLRenderer, Camera, Scene, DirectionalLight, Euler, AmbientLight, PCFSoftShadowMap, Vector2, FogExp2 } from "three";
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
 import { SAOPass } from 'three/examples/jsm/postprocessing/SAOPass';
@@ -39,7 +39,7 @@ export class Renderer implements Updateable {
     this.physics.broadphase = new NaiveBroadphase();
 
     this.scene = new Scene();
-    this.scene.fog = new FogExp2( 0x12345678, 0.07 );
+    this.scene.fog = new FogExp2( 0x12345678, 0.15 );
 
     this.composer.setSize(outerWidth / 2, outerHeight / 2);
 
@@ -75,7 +75,6 @@ export class Renderer implements Updateable {
 
     this.scene.remove(...this.scene.children);
     this.scene.add(level);
-
     this.physics.bodies = [];
 
     level.rigidbodies.forEach((item) => this.physics.addBody(item));
@@ -96,6 +95,7 @@ export class Renderer implements Updateable {
 
       this.composer.addPass(new UnrealBloomPass(new Vector2(256, 256), 0.25, 1, 0.3));
       this.composer.addPass(new RenderPass(this.scene, this.camera));
+      // this.composer.addPass(new SSAARenderPass(this.scene, this.camera, 'black', 1));
       this.composer.addPass(SAO);
     }
 

@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useCallback, useState } from 'react';
 import { Styles } from '../../types';
-import { Texture, CanvasTexture, TextureFilter, NearestFilter } from 'three';
+import { Texture, CanvasTexture, NearestFilter } from 'three';
 
 const TEXTURE_SIZE = 32;
 
@@ -32,6 +32,18 @@ const styles: Styles = {
     }
 }
 
+function doActionWithContext(
+    ref: React.RefObject<HTMLCanvasElement>,
+    callback: (ctx: CanvasRenderingContext2D, el: HTMLCanvasElement) => void)
+{
+    if(ref.current) {
+        const ctx = ref.current.getContext('2d');
+        if(ctx) {
+            callback(ctx, ref.current);
+        }
+    }
+}
+
 const colors: ReadonlyArray<string> = ['lightblue', 'lightcoral', 'white', 'orange'];
 
 export const Palette: React.FC<PaletteProps> = (props) => {
@@ -53,53 +65,38 @@ export const TextureEditor: React.FC<Props> = (props) => {
     const [color, setColor] = useState('white');
 
     const draw = useCallback((e: MouseEvent) => {
-        if (canvasRef.current) {
-            const ctx = canvasRef.current.getContext('2d');
-
-            if(!ctx) {
-                return;
-            }
-
+        doActionWithContext(canvasRef, (ctx) => {
             if (drawing) {
                 ctx.fillStyle = color;
 
                 ctx.fillRect(e.offsetX / 4, e.offsetY / 4, 1, 1);
 
-                const texture = new CanvasTexture(canvasRef.current);
+                const texture = new CanvasTexture(ctx.canvas);
                 texture.magFilter = NearestFilter;
 
                 setCubeTexture(texture);
             }
             ctx.fill();
-        }
-    }, [canvasRef, drawing]);
+        });
+    }, [canvasRef, drawing, color, setCubeTexture]);
 
-    const startDraw = useCallback(() => { setDrawing(true) }, [canvasRef]);
-    const endDraw = useCallback(() => { setDrawing(false) }, [canvasRef]);
+    const startDraw = useCallback(() => { setDrawing(true) }, []);
+    const endDraw = useCallback(() => { setDrawing(false) }, []);
 
     useEffect(() => {
-        if(canvasRef.current) {
-            const ctx = canvasRef.current.getContext('2d');
-
-            if(!ctx) {
-                return;
-            }
-
-            canvasRef.current.addEventListener('mousemove', draw);
-            canvasRef.current.addEventListener('mousedown', startDraw);
-            canvasRef.current.addEventListener('mouseup', endDraw);
-        }
-
+        doActionWithContext(canvasRef, (ctx, el) => {
+            el.addEventListener('mousemove', draw);
+            el.addEventListener('mousedown', startDraw);
+            el.addEventListener('mouseup', endDraw);
+        });
         return () => {
-            if(canvasRef.current) {
-                canvasRef.current.removeEventListener('mousemove', draw);
-                canvasRef.current.removeEventListener('mousedown', startDraw);
-                canvasRef.current.removeEventListener('mouseup', endDraw);
-
-                const ctx = canvasRef.current.getContext('2d');
+            doActionWithContext(canvasRef, (ctx, el) => {
+                el.removeEventListener('mousemove', draw);
+                el.removeEventListener('mousedown', startDraw);
+                el.removeEventListener('mouseup', endDraw);
 
                 ctx && ctx.stroke();
-            }
+            })
         }
     }, [canvasRef, startDraw, endDraw, draw]);
 

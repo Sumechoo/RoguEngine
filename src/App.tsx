@@ -6,7 +6,7 @@ import { MainDisplay } from "./ui/MainDisplay";
 import { GameState } from "./components/singletons/GameState";
 
 const renderer = new Renderer();
-const state = new GameState();
+new GameState();
 
 function switchLevel(level: Level) {
   renderer.setupLevel(level);

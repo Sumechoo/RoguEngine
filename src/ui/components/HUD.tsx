@@ -2,19 +2,58 @@ import React from 'react';
 import { Styles } from '../../types';
 import { GameState } from '../../components/singletons/GameState';
 
+export const HUD_MAX_ITEMS = 8;
+
 const styles: Styles = {
     mainContainer: {
         display: 'flex',
         flexDirection: 'row',
+        justifyContent: 'center',
+    },
+    inventoryItem: {
+        height: 30,
+        width: 30,
+        backgroundColor: 'white',
+        border: 'solid gray 2px',
+    },
+    activeInventoryItem: {
+        borderColor: 'orange',
+        backgroundColor: 'yellow',
     },
 }
 
-export const HUD: React.FC = (props) => {
-    const {items} = GameState.getState();
+interface ItemProps {
+    item: string;
+    active?: boolean;
+}
+
+export const Item: React.FC<ItemProps> = (props) => {
+    const {item, active} = props;
+    const style = {
+        ...styles.inventoryItem,
+        ...(active ? styles.activeInventoryItem : {}),
+    };
+
+    return <div style={style}>{item}</div>;
+}
+
+export const HUD: React.FC = () => {
+    const {items, activeItem} = GameState.getState();
+    const visualItems: Array<string> = [];
+
+    for(let i = 0; i < HUD_MAX_ITEMS; i++) {
+        visualItems[i] = items[i] && 'none';
+    }
 
     return(
         <div style={styles.mainContainer}>
-            {items.map(() => <span>item</span>)}
+            {visualItems.map((item, index) => (
+                <Item
+                    key={index}
+                    item={item}
+                    active={index === activeItem}
+                />
+            ))}
         </div>
     )
 }

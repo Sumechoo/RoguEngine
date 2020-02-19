@@ -2,7 +2,7 @@ import { Level } from "../Level";
 import { Cube } from "../gameobjects/primitives/Cube";
 import { Vec3 } from "cannon";
 import { TextureEditor } from "../../ui/components/TextureEditor";
-import { CanvasTexture, Texture } from "three";
+import { Texture } from "three";
 
 export class Editor extends Level {
   private targetCube: Cube = new Cube(new Vec3(0, 0, 0), 2, false, 0x126490);

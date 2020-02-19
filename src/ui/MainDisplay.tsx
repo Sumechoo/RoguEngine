@@ -48,8 +48,8 @@ export const MainDisplay: React.FC<Props> = (props) => {
     const [updateIndex, setIndex] = useState(0);
 
     const incrementIndex = useCallback(() => {
-        setIndex(updateIndex + 1);
-    }, [updateIndex]);
+        setIndex(Date.now());
+    }, []);
 
     useEffect(() => {
         GameState.getInstance().addListener(incrementIndex);
