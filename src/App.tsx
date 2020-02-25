@@ -4,9 +4,11 @@ import { Renderer } from "./components/singletons/Renderer";
 import { Level } from "./components/Level";
 import { MainDisplay } from "./ui/MainDisplay";
 import { GameState } from "./components/singletons/GameState";
+import { SingletoneStore } from "./components/singletons/SingletoneStore";
 
 const renderer = new Renderer();
 new GameState();
+new SingletoneStore();
 
 function switchLevel(level: Level) {
   renderer.setupLevel(level);
@@ -35,12 +37,6 @@ export default function App() {
     switchLevel(level);
   }, []);
 
-  const lockPointer = () => {
-    if(displayRef.current) {
-      (displayRef.current as any).requestPointerLock();
-    }
-  }
-
   return (
     <>
       <div style={{position: 'absolute', top: 0, left: 0}} ref={displayRef}>
@@ -49,7 +45,6 @@ export default function App() {
           {Ui && <Ui.Component 
             {...Ui.props}
           />}
-          <button onClick={lockPointer}>Lock my mouse!</button>
         </div>
       </div>
     </>

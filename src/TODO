@@ -1,0 +1,2 @@
+# move all singletone classes to the SingletoneStore class
+# do cleanup for controller on level changing

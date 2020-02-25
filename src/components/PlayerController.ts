@@ -4,12 +4,24 @@ import { Camera, Raycaster } from "three";
 import { GameState } from "./singletons/GameState";
 import { InputHandler } from "./singletons/InputHandler";
 import { isKeyboardEvent } from "../typeguards";
+import { SingletoneStore } from "./singletons/SingletoneStore";
+
+export interface AxisConfig {
+  name: keyof IForce;
+  value: number;
+}
+
+export const ConfigMap: Record<string, AxisConfig> = {
+  'w': {name: 'z', value: -1},
+  's': {name: 'z', value: 1},
+  'a': {name: 'x', value: -1},
+  'd': {name: 'x', value: 1},
+};
 
 export class PlayerController implements Updateable {
   protected readonly body: Object3dWithMaterial;
   protected readonly camera: Camera;
   protected readonly element: HTMLElement;
-  protected inputHandler?: InputHandler<any>;
 
   protected raycaster: Raycaster = new Raycaster();
 
@@ -36,22 +48,26 @@ export class PlayerController implements Updateable {
       this.body.rigidbody.updateMassProperties();
     }
 
-    this.raycaster.far = 100;
+    this.raycaster.far = 10;
 
     this.setupListeners();
-
-    (element as any).requestPointerLock();
   }
 
   private setupListeners() {
-    this.inputHandler = new InputHandler(this.element, {
-      'mousedown': this.listenClick,
-      'mousemove': this.listenMouse,
-      'keydown': this.listenKeyDown,
-      'keyup': this.listenKeyUp,
-    });
+    const inputHandler: InputHandler<any> | undefined = SingletoneStore.getInstance(InputHandler.name);
 
-    document.addEventListener("wheel", this.listenWheel);
+    if(inputHandler) {
+      inputHandler.cleanup();
+    }
+
+    SingletoneStore.setInstance(new InputHandler(this.element, {
+      // should be added the "wheel" event and configured as rest of listeners after chrome bug will be fixed
+      // https://bugs.chromium.org/p/chromium/issues/detail?id=1054332
+      mousedown: this.listenClick,
+      mousemove: this.listenMouse,
+      keydown: this.listenKeyDown,
+      keyup: this.listenKeyUp,
+    }), InputHandler.name);
   }
 
   private listenWheel = (e: WheelEvent) => {
@@ -103,29 +119,30 @@ export class PlayerController implements Updateable {
       GameState.setState({activeItem: Number(e.key) - 1});
     }
 
+    const cfg = ConfigMap[e.key];
+    this.mutateAxis(cfg);
+
     switch (e.key) {
       case " ":
         this.doJump();
         break;
-      case "w":
-        this.speed.z = -this.baseMovementSpeed;
-        break;
-      case "s":
-        this.speed.z = this.baseMovementSpeed;
-        break;
-      case "a":
-        this.speed.x = -this.baseMovementSpeed;
-        break;
-      case "d":
-        this.speed.x = this.baseMovementSpeed;
-        break;
-      case "e":
-        this.speed.ry = -this.baseRotationSpeed;
-        break;
-      case "q":
-        this.speed.ry = this.baseRotationSpeed;
+      case "Escape":
+        GameState.setState({showDeveloperMenu:true});
         break;
     }
+  }
+
+  private mutateAxis = (cfg: AxisConfig) => {
+    if (cfg && cfg.name in this.speed) {
+      this.speed[cfg.name] = cfg.value * this.baseMovementSpeed;
+    }
+  }
+
+  private nillAxis = (cfg: AxisConfig) => {
+    this.mutateAxis({
+      ...cfg,
+      value: 0,
+    });
   }
 
   private doJump() {
@@ -141,20 +158,8 @@ export class PlayerController implements Updateable {
       return;
     }
 
-    switch (e.key) {
-      case "w":
-      case "s":
-        this.speed.z = 0;
-        break;
-      case "a":
-      case "d":
-        this.speed.x = 0;
-        break;
-      case "q":
-      case "e":
-        this.speed.ry = 0;
-        break;
-    }
+    let cfg = ConfigMap[e.key];
+    this.nillAxis(cfg);
   }
 
   private doRaycast = () => {
@@ -182,12 +187,6 @@ export class PlayerController implements Updateable {
       newVelocity.y = rigidbody.velocity.y;
 
       rigidbody.velocity = rigidbody.vectorToWorldFrame(newVelocity);
-    }
-  }
-
-  public cleanup() {
-    if (this.inputHandler) {
-      this.inputHandler.cleanup();
     }
   }
 }

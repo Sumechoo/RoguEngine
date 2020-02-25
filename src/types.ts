@@ -5,6 +5,8 @@ import { GameObject } from "./components/GameObject";
 export interface IGameState {
   items: Array<string>;
   activeItem: number;
+
+  showDeveloperMenu: boolean;
 }
 
 export type GameInputEvent = MouseEvent | KeyboardEvent;

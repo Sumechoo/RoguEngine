@@ -14,6 +14,7 @@ export class GameState {
     this.state = {
       items: [],
       activeItem: 0,
+      showDeveloperMenu: true,
     };
 
     GameState.instance = this;

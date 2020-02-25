@@ -1,8 +1,6 @@
-type InputMap<K extends keyof HTMLElementEventMap> = Record<K, (e: HTMLElementEventMap[K]) => void>;
+export type InputMap<K extends keyof HTMLElementEventMap> = Record<K, (e: HTMLElementEventMap[K]) => void>;
 
 export class InputHandler<K extends keyof HTMLElementEventMap> {
-    protected static instance: InputHandler<any>;
-
     private inputMap: InputMap<K>;
     private el: HTMLElement;
 

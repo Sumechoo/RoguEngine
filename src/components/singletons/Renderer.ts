@@ -30,7 +30,7 @@ export class Renderer implements Updateable {
     this.aspect = outerWidth / outerHeight;
 
     this.renderer.setSize(500, 250);
-    this.renderer.setClearColor(0xeeeeee);
+    this.renderer.setClearColor(0x12345678);
 
     this.renderer.shadowMap.type = PCFSoftShadowMap;
 
@@ -87,15 +87,15 @@ export class Renderer implements Updateable {
 
       SAO.params = {
         ...SAO.params,
-        saoBlur: 0.08,
+        saoBlur: 0.1,
         saoIntensity: 0.001,
         saoKernelRadius: 128,
         saoBias: 10,
+        saoBlurDepthCutoff: 0.01,
       };
 
       this.composer.addPass(new UnrealBloomPass(new Vector2(256, 256), 0.25, 1, 0.3));
       this.composer.addPass(new RenderPass(this.scene, this.camera));
-      // this.composer.addPass(new SSAARenderPass(this.scene, this.camera, 'black', 1));
       this.composer.addPass(SAO);
     }
 
@@ -110,6 +110,7 @@ export class Renderer implements Updateable {
     light.shadowMapWidth = 2048;
     light.position.x = -4;
     light.position.z = 4;
+    light.position.y = 10;
 
     light.setRotationFromEuler(new Euler(45,45,45));
 

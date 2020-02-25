@@ -46,6 +46,7 @@ export const MainDisplay: React.FC<Props> = (props) => {
         onSwitchLevel,
     } = props;
     const [updateIndex, setIndex] = useState(0);
+    const {showDeveloperMenu} = GameState.getState();
 
     const incrementIndex = useCallback(() => {
         setIndex(Date.now());
@@ -59,7 +60,7 @@ export const MainDisplay: React.FC<Props> = (props) => {
         <div key={updateIndex} style={styles.container}>
             <div style={styles.hud}>
                 <div>
-                    {levelsList.map((item, index) => (
+                    {showDeveloperMenu && levelsList.map((item, index) => (
                         <button
                             key={index}
                             style={styles.button}
