@@ -1,7 +1,7 @@
 import { Object3D, Vector3, PerspectiveCamera } from "three";
 import { GameObject } from "./GameObject";
 import { Updateable, Initable, UIScope } from "../types";
-import { Body } from "cannon";
+import { Body, World } from "cannon";
 import { Player } from "./gameobjects/Player";
 import { Renderer } from "./singletons/Renderer";
 
@@ -10,6 +10,7 @@ export class Level extends Object3D implements Updateable, Initable {
   public readonly rigidbodies: Array<Body> = [];
 
   public ui?: UIScope<any>;
+  public worldRef?: World;
 
   constructor() {
     super();
@@ -47,6 +48,8 @@ export class Level extends Object3D implements Updateable, Initable {
         this.rigidbodies.push(body);
       }
     });
+
+    rigidbodiesToAdd.forEach((body) => this.worldRef && body && this.worldRef.addBody(body));
 
     Object3D.prototype.add.call(this, ...object);
     return this;

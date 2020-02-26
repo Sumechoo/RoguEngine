@@ -32,6 +32,7 @@ export default function App() {
 
   const loadLevel = useCallback((levelConstructor: typeof Level) => {
     const level = new levelConstructor();
+    GameState.setState({currentLevel: level});
     setUi(level.ui)
 
     switchLevel(level);

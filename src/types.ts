@@ -1,12 +1,15 @@
 import { MeshPhysicalMaterial, Mesh } from "three";
 import React, { CSSProperties } from 'react';
 import { GameObject } from "./components/GameObject";
+import { Level } from "./components/Level";
 
 export interface IGameState {
   items: Array<string>;
   activeItem: number;
 
+  // developer params
   showDeveloperMenu: boolean;
+  currentLevel?: Level;
 }
 
 export type GameInputEvent = MouseEvent | KeyboardEvent;

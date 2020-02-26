@@ -1,7 +1,7 @@
 # move all singletone classes to the SingletoneStore class
 # do cleanup for controller on level changing
 # create a developer menu and move levels list there
-# merge Vec3 and Vector3, or create util to convert one to another
 # GameObject.setPosition shoud set proper position for rigidbody
 
 # [major] move codebase to library with exposed parts
+# [?] move to electron

@@ -6,6 +6,7 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { Updateable } from "../../types";
 import { Level } from "../Level";
 import { World, NaiveBroadphase } from "cannon";
+import { GameState } from "./GameState";
 
 export class Renderer implements Updateable {
   protected static instance: Renderer;
@@ -15,7 +16,6 @@ export class Renderer implements Updateable {
 
   protected scene: Scene;
   protected camera?: Camera;
-  protected level?: Level;
 
   private composer: any;
 
@@ -55,13 +55,15 @@ export class Renderer implements Updateable {
   }
 
   update(frame: number) {
-    if (!this.level || !this.camera) {
+    const level = GameState.getState().currentLevel;
+
+    if (!level || !this.camera) {
       return;
     }
 
     this.composer.render(this.scene, this.camera);
     this.physics.step(0.5);
-    this.level.update(frame);
+    level.update(frame);
   }
 
   setActiveCamera(camera: Camera) {
@@ -78,9 +80,7 @@ export class Renderer implements Updateable {
     this.physics.bodies = [];
 
     level.rigidbodies.forEach((item) => this.physics.addBody(item));
-
-    this.level = level;
-
+    level.worldRef = this.physics;
 
     if (this.camera) {
       const SAO = new SAOPass(this.scene, this.camera);

@@ -6,6 +6,7 @@ import { InputHandler } from "./singletons/InputHandler";
 import { isKeyboardEvent } from "../typeguards";
 import { SingletoneStore } from "./singletons/SingletoneStore";
 import { Cube } from "./gameobjects/primitives/Cube";
+import { Vec3ToVector, Vector3ToVec } from "../utils";
 
 export interface AxisConfig {
   name: keyof IForce;
@@ -83,16 +84,14 @@ export class PlayerController implements Updateable {
   }
 
   private listenClick = () => {
-    const target = this.doRaycast()[0];
+    const currentLevel = GameState.getState().currentLevel;
 
-    if (target) {
-      const object: any = target.object;
-
-      if(!object) {
-        return;
-      }
-
-      object.material.setValues({color: '#FF0000'});
+    if (currentLevel) {
+      const position = new Vector3(0,0,0);
+      this.buildBlockPlaceholder.getWorldPosition(position);
+      const cube = new Cube(Vector3ToVec(position), 0.25, false);
+    
+      currentLevel.add(cube);
     }
   }
 
