@@ -1,2 +1,5 @@
 # move all singletone classes to the SingletoneStore class
 # do cleanup for controller on level changing
+# create a developer menu and move levels list there
+
+# [major] move codebase to library with exposed parts

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Styles } from '../../types';
-import { GameState } from '../../components/singletons/GameState';
+import { useGlobalState } from '../hooks';
 
 export const HUD_MAX_ITEMS = 8;
 
@@ -38,7 +38,8 @@ export const Item: React.FC<ItemProps> = (props) => {
 }
 
 export const HUD: React.FC = () => {
-    const {items, activeItem} = GameState.getState();
+    const items = useGlobalState('items');
+    const activeItem = useGlobalState('activeItem');
     const visualItems: Array<string> = [];
 
     for(let i = 0; i < HUD_MAX_ITEMS; i++) {

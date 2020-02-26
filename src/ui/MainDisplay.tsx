@@ -54,6 +54,9 @@ export const MainDisplay: React.FC<Props> = (props) => {
 
     useEffect(() => {
         GameState.getInstance().addListener(incrementIndex);
+        return () => {
+            GameState.getInstance().removeListener(incrementIndex);
+        }
     }, [incrementIndex])
     
     return (

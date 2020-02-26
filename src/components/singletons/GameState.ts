@@ -28,6 +28,12 @@ export class GameState {
     this.listeners.push(delegate);
   }
 
+  public removeListener(delegate: () => void) {
+    const delegateIndex = this.listeners.indexOf(delegate);
+
+    this.listeners.splice(delegateIndex, 1);
+  }
+
   public static getState() {
     return GameState.instance.state;
   }
