@@ -18,9 +18,7 @@ export class Player extends GameObject {
         super();
 
         this.camera = new PerspectiveCamera(75, Renderer.getInstance().aspect, 0.1, 1000);
-
         this.body.add(this.camera);
-
         this.controller = new PlayerController(this.body, this.camera, document.body);
 
         Renderer.getInstance().setActiveCamera(this.camera);

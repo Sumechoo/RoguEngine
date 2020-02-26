@@ -6,11 +6,20 @@ export class GameObject extends Object3D implements Updateable {
   public rigidbody?: Body;
   public body?: Object3dWithMaterial | MeshWithMaterial;
 
+  public setPosition(newPosition: Vec3, moveBody = true) {
+    this.position.x = newPosition.x;
+    this.position.y = newPosition.y;
+    this.position.z = newPosition.z;
+
+    if(moveBody && this.rigidbody) {
+      // const wp = this.localToWorld(this.position);
+      // this.rigidbody.position.set(wp.x, wp.y, wp.z);
+    }
+  }
+
   public update(frameNum: number) {
     if(this.rigidbody) {
-      this.position.x = this.rigidbody.position.x;
-      this.position.y = this.rigidbody.position.y;
-      this.position.z = this.rigidbody.position.z;
+      this.setPosition(this.rigidbody.position, false);
       
       const eulerRotation: Vec3 = new Vec3();
 

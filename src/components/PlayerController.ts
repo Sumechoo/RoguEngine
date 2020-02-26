@@ -1,10 +1,11 @@
 import { IForce, Updateable, Object3dWithMaterial, GameInputEvent } from "../types";
 import { Vec3 } from "cannon";
-import { Camera, Raycaster } from "three";
+import { Camera, Raycaster, Vector3 } from "three";
 import { GameState } from "./singletons/GameState";
 import { InputHandler } from "./singletons/InputHandler";
 import { isKeyboardEvent } from "../typeguards";
 import { SingletoneStore } from "./singletons/SingletoneStore";
+import { Cube } from "./gameobjects/primitives/Cube";
 
 export interface AxisConfig {
   name: keyof IForce;
@@ -28,6 +29,8 @@ export class PlayerController implements Updateable {
   protected baseMovementSpeed: number = 0.05;
   protected baseRotationSpeed: number = 0.1;
 
+  private buildBlockPlaceholder: Object3dWithMaterial;
+
   private speed: IForce = {
     x: 0,
     y: 0,
@@ -40,6 +43,9 @@ export class PlayerController implements Updateable {
     this.body = body;
     this.camera = camera;
     this.element = element;
+    this.buildBlockPlaceholder = new Cube(Vec3.ZERO, 0.25, true);
+
+    this.body.add(this.buildBlockPlaceholder);
 
     this.body.children.forEach((child) => child.castShadow = false);
 
@@ -94,6 +100,12 @@ export class PlayerController implements Updateable {
     if (isKeyboardEvent(e)) {
       return;
     }
+
+    let forward = new Vector3();
+    this.camera.getWorldDirection(forward);
+
+    // this.buildBlockPlaceholder.position.set(0, forward.y / 2, -0.5);
+    this.buildBlockPlaceholder.setPosition(new Vec3(0, forward.y / 2, -0.5));
 
     const movementX = -(e.movementX / 200);
     const movementY = -(e.movementY / 200);

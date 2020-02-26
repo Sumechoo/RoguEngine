@@ -9,6 +9,7 @@ import { Dungeon } from '../components/levels/Dungeon';
 import { HUD } from './components/HUD';
 import { GameState } from '../components/singletons/GameState';
 import { GameStateEditor } from '../components/levels/GameStateEditor';
+import { Sandbox } from '../components/levels/Sandbox';
 
 const styles: {[key: string]: CSSProperties} = {
     container: {
@@ -38,7 +39,7 @@ interface Props {
 }
 
 const levelsList: ReadonlyArray<typeof Level> = [
-    Demo, Demo2, Columns, Editor, Dungeon, GameStateEditor
+    Editor, GameStateEditor, Sandbox
 ];
 
 export const MainDisplay: React.FC<Props> = (props) => {
