@@ -1,6 +1,6 @@
 import { MeshPhysicalMaterial, Mesh } from "three";
 import React, { CSSProperties } from 'react';
-import { GameObject } from "./components/GameObject";
+import { GameObject } from "./components/core";
 import { Level } from "./components/Level";
 
 export interface IGameState {

@@ -1,14 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { CSSProperties } from "react"
 import { Level } from '../components/Level';
-import { Demo } from '../components/levels/Demo';
-import { Demo2 } from '../components/levels/Demo2';
 import { Editor } from '../components/levels/Editor';
-import { Columns } from '../components/levels/Columns';
-import { Dungeon } from '../components/levels/Dungeon';
 import { HUD } from './components/HUD';
 import { GameState } from '../components/singletons/GameState';
-import { GameStateEditor } from '../components/levels/GameStateEditor';
+import { GizmosEditor } from '../components/levels/GizmosEditor';
 import { Sandbox } from '../components/levels/Sandbox';
 
 const styles: {[key: string]: CSSProperties} = {
@@ -39,7 +35,7 @@ interface Props {
 }
 
 const levelsList: ReadonlyArray<typeof Level> = [
-    Editor, GameStateEditor, Sandbox
+    GizmosEditor, Sandbox
 ];
 
 export const MainDisplay: React.FC<Props> = (props) => {

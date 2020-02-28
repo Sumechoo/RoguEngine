@@ -1,6 +1,7 @@
 import { IGameState } from "../types"
 import { GameState } from "../components/singletons/GameState"
 import { useCallback, useState, useEffect } from "react";
+import { IObservable } from "../components/core/interfaces";
 
 export const useGlobalState = <K extends keyof IGameState>(key: K): IGameState[K] => {
     const state = GameState.getInstance();
@@ -18,3 +19,16 @@ export const useGlobalState = <K extends keyof IGameState>(key: K): IGameState[K
 
     return stateValue;
 }
+
+export const useSubscription = <T extends IObservable<T>>(obj: T) => {
+    const [value, setValue] = useState<T>(obj);
+
+    useEffect(() => {
+        obj.subscribe(setValue);
+        return () => {
+            obj.unsubscribe(setValue);
+        };
+    }, [obj, setValue]);
+
+    return value;
+} 

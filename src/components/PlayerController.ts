@@ -6,7 +6,7 @@ import { InputHandler } from "./singletons/InputHandler";
 import { isKeyboardEvent } from "../typeguards";
 import { SingletoneStore } from "./singletons/SingletoneStore";
 import { Cube } from "./gameobjects/primitives/Cube";
-import { Vec3ToVector, Vector3ToVec } from "../utils";
+import { Vector3ToVec } from "../utils";
 
 export interface AxisConfig {
   name: keyof IForce;
@@ -47,8 +47,6 @@ export class PlayerController implements Updateable {
     this.buildBlockPlaceholder = new Cube(Vec3.ZERO, 0.25, true);
 
     this.body.add(this.buildBlockPlaceholder);
-
-    this.body.children.forEach((child) => child.castShadow = false);
 
     if(this.body.rigidbody) {
       this.body.rigidbody.fixedRotation = true;
@@ -103,8 +101,8 @@ export class PlayerController implements Updateable {
     let forward = new Vector3();
     this.camera.getWorldDirection(forward);
 
-    // this.buildBlockPlaceholder.position.set(0, forward.y / 2, -0.5);
-    this.buildBlockPlaceholder.setPosition(new Vec3(0, forward.y / 2, -0.5));
+    this.buildBlockPlaceholder.transform.setPosition(new Vec3(0, forward.y / 2, -0.5));
+    this.buildBlockPlaceholder.update();
 
     const movementX = -(e.movementX / 200);
     const movementY = -(e.movementY / 200);

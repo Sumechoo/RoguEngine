@@ -1,5 +1,5 @@
 import { BoxGeometry, MeshPhysicalMaterial, Mesh, CanvasTexture, Color, NearestFilter } from "three";
-import { GameObject } from "../../GameObject";
+import { GameObject } from "../../core";
 import { Vec3, Body, Box } from "cannon";
 import { MeshWithMaterial } from "../../../types";
 
@@ -43,6 +43,9 @@ export class Cube extends GameObject {
       mass: 1,
     });
     this.rigidbody.addShape(new Box(new Vec3(size / 2, size / 2, size / 2)));
+
+    // this.transform.setPosition(pos);
+
     this.rigidbody.position = pos;
 
     if(kinematic) {

@@ -1,5 +1,5 @@
 import { Object3D, Vector3, PerspectiveCamera } from "three";
-import { GameObject } from "./GameObject";
+import { GameObject } from "./core";
 import { Updateable, Initable, UIScope } from "../types";
 import { Body, World } from "cannon";
 import { Player } from "./gameobjects/Player";

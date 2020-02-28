@@ -1,6 +1,6 @@
 import { BoxGeometry, MeshBasicMaterial, Mesh } from "three";
 import { Vec3, Body, Box, IBodyEvent } from "cannon";
-import { GameObject } from "../GameObject";
+import { GameObject } from "../core";
 
 export class Trigger extends GameObject {
   constructor(pos: Vec3, size = 1, kinematic = false, color = 0x88aa55) {

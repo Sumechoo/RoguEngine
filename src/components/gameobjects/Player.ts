@@ -1,4 +1,4 @@
-import { GameObject } from "../GameObject";
+import { GameObject } from "../core";
 import { PerspectiveCamera } from "three";
 import { Cube } from "./primitives/Cube";
 import { Vec3 } from "cannon";
