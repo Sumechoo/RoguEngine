@@ -24,6 +24,8 @@ export class Transform implements IObservable<Transform> {
     public setRotation(newRotation: Vec3, external = true) {
         this.setAsExternalValidated(external);
         this.rotation = newRotation;
+
+        this.notify();
     }
 
     private setAsExternalValidated(external: boolean) {
@@ -41,6 +43,7 @@ export class Transform implements IObservable<Transform> {
     }
 
     notify() {
-        this.listeners.forEach((listener) => listener(this));
+        const newValues = {...this};
+        this.listeners.forEach((listener) => listener(newValues));
     }
 }

@@ -44,9 +44,8 @@ export class Cube extends GameObject {
     });
     this.rigidbody.addShape(new Box(new Vec3(size / 2, size / 2, size / 2)));
 
-    // this.transform.setPosition(pos);
-
-    this.rigidbody.position = pos;
+    this.transform.setPosition(pos);
+    this.update();
 
     if(kinematic) {
       this.rigidbody.type = Body.KINEMATIC;

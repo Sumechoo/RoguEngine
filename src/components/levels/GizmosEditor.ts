@@ -4,7 +4,7 @@ import { Vec3 } from "cannon";
 import { VisualEditor } from "../../ui/components/VisualEditor";
 
 export class GizmosEditor extends Level {
-  private targetCube: Cube = new Cube(new Vec3(1, 2, 0), 2, false, 0x126490);
+  private targetCube: Cube = new Cube(new Vec3(1, 2, 0), 1, true, 0x126490);
 
   constructor() {
     super();
