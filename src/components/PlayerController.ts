@@ -44,7 +44,7 @@ export class PlayerController implements Updateable {
     this.body = body;
     this.camera = camera;
     this.element = element;
-    this.buildBlockPlaceholder = new Cube(Vec3.ZERO, 0.25, true);
+    this.buildBlockPlaceholder = new Cube(Vec3.ZERO, 0.25, false);
 
     this.body.add(this.buildBlockPlaceholder);
 
@@ -87,7 +87,7 @@ export class PlayerController implements Updateable {
     if (currentLevel) {
       const position = new Vector3(0,0,0);
       this.buildBlockPlaceholder.getWorldPosition(position);
-      const cube = new Cube(Vector3ToVec(position), 0.25, false);
+      const cube = new Cube(Vector3ToVec(position), 0.25, true);
     
       currentLevel.add(cube);
     }

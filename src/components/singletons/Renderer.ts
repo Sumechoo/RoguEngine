@@ -61,7 +61,7 @@ export class Renderer implements Updateable {
       return;
     }
 
-    this.composer.render(this.scene, this.camera);
+    this.renderer.render(this.scene, this.camera);
     this.physics.step(0.5);
     level.update(frame);
   }
@@ -106,8 +106,8 @@ export class Renderer implements Updateable {
 
     light.castShadow = true;
     light.shadow.bias = 0;
-    light.shadowMapHeight = 2048;
-    light.shadowMapWidth = 2048;
+    light.shadowMapHeight = 128;
+    light.shadowMapWidth = 128;
     light.position.x = -4;
     light.position.z = 4;
     light.position.y = 10;

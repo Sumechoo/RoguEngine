@@ -35,7 +35,7 @@ interface Props {
 }
 
 const levelsList: ReadonlyArray<typeof Level> = [
-    GizmosEditor, Sandbox
+    GizmosEditor, Sandbox, Editor
 ];
 
 export const MainDisplay: React.FC<Props> = (props) => {
