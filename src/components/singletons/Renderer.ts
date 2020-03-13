@@ -29,7 +29,7 @@ export class Renderer implements Updateable {
 
     this.aspect = outerWidth / outerHeight;
 
-    this.renderer.setSize(500, 250);
+    this.renderer.setSize(outerWidth / 2, outerHeight / 2);
     this.renderer.setClearColor(0x12345678);
 
     this.renderer.shadowMap.type = PCFSoftShadowMap;

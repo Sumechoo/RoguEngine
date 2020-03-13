@@ -1,5 +1,17 @@
 import React, { useCallback, ChangeEvent, WheelEvent } from 'react';
 import { CommonStyles } from './CommonStyles';
+import { Styles } from '../../types';
+
+const styles: Styles = {
+    inputBody: {
+        width: 50,
+        borderRadius: 3,
+        border: 'none',
+        padding: 5,
+        margin: 5,
+        boxShadow: '0 2px 5px rgba(0,0,0,.5)',
+    }
+}
 
 interface Props {
     title?: string;
@@ -26,6 +38,7 @@ export const Input: React.FC<Props> = (props) => {
         <div style={CommonStyles.container}>
             {title && <span>{title}</span>}
             <input
+                style={styles.inputBody}
                 onWheel={handleWheel}
                 onChange={onChangeHandler}
                 value={value}

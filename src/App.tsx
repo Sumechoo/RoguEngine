@@ -1,11 +1,24 @@
 import React, { useEffect, useRef, useCallback, useState } from "react";
-import { UIScope } from "./types";
+import { UIScope, Styles } from "./types";
 import { Renderer } from "./components/singletons/Renderer";
 import { Level } from "./components/Level";
 import { MainDisplay } from "./ui/MainDisplay";
 import { GameState } from "./components/singletons/GameState";
 import { SingletoneStore } from "./components/singletons/SingletoneStore";
 import { Overlay } from "./ui/components/Overlay";
+
+const styles: Styles = {
+  main: {
+    fontFamily: 'Open Sans',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right:0,
+    bottom: 0,
+    overflow: 'hidden',
+    background: 'linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%)'
+  }
+};
 
 const renderer = new Renderer();
 new GameState();
@@ -40,22 +53,12 @@ export default function App() {
   }, []);
 
   return (
-    <>
-      <div style={{position: 'absolute', top: 0, left: 0}} >
-        <MainDisplay onSwitchLevel={loadLevel} />
-        <Overlay
-          top='Top container'
-          bottom={<button>Try in game mode</button>}
-          left={<span>Left pad</span>}
-          right={<span>Right pad</span>}
-          renderer={<div ref={displayRef}/>}
-        />
-        <div style={{position: 'absolute', top: 0, left: 0}}>
-          {Ui && <Ui.Component 
-            {...Ui.props}
-          />}
-        </div>
-      </div>
-    </>
+    <div style={styles.main} >
+      <MainDisplay onSwitchLevel={loadLevel} />
+      <Overlay
+        right={Ui && <Ui.Component {...Ui.props} />}
+        renderer={<div ref={displayRef}/>}
+      />
+    </div>
   );
 }

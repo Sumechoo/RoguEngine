@@ -17,10 +17,12 @@ const styles: {[key: string]: CSSProperties} = {
         display: 'flex',
         alignItems: 'flex-end',
         justifyContent: 'center',
+        pointerEvents: 'none',
     },
     hud: {
         display: 'flex',
         flexDirection: 'column',
+        pointerEvents: 'all',
     },
     button: {
         backgroundColor: 'coral',

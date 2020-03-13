@@ -12,7 +12,6 @@ interface Props {
 
 const styles: Styles = {
     parametersForm: {
-        backgroundColor: 'white',
         padding: 5,
     },
 }

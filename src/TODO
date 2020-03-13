@@ -3,6 +3,7 @@
 # create a developer menu and move levels list there
 # GameObject.setPosition shoud set proper position for rigidbody
 
+# [maj] create a runtime enviroment
 # [maj] add methods to serialize/parse the level's content
 # [maj] move codebase to library with exposed parts
 # [?] move to electron
