@@ -1,52 +1,59 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useState, useCallback, MouseEvent} from 'react';
 import { Styles } from '../../../types';
 import { Button } from '../Button';
+import { SegmentedControl } from '../SegmentedControl';
+import { Contextual } from '../Contextual';
 
-const menuItems: Array<string> = ['File', 'Edit', 'Play', 'Level', 'Instruments'];
+const menuItems: Array<string> = ['File', 'Edit', 'Level', 'Instruments'];
 
 const styles: Styles = {
     mainContainer: {
-        boxShadow: '0 2px 15px rgba(0,0,0,.5)',
-        padding: 2,
+        boxShadow: '0 2px 4px rgba(0,0,0,.2)',
+        padding: 8,
         display: 'flex',
         flexDirection: 'row',
-        background: 'linear-gradient(to bottom, rgba(222,239,255,1) 0%,rgba(152,190,222,1) 100%)',
+        background: 'rgba(240,240,240,0.8)',
     },
     title: {
+        fontSize: 19,
         padding: '2px 50px',
         fontWeight: 'bold',
     },
     spacer: {
         flex: 1,
     },
-    menuPlaceholder: {
-        position: 'absolute',
-        backdropFilter: 'blur(25px)',
-        backgroundColor: 'rgba(0,0,0,.3)',
-        borderRadius: 5,
-        border: 'solid 0.3px',
-        boxShadow: '1px 1px 3px black',
-        padding: '3px 10px',
-        top: 20,
-        left: 100,
-        width: 200,
-        height: 300,
-        color: 'white',
-    }
+}
+
+interface ContextualParams {
+    title: string;
+    top: number;
+    left: number;
 }
 
 export const TopBar: FC = () => {
-    const [showMenu, setShowMenu] = useState<string | undefined>();
+    const [showMenu, setShowMenu] = useState<ContextualParams | undefined>();
 
-    const openMenu = (item: string) => () => setShowMenu(item);
+    const openMenu = (title: string) => (e: MouseEvent) => setShowMenu({
+        left: e.pageX,
+        top: e.clientY,
+        title,
+    });
+    const closeMenu = useCallback(() => setShowMenu(undefined), []);
 
     return (
         <div style={styles.mainContainer}>
-            {showMenu && <div style={styles.menuPlaceholder}>menu</div>}
-            <span style={styles.title}>RoguEngine Editor</span>
+            {showMenu && <Contextual onClose={closeMenu} style={{...showMenu}} />}
+            <span style={styles.title}>Project Demo</span>
             {menuItems.map((item) => <Button title={item} onClick={openMenu(item)} />)}
-            <div style={styles.spacer}/>
-            <Button title='Help' />
+            <SegmentedControl 
+                buttons={[
+                    <Button title='Play' />,
+                    <Button title='Publish' />,
+                    <Button title='Settings' />,
+                ]}
+            />
+            <div style={styles.spacer} />
+            <SegmentedControl buttons={[<Button title='Help' />]} />
         </div>
     )
 }

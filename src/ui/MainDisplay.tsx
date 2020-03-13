@@ -72,8 +72,8 @@ export const MainDisplay: React.FC<Props> = (props) => {
                         </button>
                     ))}
                 </div>
-                <HUD />
             </div>
+            <HUD />
         </div>
     )
 }

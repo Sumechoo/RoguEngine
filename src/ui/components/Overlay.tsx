@@ -13,6 +13,12 @@ const styles: Styles = {
         alignItems: 'center',
         justifyContent: 'space-between',
     },
+    renderer: {
+        padding: 8,
+        margin: 8,
+        border: '1px solid lightgrey',
+        boxShadow: '0 0 3px lightgrey',
+    },
     padPlaceholder: {
         flex: 1,
     }
@@ -41,7 +47,7 @@ export const Overlay: FC<Props> = (props) => {
                 {top || <TopBar />}
                 <div style={styles.middleContainer}>
                     <div style={styles.padPlaceholder}>{left}</div>
-                    {renderer}
+                    <div style={styles.renderer}>{renderer}</div>
                     <div style={styles.padPlaceholder}>{right}</div>
                 </div>
                 {bottom}

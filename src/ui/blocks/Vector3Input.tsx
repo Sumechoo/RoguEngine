@@ -30,7 +30,7 @@ export const Vector3Input: React.FC<Props> = (props) => {
     }
 
     return (
-        <div style={CommonStyles.container}>
+        <div >
             {title && <span>{title}</span>}
             <div style={styles.vertical}>
                 <Input value={value.x} title='x' onChange={onChangeHandler('x')} />

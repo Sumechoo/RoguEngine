@@ -16,7 +16,18 @@ const styles: Styles = {
     right:0,
     bottom: 0,
     overflow: 'hidden',
-    background: 'linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%)'
+    // backdropFilter: 'blur(10px)',
+    background: 'rgba(255,255,255,0.6)',
+  },
+  backdrop: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right:0,
+    bottom: 0,
+  },
+  displayContainer: {
+    position: 'relative',
   }
 };
 
@@ -53,12 +64,16 @@ export default function App() {
   }, []);
 
   return (
-    <div style={styles.main} >
-      <MainDisplay onSwitchLevel={loadLevel} />
-      <Overlay
-        right={Ui && <Ui.Component {...Ui.props} />}
-        renderer={<div ref={displayRef}/>}
-      />
+    <div style={styles.backdrop} >
+      <div style={styles.main} >
+        <Overlay
+          bottom={<span>HELPER</span>}
+          right={Ui && <Ui.Component {...Ui.props} />}
+          renderer={<div style={styles.displayContainer} ref={displayRef}>
+            <MainDisplay onSwitchLevel={loadLevel} />
+          </div>}
+        />
+      </div>
     </div>
   );
 }

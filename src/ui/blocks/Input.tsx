@@ -6,10 +6,12 @@ const styles: Styles = {
     inputBody: {
         width: 50,
         borderRadius: 3,
-        border: 'none',
-        padding: 5,
+        padding: 2,
         margin: 5,
-        boxShadow: '0 2px 5px rgba(0,0,0,.5)',
+        border: '1px solid lightgrey',
+    },
+    title: {
+        fontWeight: 600,
     }
 }
 
@@ -36,7 +38,7 @@ export const Input: React.FC<Props> = (props) => {
 
     return (
         <div style={CommonStyles.container}>
-            {title && <span>{title}</span>}
+            {title && <span style={styles.title}>{title}: </span>}
             <input
                 style={styles.inputBody}
                 onWheel={handleWheel}
