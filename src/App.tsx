@@ -6,6 +6,7 @@ import { MainDisplay } from "./ui/MainDisplay";
 import { GameState } from "./components/singletons/GameState";
 import { SingletoneStore } from "./components/singletons/SingletoneStore";
 import { Overlay } from "./ui/components/Overlay";
+import { API } from "./components/singletons/API";
 
 const styles: Styles = {
   main: {
@@ -34,6 +35,7 @@ const styles: Styles = {
 const renderer = new Renderer();
 new GameState();
 new SingletoneStore();
+new API();
 
 function switchLevel(level: Level) {
   renderer.setupLevel(level);
@@ -61,7 +63,13 @@ export default function App() {
     setUi(level.ui)
 
     switchLevel(level);
-  }, []);
+  }, [setUi]);
+
+  useEffect(() => {
+    const api = API.getInstance();
+    api.loadLevel = loadLevel;
+    return () => {api.loadLevel = () => {}};
+  }, [loadLevel])
 
   return (
     <div style={styles.backdrop} >
@@ -70,7 +78,7 @@ export default function App() {
           bottom={<span>HELPER</span>}
           right={Ui && <Ui.Component {...Ui.props} />}
           renderer={<div style={styles.displayContainer} ref={displayRef}>
-            <MainDisplay onSwitchLevel={loadLevel} />
+            <MainDisplay />
           </div>}
         />
       </div>

@@ -32,20 +32,12 @@ const styles: {[key: string]: CSSProperties} = {
     }
 }
 
-interface Props {
-    onSwitchLevel: (levelConstructor: typeof Level) => void;
-}
-
 const levelsList: ReadonlyArray<typeof Level> = [
     GizmosEditor, Sandbox, Editor
 ];
 
-export const MainDisplay: React.FC<Props> = (props) => {
-    const {
-        onSwitchLevel,
-    } = props;
+export const MainDisplay: React.FC = () => {
     const [updateIndex, setIndex] = useState(0);
-    const {showDeveloperMenu} = GameState.getState();
 
     const incrementIndex = useCallback(() => {
         setIndex(Date.now());
@@ -60,19 +52,6 @@ export const MainDisplay: React.FC<Props> = (props) => {
     
     return (
         <div key={updateIndex} style={styles.container}>
-            <div style={styles.hud}>
-                <div>
-                    {showDeveloperMenu && levelsList.map((item, index) => (
-                        <button
-                            key={index}
-                            style={styles.button}
-                            onClick={() => onSwitchLevel(item)}
-                        >
-                            {item.name}
-                        </button>
-                    ))}
-                </div>
-            </div>
             <HUD />
         </div>
     )

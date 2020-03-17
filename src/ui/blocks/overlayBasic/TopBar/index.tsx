@@ -1,10 +1,10 @@
 import React, {FC, useState, useCallback, MouseEvent} from 'react';
-import { Styles } from '../../../types';
-import { Button } from '../Button';
-import { SegmentedControl } from '../SegmentedControl';
-import { Contextual } from '../Contextual';
-
-const menuItems: Array<string> = ['File', 'Edit', 'Level', 'Instruments'];
+import { Styles } from '../../../../types';
+import { Button } from '../../Button';
+import { SegmentedControl } from '../../SegmentedControl';
+import { Contextual } from '../../Contextual';
+import { config } from './config';
+import { MenuItem } from '../../Contextual/types';
 
 const styles: Styles = {
     mainContainer: {
@@ -24,27 +24,25 @@ const styles: Styles = {
     },
 }
 
-interface ContextualParams {
-    title: string;
-    top: number;
-    left: number;
+export interface ContextualParams {
+    ref: HTMLElement;
+    menuItems: MenuItem[];
 }
 
 export const TopBar: FC = () => {
     const [showMenu, setShowMenu] = useState<ContextualParams | undefined>();
 
-    const openMenu = (title: string) => (e: MouseEvent) => setShowMenu({
-        left: e.pageX,
-        top: e.clientY,
-        title,
+    const openMenu = (menuItems: MenuItem[]) => (e: MouseEvent<HTMLElement>) => setShowMenu({
+        ref: e.currentTarget,
+        menuItems,
     });
     const closeMenu = useCallback(() => setShowMenu(undefined), []);
 
     return (
         <div style={styles.mainContainer}>
-            {showMenu && <Contextual onClose={closeMenu} style={{...showMenu}} />}
+            {showMenu && <Contextual onClose={closeMenu} params={showMenu} />}
             <span style={styles.title}>Project Demo</span>
-            {menuItems.map((item) => <Button title={item} onClick={openMenu(item)} />)}
+            {config.configItems.map((item) => <Button title={item.title} onClick={openMenu(item.menuItems)} />)}
             <SegmentedControl 
                 buttons={[
                     <Button title='Play' />,
