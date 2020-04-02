@@ -30,7 +30,7 @@ export class Renderer implements Updateable {
     this.aspect = outerWidth / outerHeight;
 
     this.renderer.setSize(outerWidth / 1.2, outerHeight / 1.2);
-    this.renderer.setClearColor(0x12345678);
+    this.renderer.setClearColor(0xE9B87A);
 
     this.renderer.shadowMap.type = PCFSoftShadowMap;
 
@@ -39,7 +39,7 @@ export class Renderer implements Updateable {
     this.physics.broadphase = new NaiveBroadphase();
 
     this.scene = new Scene();
-    this.scene.fog = new FogExp2( 0x12345678, 0.15 );
+    this.scene.fog = new FogExp2( 0xE9B87A, 0.15 );
 
     this.composer.setSize(outerWidth / 2, outerHeight / 2);
 

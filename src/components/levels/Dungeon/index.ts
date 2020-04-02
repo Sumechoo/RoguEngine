@@ -1,52 +1,48 @@
 import { Level } from "../../Level";
 import { Cube } from "../../gameobjects/primitives/Cube";
 import { Vec3 } from "cannon";
-import { Vector3 } from "three";
+import { Vector3, Vec2 } from "three";
 import { TileType } from "./types";
-import { block, pen } from "../../../assets/sprites";
-
-const tileToTexture: Record<TileType, string | undefined> = {
-  [TileType.WALL]: block,
-  [TileType.FLOOR]: pen,
-
-  [TileType.VOID]: undefined,
-};
+import { tileToTexture } from "./config";
+import { spawnRoom, spawnWalls } from "./utils";
 
 export class Dungeon extends Level {
-  private size = 20;
+  private size = 30;
   private data: TileType[][] = [];
 
   constructor() {
     super();
 
-    this.data.length = this.size;
-    this.data.fill([]);
-    this.data.forEach((row, index) => {
-      this.data[index].length = this.size;
-      this.data[index].fill(TileType.WALL);
-    });
+    for(let i = 0; i < this.size; i++) {
+      this.data[i] = [];
+      for(let j = 0; j < this.size; j++) {
+        this.data[i][j] = TileType.VOID;
+      }
+    }
 
     this.spawnPlayer(new Vector3(15, 1, 15));
   }
 
   beforeInit() {
-    // const getRandom = () => Math.ceil(Math.random() * this.size);
-    // for(let i = 0; i < 20; i ++) {
-    //   console.info('data: ', this.data);
+    const getRandom = () => Math.floor(Math.random() * this.size);
+    const walls: Vec2[] = [];
 
-    //   this.data[getRandom()][getRandom()] = TileType.FLOOR;
-    // }
+    for(let i = 0; i < 30; i++) {
+      walls.push(...spawnRoom(this.data, {x: 6, y: 6}, {x: getRandom(), y: getRandom()}));
+    }
+
+    spawnWalls(this.data, walls);
   }
 
   init() {
     this.beforeInit();
-
+  
     this.data.forEach((row, x) => {
       row.forEach((tile, y) => {
-        const texture = tileToTexture[tile];
+        const tileCfg = tileToTexture[tile];
 
-        if (texture) {
-          this.add(new Cube(new Vec3(x, -1, y), 1, true, texture));
+        if (tileCfg) {
+          this.add(new Cube(new Vec3(x, tileCfg.yShift || 0, y), 1, true, tileCfg.texture));
         }
       });
     });

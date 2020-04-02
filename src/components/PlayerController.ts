@@ -88,9 +88,9 @@ export class PlayerController implements Updateable {
     if (currentLevel) {
       const position = new Vector3(0,0,0);
       this.buildBlockPlaceholder.getWorldPosition(position);
-      const cube = new Cube(Vector3ToVec(position), 0.25, true, pen);
+      // const cube = new Cube(Vector3ToVec(position), 0.25, true, pen);
     
-      currentLevel.add(cube);
+      // currentLevel.add(cube);
     }
   }
 
@@ -102,8 +102,8 @@ export class PlayerController implements Updateable {
     let forward = new Vector3();
     this.camera.getWorldDirection(forward);
 
-    this.buildBlockPlaceholder.transform.setPosition(new Vec3(0, forward.y / 2, -0.5));
-    this.buildBlockPlaceholder.update();
+    // this.buildBlockPlaceholder.transform.setPosition(new Vec3(0, forward.y / 2, -0.5));
+    // this.buildBlockPlaceholder.update();
 
     const movementX = -(e.movementX / 200);
     const movementY = -(e.movementY / 200);
@@ -134,7 +134,7 @@ export class PlayerController implements Updateable {
 
     switch (e.key) {
       case " ":
-        // this.doJump();
+        this.doJump();
         break;
       case "Escape":
         GameState.setState({showDeveloperMenu:true});
