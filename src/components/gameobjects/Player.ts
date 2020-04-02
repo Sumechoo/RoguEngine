@@ -10,7 +10,7 @@ import { GameState } from "../singletons/GameState";
 export class Player extends GameObject {
     protected camera?: PerspectiveCamera;
 
-    public body = new Cube(new Vec3(0, 0, 3), 0.5, false, 0xff0000) as Object3dWithMaterial;
+    public body = new Cube(new Vec3(0, 0, 3), 0.5, false) as Object3dWithMaterial;
 
     protected controller: PlayerController;
 

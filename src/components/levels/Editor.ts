@@ -5,7 +5,7 @@ import { TextureEditor } from "../../ui/components/TextureEditor";
 import { Texture } from "three";
 
 export class Editor extends Level {
-  private targetCube: Cube = new Cube(new Vec3(0, 0, 0), 2, false, 0x126490);
+  private targetCube: Cube = new Cube(new Vec3(0, 0, 0), 2, false);
 
   constructor() {
     super();
@@ -31,6 +31,6 @@ export class Editor extends Level {
   init() {
     this.add(this.targetCube);
 
-    this.add(new Cube(new Vec3(0, -6, 0), 10, true, 0xaf2449));
+    this.add(new Cube(new Vec3(0, -6, 0), 10, true));
   }
 }

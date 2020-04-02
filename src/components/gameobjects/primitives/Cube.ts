@@ -1,36 +1,17 @@
-import { BoxGeometry, MeshPhysicalMaterial, Mesh, CanvasTexture, Color, NearestFilter } from "three";
+import { BoxGeometry, MeshPhysicalMaterial, Mesh, CanvasTexture, Color, NearestFilter, TextureLoader, RepeatWrapping } from "three";
 import { GameObject } from "../../core";
 import { Vec3, Body, Box } from "cannon";
+import { block } from "../../../assets/sprites";
 import { MeshWithMaterial } from "../../../types";
-
 export class Cube extends GameObject {
-  constructor(pos: Vec3, size = 1, kinematic = false, color = 0x88aa55) {
+  constructor(pos: Vec3, size = 1, kinematic = false, t?: string) {
     super();
-
-    const canvas: HTMLCanvasElement = document.createElement('canvas');
-
-    canvas.height = 20;
-    canvas.width = 20;
-
-    const ctx = canvas.getContext('2d');
-    const texture = new CanvasTexture(canvas);
-
+  
+    const texture = new TextureLoader().load(t || block);
     texture.magFilter = NearestFilter;
 
-    if(ctx) {
-      ctx.fillStyle = `#${new Color(color).getHexString()}`;
-      ctx.fillRect(0, 0, 20, 20);
-      ctx.fill();
-      ctx.strokeStyle = 'black';
-      ctx.fillStyle = 'white';
-      ctx.fillRect(2, 2, 16, 16);
-      ctx.fill();
-    }
-
-    texture.needsUpdate = true;
-
     const geometry = new BoxGeometry(size, size, size);
-    const material = new MeshPhysicalMaterial({ map: texture, roughnessMap: texture, bumpMap: texture });
+    const material = new MeshPhysicalMaterial({ map: texture, roughnessMap: texture, bumpMap: texture, transparent: true });
     const body = new Mesh(geometry, material);
 
     body.castShadow = true;

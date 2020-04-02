@@ -17,7 +17,6 @@ const styles: Styles = {
     right:0,
     bottom: 0,
     overflow: 'hidden',
-    // backdropFilter: 'blur(10px)',
     background: 'rgba(255,255,255,0.6)',
   },
   backdrop: {
