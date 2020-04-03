@@ -19,24 +19,30 @@ export class Dungeon extends Level {
         this.data[i][j] = TileType.VOID;
       }
     }
-
-    this.spawnPlayer(new Vector3(15, 1, 15));
   }
 
   beforeInit() {
     const getRandom = () => Math.floor(Math.random() * this.size);
     const walls: Vec2[] = [];
 
+    let playerStart: Vec2 = {x: 0, y: 0};
+
     for(let i = 0; i < 30; i++) {
-      walls.push(...spawnRoom(this.data, {x: 6, y: 6}, {x: getRandom(), y: getRandom()}));
+      const loc: Vec2 = {x: getRandom(), y: getRandom()};
+      const size: Vec2 = {x: 6, y: 6};
+
+      walls.push(...spawnRoom(this.data, size, loc));
+
+      if (i === 15) {
+        playerStart = {x: loc.x + 3, y: loc.y + 3};
+      }
     }
 
     spawnWalls(this.data, walls);
+    this.spawnPlayer(new Vector3(playerStart.x, 1, playerStart.y));
   }
 
-  init() {
-    this.beforeInit();
-  
+  afterInit() {
     this.data.forEach((row, x) => {
       row.forEach((tile, y) => {
         const tileCfg = tileToTexture[tile];
@@ -46,5 +52,10 @@ export class Dungeon extends Level {
         }
       });
     });
+  }
+
+  init() {
+    this.beforeInit();
+    this.afterInit();
   }
 }

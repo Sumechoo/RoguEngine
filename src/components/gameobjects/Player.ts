@@ -5,7 +5,6 @@ import { Vec3 } from "cannon";
 import { Object3dWithMaterial } from "../../types";
 import { PlayerController } from "../PlayerController";
 import { Renderer } from "../singletons/Renderer";
-import { GameState } from "../singletons/GameState";
 
 export class Player extends GameObject {
     protected camera?: PerspectiveCamera;
@@ -24,7 +23,6 @@ export class Player extends GameObject {
         Renderer.getInstance().setActiveCamera(this.camera);
 
         (document.body as any).requestPointerLock();
-        GameState.setState({showDeveloperMenu: false});
     }
 
     public getPlayerConponents = () => {

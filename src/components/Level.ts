@@ -1,7 +1,7 @@
 import { Object3D, Vector3, PerspectiveCamera } from "three";
 import { GameObject } from "./core";
 import { Updateable, Initable, UIScope } from "../types";
-import { Body, World } from "cannon";
+import { Body, World, Vec3 } from "cannon";
 import { Player } from "./gameobjects/Player";
 import { Renderer } from "./singletons/Renderer";
 
@@ -31,7 +31,7 @@ export class Level extends Object3D implements Updateable, Initable {
     this.add(playerComponents.body);
     this.objects.push(playerComponents.controller);
 
-    playerObject.position.set(point.x, point.y, point.z);
+    playerComponents.body.transform.setPosition(new Vec3(point.x, point.y, point.z));
   }
 
   public update(frameNum: number) {
