@@ -1,17 +1,14 @@
-import { BoxGeometry, MeshPhysicalMaterial, Mesh, CanvasTexture, Color, NearestFilter, TextureLoader, RepeatWrapping } from "three";
+import { BoxGeometry, MeshPhysicalMaterial, Mesh } from "three";
 import { GameObject } from "../../core";
 import { Vec3, Body, Box } from "cannon";
-import { block } from "../../../assets/sprites";
 import { MeshWithMaterial } from "../../../types";
+import { ASSETS } from "../../../assets/sprites";
 export class Cube extends GameObject {
-  constructor(pos: Vec3, size = 1, kinematic = false, t?: string) {
+  constructor(pos: Vec3, size = 1, kinematic = false, mat?: MeshPhysicalMaterial) {
     super();
-  
-    const texture = new TextureLoader().load(t || block);
-    texture.magFilter = NearestFilter;
 
     const geometry = new BoxGeometry(size, size, size);
-    const material = new MeshPhysicalMaterial({ map: texture, roughnessMap: texture, bumpMap: texture, transparent: true });
+    const material = mat || ASSETS.block;
     const body = new Mesh(geometry, material);
 
     body.castShadow = true;

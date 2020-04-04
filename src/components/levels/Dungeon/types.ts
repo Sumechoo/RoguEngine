@@ -1,9 +1,11 @@
+import { MeshPhysicalMaterial } from "three";
+
 export enum TileType {
     WALL, FLOOR, VOID, WATER,
 }
 
 export interface TileConfig {
-    texture: string;
+    material: MeshPhysicalMaterial;
     yShift?: number;
 }
 

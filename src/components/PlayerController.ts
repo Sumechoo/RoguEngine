@@ -6,8 +6,8 @@ import { InputHandler } from "./singletons/InputHandler";
 import { isKeyboardEvent } from "../typeguards";
 import { SingletoneStore } from "./singletons/SingletoneStore";
 import { Plane } from "./gameobjects/primitives";
-import { pen } from "../assets/sprites";
 import { Vector3ToVec } from "../utils";
+import { ASSETS } from "../assets/sprites";
 
 export interface AxisConfig {
   name: keyof IForce;
@@ -45,7 +45,7 @@ export class PlayerController implements Updateable {
     this.body = body;
     this.camera = camera;
     this.element = element;
-    this.buildBlockPlaceholder = new Plane(new Vec3(0.2, 0, -0.4), 0.25, false, pen);
+    this.buildBlockPlaceholder = new Plane(new Vec3(0.2, 0, -0.4), 0.25, false, ASSETS.pen);
 
     this.body.add(this.buildBlockPlaceholder);
 
@@ -88,7 +88,7 @@ export class PlayerController implements Updateable {
     if (currentLevel) {
       const position = new Vector3(0,0,0);
       this.buildBlockPlaceholder.getWorldPosition(position);
-      const cube = new Plane(Vector3ToVec(position), 0.25, true, pen);
+      const cube = new Plane(Vector3ToVec(position), 0.25, true, ASSETS.pen);
     
       currentLevel.add(cube);
     }

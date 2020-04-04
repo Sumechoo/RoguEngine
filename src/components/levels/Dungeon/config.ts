@@ -1,15 +1,15 @@
 import { TileType, TileConfig } from "./types";
-import { block, water, wall } from "../../../assets/sprites";
+import { ASSETS } from "../../../assets/sprites";
 
 
 export const tileToTexture: Record<TileType, TileConfig | undefined> = {
     [TileType.WALL]: {
-        texture: block,
+        material: ASSETS.block,
         yShift: 1,
     },
-    [TileType.FLOOR]: {texture: wall},
+    [TileType.FLOOR]: {material: ASSETS.wall},
     [TileType.WATER]: {
-        texture: water,
+        material: ASSETS.water,
         yShift: -0.2
     },
   
