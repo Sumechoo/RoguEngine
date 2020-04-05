@@ -1,5 +1,5 @@
 import { Level } from "../../Level";
-import { Cube } from "../../gameobjects/primitives/Cube";
+import { Cube, Plane } from "../../gameobjects/primitives";
 import { Vec3 } from "cannon";
 import { Vector3, Vec2 } from "three";
 import { TileType } from "./types";
@@ -49,6 +49,13 @@ export class Dungeon extends Level {
 
         if (tileCfg) {
           this.add(new Cube(new Vec3(x, tileCfg.yShift || 0, y), 1, true, tileCfg.material));
+
+          if (tileCfg.decoratorAssets) {
+            const decor = new Plane(new Vec3(x, (tileCfg.yShift || 0) + 0.68, y), 0.35, true, tileCfg.decoratorAssets[0]);
+            this.add(decor);
+
+            decor.transform.setRotation(new Vec3(0, Math.random() * 360, 0));
+          }
         }
       });
     });

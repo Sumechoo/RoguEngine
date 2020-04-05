@@ -1,8 +1,14 @@
-import { MeshPhysicalMaterial, TextureLoader, NearestFilter } from "three";
+import { MeshPhysicalMaterial, TextureLoader, NearestFilter, DoubleSide } from "three";
 
-export function makeMaterial(t: string) {
+export function makeMaterial(t: string, transparent = false) {
     const texture = new TextureLoader().load(t);
     texture.magFilter = NearestFilter;
 
-    return new MeshPhysicalMaterial({ map: texture, roughnessMap: texture, bumpMap: texture, transparent: true });
+    return new MeshPhysicalMaterial({ 
+        map: texture,
+        roughnessMap: texture,
+        bumpMap: texture,
+        side: transparent ? DoubleSide : undefined,
+        transparent
+    });
 }

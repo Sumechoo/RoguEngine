@@ -6,6 +6,7 @@ export enum TileType {
 
 export interface TileConfig {
     material: MeshPhysicalMaterial;
+    decoratorAssets?: ReadonlyArray<MeshPhysicalMaterial>;
     yShift?: number;
 }
 

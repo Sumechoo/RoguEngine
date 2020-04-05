@@ -7,7 +7,12 @@ export const tileToTexture: Record<TileType, TileConfig | undefined> = {
         material: ASSETS.block,
         yShift: 1,
     },
-    [TileType.FLOOR]: {material: ASSETS.wall},
+    [TileType.FLOOR]: {
+        material: ASSETS.wall,
+        decoratorAssets: [
+            ASSETS.bush,
+        ],
+    },
     [TileType.WATER]: {
         material: ASSETS.water,
         yShift: -0.2

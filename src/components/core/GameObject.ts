@@ -23,6 +23,11 @@ export class GameObject extends Object3D implements Updateable {
     if(this.rigidbody) {
       if (this.transform.externalModified) {
         this.rigidbody.position = this.transform.position;
+        this.rigidbody.quaternion.setFromEuler(
+          this.transform.rotation.x,
+          this.transform.rotation.y,
+          this.transform.rotation.z,
+        );
 
         this.transform.externalModified = false;
       }
