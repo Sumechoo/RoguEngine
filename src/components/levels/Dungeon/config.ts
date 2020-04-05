@@ -6,6 +6,11 @@ export const tileToTexture: Record<TileType, TileConfig | undefined> = {
     [TileType.WALL]: {
         material: ASSETS.block,
         yShift: 1,
+        decoratorAssets: [
+            ASSETS.tree,
+            ASSETS.bush,
+            ASSETS.pen,
+        ],
     },
     [TileType.FLOOR]: {
         material: ASSETS.wall,

@@ -45,9 +45,16 @@ export class PlayerController implements Updateable {
     this.body = body;
     this.camera = camera;
     this.element = element;
-    this.buildBlockPlaceholder = new Plane(new Vec3(0.2, 0, -0.4), 0.25, false, ASSETS.pen);
+    this.buildBlockPlaceholder = new Plane({
+      pos: new Vec3(0.2, -0.1, -0.25),
+      rot: new Vec3(-45, 0, 0),
+      size: 0.25,
+      mat: ASSETS.hand,
+      kinematic: true,
+    });
 
-    this.body.add(this.buildBlockPlaceholder);
+    this.camera.add(this.buildBlockPlaceholder);
+    this.buildBlockPlaceholder.transform.setRotation(new Vec3(45,45,45));
 
     if(this.body.rigidbody) {
       this.body.rigidbody.fixedRotation = true;
@@ -90,7 +97,10 @@ export class PlayerController implements Updateable {
       const rotation = new Quaternion();
       this.buildBlockPlaceholder.getWorldPosition(position);
       this.buildBlockPlaceholder.getWorldQuaternion(rotation);
-      const cube = new Plane(Vec3.ZERO, 0.25, true, ASSETS.pen);
+      const cube = new Plane({
+        mat: ASSETS.pen,
+        size: 0.25,
+      });
 
       cube.transform.setPosition(Vector3ToVec(position));
       cube.transform.setRotation(Vector3ToVec(new Euler().setFromQuaternion(rotation).toVector3()));

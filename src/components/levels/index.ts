@@ -6,3 +6,4 @@ export {Editor} from './Editor';
 export {GameStateEditor} from './GameStateEditor';
 export {GizmosEditor} from './GizmosEditor';
 export {Sandbox} from './Sandbox';
+export {DickBench} from './DickBench';

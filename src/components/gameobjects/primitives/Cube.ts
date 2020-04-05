@@ -8,7 +8,7 @@ export class Cube extends GameObject {
     super();
 
     const geometry = new BoxGeometry(size, size, size);
-    const material = mat || ASSETS.block;
+    const material = mat || ASSETS.error;
     const body = new Mesh(geometry, material);
 
     body.castShadow = true;

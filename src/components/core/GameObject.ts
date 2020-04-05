@@ -37,9 +37,9 @@ export class GameObject extends Object3D implements Updateable {
 
       this.transform.setPosition(this.rigidbody.position, false);
       this.transform.setRotation(eulerRotation, false);
-
-      this.updatePosition();
-      this.updateRotation();
     }
+    
+    this.updatePosition();
+    this.updateRotation();
   }
 }

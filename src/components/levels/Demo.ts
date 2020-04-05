@@ -5,7 +5,7 @@ import { Trigger } from "../gameobjects/Trigger";
 
 export class Demo extends Level {
   init() {
-    this.add(new Cube(Vec3.ZERO, 1.5, false));
+    this.add(new Cube(Vec3.ZERO.clone(), 1.5, false));
     this.add(new Cube(new Vec3(0, 2, 0), 0.75, false));
     this.add(new Cube(new Vec3(0, 3, 0), 0.35, false));
     this.add(new Cube(new Vec3(0, 4, 0), 0.15, false));

@@ -5,6 +5,7 @@ import { Vector3, Vec2 } from "three";
 import { TileType } from "./types";
 import { tileToTexture } from "./config";
 import { spawnRoom, spawnWalls } from "./utils";
+import { getRandomItem, getRandomShift } from "../../core/utils";
 
 export class Dungeon extends Level {
   private size = 30;
@@ -51,7 +52,13 @@ export class Dungeon extends Level {
           this.add(new Cube(new Vec3(x, tileCfg.yShift || 0, y), 1, true, tileCfg.material));
 
           if (tileCfg.decoratorAssets) {
-            const decor = new Plane(new Vec3(x, (tileCfg.yShift || 0) + 0.68, y), 0.35, true, tileCfg.decoratorAssets[0]);
+            const decor = new Plane({
+              pos: new Vec3(x + getRandomShift(), (tileCfg.yShift || 0) + 0.8, y + getRandomShift()),
+              size: 0.6,
+              kinematic: true,
+              mat: getRandomItem(tileCfg.decoratorAssets),
+              hollow: true,
+            });
             this.add(decor);
 
             decor.transform.setRotation(new Vec3(0, Math.random() * 360, 0));

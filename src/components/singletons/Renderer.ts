@@ -106,8 +106,8 @@ export class Renderer implements Updateable {
 
     light.castShadow = true;
     light.shadow.bias = 0;
-    light.shadowMapHeight = 128;
-    light.shadowMapWidth = 128;
+    light.shadowMapHeight = 2048;
+    light.shadowMapWidth = 2048;
     light.position.x = -4;
     light.position.z = 4;
     light.position.y = 10;
