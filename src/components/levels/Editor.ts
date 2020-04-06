@@ -5,6 +5,8 @@ import { TextureEditor } from "../../ui/components/TextureEditor";
 import { Texture } from "three";
 
 export class Editor extends Level {
+  public static entityName = 'Texture editor';
+
   private targetCube: Cube = new Cube(new Vec3(0, 0, 0), 2, false);
 
   constructor() {

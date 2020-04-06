@@ -4,12 +4,13 @@ import { ASSETS } from "../../../assets/sprites";
 
 export const tileToTexture: Record<TileType, TileConfig | undefined> = {
     [TileType.WALL]: {
-        material: ASSETS.block,
+        material: ASSETS.bricks,
         yShift: 1,
         decoratorAssets: [
             ASSETS.tree,
             ASSETS.bush,
             ASSETS.pen,
+            ASSETS.antena,
         ],
     },
     [TileType.FLOOR]: {

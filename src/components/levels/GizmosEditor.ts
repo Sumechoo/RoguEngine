@@ -4,6 +4,8 @@ import { Vec3 } from "cannon";
 import { VisualEditor } from "../../ui/components/VisualEditor";
 
 export class GizmosEditor extends Level {
+  public static entityName = 'Position editor demo';
+
   private targetCube: Cube = new Cube(new Vec3(1, 2, 0), 1, true);
 
   constructor() {

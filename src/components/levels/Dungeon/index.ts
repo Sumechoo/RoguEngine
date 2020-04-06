@@ -11,6 +11,8 @@ export class Dungeon extends Level {
   private size = 30;
   private data: TileType[][] = [];
 
+  public static entityName = 'Dungeon';
+
   constructor() {
     super();
 

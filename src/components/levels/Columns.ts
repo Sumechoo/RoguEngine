@@ -5,6 +5,8 @@ import { Vec3 } from "cannon";
 const dungeonSize = 10;
 
 export class Columns extends Level {
+  public static entityName = 'Columns bench';
+
   init() {
     for(let i = 0; i < dungeonSize; i++) {
       for(let j = 0; j < dungeonSize; j++) {

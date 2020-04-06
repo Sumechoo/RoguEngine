@@ -9,6 +9,8 @@ export class Level extends Object3D implements Updateable, Initable {
   public readonly objects: Array<Updateable> = [];
   public readonly rigidbodies: Array<Body> = [];
 
+  public static entityName: string = 'Unnamed';
+
   public ui?: UIScope<any>;
   public worldRef?: World;
 

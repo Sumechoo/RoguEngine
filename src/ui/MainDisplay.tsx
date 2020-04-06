@@ -5,7 +5,6 @@ import { Editor } from '../components/levels/Editor';
 import { HUD } from './components/HUD';
 import { GameState } from '../components/singletons/GameState';
 import { GizmosEditor } from '../components/levels/GizmosEditor';
-import { Sandbox } from '../components/levels/Sandbox';
 
 const styles: {[key: string]: CSSProperties} = {
     container: {
@@ -31,10 +30,6 @@ const styles: {[key: string]: CSSProperties} = {
         color: 'white',
     }
 }
-
-const levelsList: ReadonlyArray<typeof Level> = [
-    GizmosEditor, Sandbox, Editor
-];
 
 export const MainDisplay: React.FC = () => {
     const [updateIndex, setIndex] = useState(0);

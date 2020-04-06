@@ -4,6 +4,8 @@ import { Vec3 } from "cannon";
 import { ASSETS } from "../../assets/sprites";
 
 export class DickBench extends Level {
+  public static entityName = 'Dickbench';
+
   spawnDicks() {
     this.add(new Plane({mat: ASSETS.pen}));
 

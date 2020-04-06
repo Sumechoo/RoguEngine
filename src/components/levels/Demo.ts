@@ -4,6 +4,8 @@ import { Vec3 } from "cannon";
 import { Trigger } from "../gameobjects/Trigger";
 
 export class Demo extends Level {
+  public static entityName = 'Demo scene: A few cubes'
+
   init() {
     this.add(new Cube(Vec3.ZERO.clone(), 1.5, false));
     this.add(new Cube(new Vec3(0, 2, 0), 0.75, false));

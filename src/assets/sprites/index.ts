@@ -6,6 +6,8 @@ import bush from './bush.png';
 import error from './error.png';
 import tree from './tree.png';
 import hand from './hand.png';
+import bricks from './bricks.png';
+import antena from './antena.png';
 
 import { makeMaterial } from './utils';
 
@@ -14,8 +16,11 @@ export const ASSETS = {
     pen: makeMaterial(pen, true),
     water: makeMaterial(water),
     wall: makeMaterial(wall),
+    bricks: makeMaterial(bricks),
     bush: makeMaterial(bush, true),
     tree: makeMaterial(tree, true),
     hand: makeMaterial(hand, true),
+    antena: makeMaterial(antena, true),
+    
     error: makeMaterial(error),
 }
