@@ -6,7 +6,10 @@ import { VisualEditor } from "../../ui/components/VisualEditor";
 export class GizmosEditor extends Level {
   public static entityName = 'Position editor demo';
 
-  private targetCube: Cube = new Cube(new Vec3(1, 2, 0), 1, true);
+  private targetCube: Cube = new Cube({
+    pos: new Vec3(1, 2, 0),
+    kinematic: true,
+  });
 
   constructor() {
     super();
@@ -22,6 +25,10 @@ export class GizmosEditor extends Level {
   init() {
     this.add(this.targetCube);
 
-    this.add(new Cube(new Vec3(0, -6, 0), 10, true));
+    this.add(new Cube({
+      pos: new Vec3(0, -6, 0),
+      size: 10,
+      kinematic: true,
+    }));
   }
 }

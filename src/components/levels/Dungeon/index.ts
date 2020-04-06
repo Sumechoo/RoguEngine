@@ -2,8 +2,8 @@ import { Level } from "../../Level";
 import { Cube, Plane } from "../../gameobjects/primitives";
 import { Vec3 } from "cannon";
 import { Vector3, Vec2 } from "three";
-import { TileType } from "./types";
-import { tileToTexture } from "./config";
+import { TileType, TileFormat } from "./types";
+import { tileToTexture, mapFormatToObject } from "./config";
 import { spawnRoom, spawnWalls } from "./utils";
 import { getRandomItem, getRandomShift } from "../../core/utils";
 
@@ -51,19 +51,29 @@ export class Dungeon extends Level {
         const tileCfg = tileToTexture[tile];
 
         if (tileCfg) {
-          this.add(new Cube(new Vec3(x, tileCfg.yShift || 0, y), 1, true, tileCfg.material));
+          this.add(new mapFormatToObject[TileFormat.TILE]({
+            pos: new Vec3(x, tileCfg.yShift || 0, y),
+            kinematic: true,
+            mat: tileCfg.material,
+          }));
 
           if (tileCfg.decoratorAssets) {
-            const decor = new Plane({
-              pos: new Vec3(x + getRandomShift(), (tileCfg.yShift || 0) + 0.8, y + getRandomShift()),
-              size: 0.6,
+            const config = getRandomItem(tileCfg.decoratorAssets);
+            const tileProperties = {
+              // pos: new Vec3(x + getRandomShift(), (tileCfg.yShift || 0) + 0.8, y + getRandomShift()),
+              pos: new Vec3(x, (tileCfg.yShift || 0) + 1, y),
+              size: config.size,
               kinematic: true,
-              mat: getRandomItem(tileCfg.decoratorAssets),
-              hollow: true,
-            });
+              mat: config.material,
+              hollow: !!config.hollow,
+            };
+            const decor = new mapFormatToObject[config.format || TileFormat.TILE](tileProperties);
+          
             this.add(decor);
 
-            decor.transform.setRotation(new Vec3(0, Math.random() * 360, 0));
+            if (config.randomShift) {
+              decor.transform.setRotation(new Vec3(0, Math.random() * 360, 0));
+            }
           }
         }
       });

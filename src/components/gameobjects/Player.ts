@@ -9,7 +9,11 @@ import { Renderer } from "../singletons/Renderer";
 export class Player extends GameObject {
     protected camera?: PerspectiveCamera;
 
-    public body = new Cube(new Vec3(0, 0, 3), 0.5, false) as Object3dWithMaterial;
+    public body = new Cube({
+        pos: new Vec3(0, 0, 3),
+        size: 0.5,
+        kinematic: false,
+    }) as Object3dWithMaterial;
 
     protected controller: PlayerController;
 

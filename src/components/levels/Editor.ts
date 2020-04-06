@@ -7,7 +7,10 @@ import { Texture } from "three";
 export class Editor extends Level {
   public static entityName = 'Texture editor';
 
-  private targetCube: Cube = new Cube(new Vec3(0, 0, 0), 2, false);
+  private targetCube: Cube = new Cube({
+    size: 2,
+    kinematic: false,
+  });
 
   constructor() {
     super();
@@ -33,6 +36,10 @@ export class Editor extends Level {
   init() {
     this.add(this.targetCube);
 
-    this.add(new Cube(new Vec3(0, -6, 0), 10, true));
+    this.add(new Cube({
+      pos: new Vec3(0, -6, 0),
+      size: 10,
+      kinematic: true,
+    }));
   }
 }

@@ -13,7 +13,11 @@ export class DickBench extends Level {
   }
 
   init() {
-    this.add(new Cube(new Vec3(0, -6, 0), 10, true));
+    this.add(new Cube({
+      pos: new Vec3(0, -6, 0),
+      size: 10,
+      kinematic: true,
+    }));
   
     this.spawnDicks();
   }

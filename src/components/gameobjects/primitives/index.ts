@@ -1,9 +1,13 @@
 import { MeshPhysicalMaterial } from 'three';
 import { Vec3 } from 'cannon';
 import { ASSETS } from '../../../assets/sprites';
+import {Cube} from './Cube';
+import {Plane} from './Plane';
 
 export {Cube} from './Cube';
 export {Plane} from './Plane';
+
+export type Primitive = typeof Cube | typeof Plane;
 
 export interface PrimitiveProps {
     pos: Vec3,
