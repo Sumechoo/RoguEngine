@@ -9,6 +9,8 @@ import hand from './hand.png';
 import bricks from './bricks.png';
 import window from './window.png';
 import antena from './antena.png';
+import grass from './grass.png';
+import tree_big from './tree_big.png';
 
 import { makeMaterial } from './utils';
 
@@ -18,9 +20,11 @@ export const ASSETS = {
     water: makeMaterial(water),
     wall: makeMaterial(wall),
     bricks: makeMaterial(bricks),
+    grass: makeMaterial(grass),
     window: makeMaterial(window),
     bush: makeMaterial(bush, true),
     tree: makeMaterial(tree, true),
+    tree_big: makeMaterial(tree_big, true),
     hand: makeMaterial(hand, true),
     antena: makeMaterial(antena, true),
     

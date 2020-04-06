@@ -32,7 +32,51 @@ export function spawnRoom(data: TileType[][], size: Vec2, position: Vec2) {
         }
     }
 
-    return walls;
+    return {
+        walls,
+        center: {
+            x: position.x + size.x / 2,
+            y: position.y + size.y / 2,
+        } as Vec2,
+    };
+}
+
+export function spawnPaths(data: TileType[][], roomCenters: Vec2[]) {
+    if (roomCenters.length < 2) {
+        return;
+    }
+
+    for(let i = 0; i < roomCenters.length; i++) {
+        const start = roomCenters[i];
+        const end = roomCenters[i + 1];
+
+        if (!start || !end) {
+            console.info('something goes wrong', start, end);
+            
+            return;
+        }
+
+        const startNormalized: Bounds = {
+            from: start.x > end.x ? end.x : start.x,
+            to: start.y > end.y ? end.y : start.y,
+        };
+        const endNormalized: Bounds = {
+            from: start.x > end.x ? start.x : end.x,
+            to: start.y > end.y ? start.y : end.y,
+        };
+
+        for(let x = startNormalized.from; x < endNormalized.to; x++) {
+            if (data[x]) {
+                data[x][startNormalized.to] = TileType.FLOOR;
+            }
+        }
+
+        for(let y = startNormalized.to; y < endNormalized.from; y++) {
+            if (data[endNormalized.to]) {
+                data[endNormalized.to][y] = TileType.FLOOR;
+            }
+        }
+    }
 }
 
 export function spawnWalls(data: TileType[][], walls: Vec2[]) {
@@ -43,4 +87,12 @@ export function spawnWalls(data: TileType[][], walls: Vec2[]) {
             data[x][y] = TileType.WALL;
         }
     });
+}
+
+export function spawnGrass(data: TileType[][]) {
+    data.forEach((row, x) => row.forEach((tile, y) => {
+        if (tile === TileType.VOID) {
+            data[x][y] = TileType.GRASS
+        }
+    }));
 }

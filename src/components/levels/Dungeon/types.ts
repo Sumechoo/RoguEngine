@@ -1,7 +1,7 @@
 import { MeshPhysicalMaterial } from "three";
 
 export enum TileType {
-    WALL, FLOOR, VOID, WATER,
+    WALL, FLOOR, VOID, WATER, GRASS,
 }
 
 export enum TileFormat {

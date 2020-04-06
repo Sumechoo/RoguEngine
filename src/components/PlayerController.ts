@@ -149,7 +149,7 @@ export class PlayerController implements Updateable {
 
     switch (e.key) {
       case " ":
-        // this.doJump();
+        this.doJump();
         break;
       case "Escape":
         GameState.setState({showDeveloperMenu:true});

@@ -39,7 +39,7 @@ export class Renderer implements Updateable {
     this.physics.broadphase = new NaiveBroadphase();
 
     this.scene = new Scene();
-    this.scene.fog = new FogExp2( 0xaaaaaa, 0.35 );
+    this.scene.fog = new FogExp2( 0xaaaaaa, 0.2 );
 
     this.composer.setSize(outerWidth / 2, outerHeight / 2);
 
@@ -62,7 +62,7 @@ export class Renderer implements Updateable {
     }
 
     this.renderer.render(this.scene, this.camera);
-    this.physics.step(0.5);
+    this.physics.step(1);
     level.update(frame);
   }
 

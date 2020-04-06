@@ -40,16 +40,6 @@ export const tileToTexture: Record<TileType, TileConfig | undefined> = {
                                         randomShift: true,
                                     },
                                     {
-                                        material: ASSETS.wall,
-                                        size: 1,
-                                        hollow: true,
-                                    },
-                                    {
-                                        material: ASSETS.block,
-                                        size: 1,
-                                        hollow: true,
-                                    },
-                                    {
                                         material: ASSETS.window,
                                         size: 1,
                                         hollow: true,
@@ -69,8 +59,8 @@ export const tileToTexture: Record<TileType, TileConfig | undefined> = {
             },
         ],
     },
-    [TileType.FLOOR]: {
-        material: ASSETS.wall,
+    [TileType.GRASS]: {
+        material: ASSETS.grass,
         decoratorAssets: [
             {
                 material: ASSETS.bush,
@@ -89,6 +79,9 @@ export const tileToTexture: Record<TileType, TileConfig | undefined> = {
                 randomShift: true,
             },
         ],
+    },
+    [TileType.FLOOR]: {
+        material: ASSETS.wall,
     },
     [TileType.WATER]: {
         material: ASSETS.water,

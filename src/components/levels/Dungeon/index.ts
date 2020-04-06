@@ -4,11 +4,11 @@ import { Vec3 } from "cannon";
 import { Vector3, Vec2 } from "three";
 import { TileType, TileFormat, TileConfig } from "./types";
 import { tileToTexture, mapFormatToObject } from "./config";
-import { spawnRoom, spawnWalls } from "./utils";
+import { spawnRoom, spawnWalls, spawnPaths, spawnGrass } from "./utils";
 import { getRandomItem, getRandomShift } from "../../core/utils";
 
 export class Dungeon extends Level {
-  private size = 30;
+  private size = 25;
   private data: TileType[][] = [];
 
   public static entityName = 'Dungeon';
@@ -27,21 +27,26 @@ export class Dungeon extends Level {
   beforeInit() {
     const getRandom = () => Math.floor(Math.random() * this.size);
     const walls: Vec2[] = [];
+    const centers: Vec2[] = [];
 
     let playerStart: Vec2 = {x: 0, y: 0};
 
-    for(let i = 0; i < 30; i++) {
+    for(let i = 0; i < 20; i++) {
       const loc: Vec2 = {x: getRandom(), y: getRandom()};
       const size: Vec2 = {x: 6, y: 6};
+      const room = spawnRoom(this.data, size, loc)
 
-      walls.push(...spawnRoom(this.data, size, loc));
+      walls.push(...room.walls);
+      centers.push(room.center);
 
-      if (i === 15) {
+      if (i === 0) {
         playerStart = {x: loc.x + 3, y: loc.y + 3};
       }
     }
 
+    spawnPaths(this.data, centers);
     spawnWalls(this.data, walls);
+    spawnGrass(this.data);
     this.spawnPlayer(new Vector3(playerStart.x, 1, playerStart.y));
   }
 
@@ -67,7 +72,6 @@ export class Dungeon extends Level {
     }
 
     if (config.decoratorAssets) {
-      console.info('found nested decor config');
       this.spawnDecor(config, x, y, level + 1);
     }
   }
