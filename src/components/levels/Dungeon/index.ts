@@ -2,7 +2,7 @@ import { Level } from "../../Level";
 import { Cube, Plane } from "../../gameobjects/primitives";
 import { Vec3 } from "cannon";
 import { Vector3, Vec2 } from "three";
-import { TileType, TileFormat } from "./types";
+import { TileType, TileFormat, TileConfig } from "./types";
 import { tileToTexture, mapFormatToObject } from "./config";
 import { spawnRoom, spawnWalls } from "./utils";
 import { getRandomItem, getRandomShift } from "../../core/utils";
@@ -30,7 +30,7 @@ export class Dungeon extends Level {
 
     let playerStart: Vec2 = {x: 0, y: 0};
 
-    for(let i = 0; i < 20; i++) {
+    for(let i = 0; i < 30; i++) {
       const loc: Vec2 = {x: getRandom(), y: getRandom()};
       const size: Vec2 = {x: 6, y: 6};
 
@@ -43,6 +43,33 @@ export class Dungeon extends Level {
 
     spawnWalls(this.data, walls);
     this.spawnPlayer(new Vector3(playerStart.x, 1, playerStart.y));
+  }
+
+  spawnDecor(tileCfg: TileConfig, x: number, y: number, level = 0) {
+    if (!tileCfg.decoratorAssets) {
+      return;
+    }
+
+    const config = getRandomItem(tileCfg.decoratorAssets);
+    const tileProperties = {
+      pos: new Vec3(x, (config.yShift || 0) + level, y),
+      size: config.size,
+      kinematic: true,
+      mat: config.material,
+      hollow: !!config.hollow,
+    };
+    const decor = new mapFormatToObject[config.format || TileFormat.TILE](tileProperties);
+  
+    this.add(decor);
+
+    if (config.randomShift) {
+      decor.transform.setRotation(new Vec3(0, Math.random() * 360, 0));
+    }
+
+    if (config.decoratorAssets) {
+      console.info('found nested decor config');
+      this.spawnDecor(config, x, y, level + 1);
+    }
   }
 
   afterInit() {
@@ -58,22 +85,7 @@ export class Dungeon extends Level {
           }));
 
           if (tileCfg.decoratorAssets) {
-            const config = getRandomItem(tileCfg.decoratorAssets);
-            const tileProperties = {
-              // pos: new Vec3(x + getRandomShift(), (tileCfg.yShift || 0) + 0.8, y + getRandomShift()),
-              pos: new Vec3(x, (tileCfg.yShift || 0) + 1, y),
-              size: config.size,
-              kinematic: true,
-              mat: config.material,
-              hollow: !!config.hollow,
-            };
-            const decor = new mapFormatToObject[config.format || TileFormat.TILE](tileProperties);
-          
-            this.add(decor);
-
-            if (config.randomShift) {
-              decor.transform.setRotation(new Vec3(0, Math.random() * 360, 0));
-            }
+            this.spawnDecor(tileCfg, x, y, (tileCfg.yShift || 0) + 1);
           }
         }
       });
