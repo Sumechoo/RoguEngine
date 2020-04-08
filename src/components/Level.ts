@@ -14,6 +14,8 @@ export class Level extends Object3D implements Updateable, Initable {
   public ui?: UIScope<any>;
   public worldRef?: World;
 
+  public lazyMode = false;
+
   constructor() {
     super();
 
@@ -37,21 +39,55 @@ export class Level extends Object3D implements Updateable, Initable {
   }
 
   public update(frameNum: number) {
-    this.objects.forEach(object => object.update(frameNum));
+    for (let i = 0; i < this.objects.length; i ++) {
+      const obj = this.objects[i];
+      obj.update(frameNum);
+    }
+  }
+
+  public addRB(rb?: Body) {
+    if (!rb) {
+      return;
+    }
+    
+    if (this.worldRef && !this.worldRef.bodies.includes(rb)) {
+      this.rigidbodies.push(rb);
+
+      this.updateWorldRBs();
+    }
+  }
+
+  public removeRB(rb?: Body) {
+    if (!rb) {
+      return;
+    }
+
+    const index = this.rigidbodies.indexOf(rb);
+
+    if (index > 0) {
+      this.rigidbodies.splice(index, 1);
+      this.updateWorldRBs();
+    }
+  }
+
+  private updateWorldRBs() {
+    if (this.worldRef !== undefined) {
+      this.worldRef.bodies = this.rigidbodies;
+    } 
   }
 
   public add(...object: Array<GameObject>) {
     this.objects.push(...object);
 
+    object.forEach((obj) => obj.levelRef =  this);
+
     const rigidbodiesToAdd = object.map((item) => item.rigidbody);
 
     rigidbodiesToAdd.forEach((body) => {
       if(body) {
-        this.rigidbodies.push(body);
+        this.addRB(body);
       }
     });
-
-    rigidbodiesToAdd.forEach((body) => this.worldRef && body && this.worldRef.addBody(body));
 
     Object3D.prototype.add.call(this, ...object);
     return this;

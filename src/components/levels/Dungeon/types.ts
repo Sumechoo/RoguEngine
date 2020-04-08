@@ -10,6 +10,7 @@ export enum TileFormat {
 
 export interface TileConfig {
     material: MeshPhysicalMaterial;
+    probability?: number;
     decoratorAssets?: ReadonlyArray<TileConfig>;
     yShift?: number;
     size?: number;

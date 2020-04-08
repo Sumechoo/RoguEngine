@@ -61,6 +61,7 @@ export const tileToTexture: Record<TileType, TileConfig | undefined> = {
     },
     [TileType.GRASS]: {
         material: ASSETS.grass,
+        yShift: 0.05,
         decoratorAssets: [
             {
                 material: ASSETS.bush,
@@ -73,7 +74,7 @@ export const tileToTexture: Record<TileType, TileConfig | undefined> = {
             {
                 material: ASSETS.tree,
                 hollow: true,
-                yShift: -0.2,
+                yShift: 0,
                 size: 1.2,
                 format: TileFormat.SPRITE,
                 randomShift: true,
@@ -82,6 +83,7 @@ export const tileToTexture: Record<TileType, TileConfig | undefined> = {
     },
     [TileType.FLOOR]: {
         material: ASSETS.wall,
+        // yShift: 0.05,
     },
     [TileType.WATER]: {
         material: ASSETS.water,

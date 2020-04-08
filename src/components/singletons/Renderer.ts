@@ -39,7 +39,7 @@ export class Renderer implements Updateable {
     this.physics.broadphase = new NaiveBroadphase();
 
     this.scene = new Scene();
-    this.scene.fog = new FogExp2( 0xaaaaaa, 0.2 );
+    this.scene.fog = new FogExp2( 0xaaaaaa, 0.05 );
 
     this.composer.setSize(outerWidth / 2, outerHeight / 2);
 
@@ -68,6 +68,10 @@ export class Renderer implements Updateable {
 
   setActiveCamera(camera: Camera) {
     this.camera = camera;
+  }
+
+  getActiveCamera() {
+    return this.camera;
   }
 
   setupLevel(level: Level) {
@@ -99,9 +103,9 @@ export class Renderer implements Updateable {
       this.composer.addPass(SAO);
     }
 
-    this.renderer.shadowMapEnabled = true;
+    this.renderer.shadowMapEnabled = false;
 
-    const light = new DirectionalLight(0xFFBD6D, 2);
+    const light = new DirectionalLight(0xFFBD6D, 1);
     const ambient = new AmbientLight(0x12345678, 1);
 
     light.castShadow = true;

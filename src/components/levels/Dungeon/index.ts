@@ -1,14 +1,13 @@
 import { Level } from "../../Level";
-import { Cube, Plane } from "../../gameobjects/primitives";
 import { Vec3 } from "cannon";
 import { Vector3, Vec2 } from "three";
 import { TileType, TileFormat, TileConfig } from "./types";
 import { tileToTexture, mapFormatToObject } from "./config";
 import { spawnRoom, spawnWalls, spawnPaths, spawnGrass } from "./utils";
-import { getRandomItem, getRandomShift } from "../../core/utils";
+import { getRandomItem } from "../../core/utils";
 
 export class Dungeon extends Level {
-  private size = 25;
+  private size = 50;
   private data: TileType[][] = [];
 
   public static entityName = 'Dungeon';
@@ -99,5 +98,8 @@ export class Dungeon extends Level {
   init() {
     this.beforeInit();
     this.afterInit();
+
+    // setTimeout(() => this.lazyMode = true, 3000);
+    this.lazyMode = true;
   }
 }
