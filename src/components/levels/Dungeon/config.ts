@@ -7,8 +7,8 @@ export const mapFormatToObject: Record<TileFormat, Primitive> = {
     [TileFormat.TILE]: Cube,
 };
 
-export const tileToTexture: Record<TileType, TileConfig | undefined> = {
-    [TileType.WALL]: {
+export const tileToTexture: Record<TileType, ReadonlyArray<TileConfig> | undefined> = {
+    [TileType.WALL]: [{
         material: ASSETS.window,
         yShift: 1,
         decoratorAssets: [
@@ -58,37 +58,55 @@ export const tileToTexture: Record<TileType, TileConfig | undefined> = {
                 ],
             },
         ],
-    },
-    [TileType.GRASS]: {
-        material: ASSETS.grass,
-        yShift: 0.05,
-        decoratorAssets: [
-            {
-                material: ASSETS.bush,
-                hollow: true,
-                yShift: -0.4,
-                size: 0.7,
-                format: TileFormat.SPRITE,
-                randomShift: true,
-            },
-            {
-                material: ASSETS.tree,
-                hollow: true,
-                yShift: 0,
-                size: 1.2,
-                format: TileFormat.SPRITE,
-                randomShift: true,
-            },
-        ],
-    },
-    [TileType.FLOOR]: {
-        material: ASSETS.wall,
-        // yShift: 0.05,
-    },
-    [TileType.WATER]: {
-        material: ASSETS.water,
-        yShift: -0.2
-    },
+    }],
+    [TileType.GRASS]: [
+        {
+            material: ASSETS.grass,
+            yShift: 0.05,
+            decoratorAssets: [
+                {
+                    material: ASSETS.bush,
+                    hollow: true,
+                    yShift: -0.4,
+                    size: 0.7,
+                    format: TileFormat.SPRITE,
+                    randomShift: true,
+                },
+                {
+                    material: ASSETS.tree,
+                    hollow: true,
+                    yShift: 0,
+                    size: 1.2,
+                    format: TileFormat.SPRITE,
+                    randomShift: true,
+                },
+            ],
+        },
+        {
+            material: ASSETS.grass,
+            yShift: 0.05,
+        },
+        {
+            material: ASSETS.water,
+            yShift: -0.1,
+        },
+        {
+            material: ASSETS.wall,
+            yShift: 0.05,
+            decoratorAssets: [
+                {
+                    material: ASSETS.antena,
+                    format: TileFormat.SPRITE,
+                    randomShift: true,
+                }
+            ]
+        },
+    ],
+    [TileType.FLOOR]: [
+        {
+            material: ASSETS.wall,
+        },
+    ],
   
     [TileType.VOID]: undefined,
   };

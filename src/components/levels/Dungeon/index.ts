@@ -30,7 +30,7 @@ export class Dungeon extends Level {
 
     let playerStart: Vec2 = {x: 0, y: 0};
 
-    for(let i = 0; i < 20; i++) {
+    for(let i = 0; i < 30; i++) {
       const loc: Vec2 = {x: getRandom(), y: getRandom()};
       const size: Vec2 = {x: 6, y: 6};
       const room = spawnRoom(this.data, size, loc)
@@ -78,7 +78,7 @@ export class Dungeon extends Level {
   afterInit() {
     this.data.forEach((row, x) => {
       row.forEach((tile, y) => {
-        const tileCfg = tileToTexture[tile];
+        const tileCfg = getRandomItem(tileToTexture[tile] || []);
 
         if (tileCfg) {
           this.add(new mapFormatToObject[TileFormat.TILE]({
