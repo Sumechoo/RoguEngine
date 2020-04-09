@@ -1,112 +1,20 @@
-import { TileType, TileConfig, TileFormat } from "./types";
-import { ASSETS } from "../../../assets/sprites";
+import { TileType, TileConfig, TileFormat, LocationTheme } from "./types";
 import {Primitive, Cube, Plane} from '../../gameobjects/primitives'
+import { basicWall, stack } from "./builders";
 
 export const mapFormatToObject: Record<TileFormat, Primitive> = {
     [TileFormat.SPRITE]: Plane,
     [TileFormat.TILE]: Cube,
 };
 
-export const tileToTexture: Record<TileType, ReadonlyArray<TileConfig> | undefined> = {
-    [TileType.WALL]: [{
-        material: ASSETS.window,
-        yShift: 1,
-        decoratorAssets: [
-            {
-                material: ASSETS.window,
-                size: 1,
-                hollow: true,
-                decoratorAssets: [
-                    {
-                        material: ASSETS.window,
-                        size: 1,
-                        hollow: true,
-                        decoratorAssets: [
-                            {
-                                material: ASSETS.bricks,
-                                size: 1,
-                                hollow: true,
-                            },
-                            {
-                                material: ASSETS.window,
-                                size: 1,
-                                hollow: true,
-                                decoratorAssets: [
-                                    {
-                                        material: ASSETS.antena,
-                                        size: 0.7,
-                                        format: TileFormat.SPRITE,
-                                        hollow: true,
-                                        randomShift: true,
-                                    },
-                                    {
-                                        material: ASSETS.window,
-                                        size: 1,
-                                        hollow: true,
-                                        decoratorAssets: [
-                                            {
-                                                material: ASSETS.window,
-                                                size: 1,
-                                                hollow: true,
-                                            },
-                                        ],
-                                    },
-                                ],
-                            },
-                        ],
-                    },
-                ],
-            },
-        ],
-    }],
-    [TileType.GRASS]: [
-        {
-            material: ASSETS.grass,
-            yShift: 0.05,
-            decoratorAssets: [
-                {
-                    material: ASSETS.bush,
-                    hollow: true,
-                    yShift: -0.4,
-                    size: 0.7,
-                    format: TileFormat.SPRITE,
-                    randomShift: true,
-                },
-                {
-                    material: ASSETS.tree,
-                    hollow: true,
-                    yShift: 0,
-                    size: 1.2,
-                    format: TileFormat.SPRITE,
-                    randomShift: true,
-                },
-            ],
-        },
-        {
-            material: ASSETS.grass,
-            yShift: 0.05,
-        },
-        {
-            material: ASSETS.water,
-            yShift: -0.1,
-        },
-        {
-            material: ASSETS.wall,
-            yShift: 0.05,
-            decoratorAssets: [
-                {
-                    material: ASSETS.antena,
-                    format: TileFormat.SPRITE,
-                    randomShift: true,
-                }
-            ]
-        },
-    ],
-    [TileType.FLOOR]: [
-        {
-            material: ASSETS.wall,
-        },
-    ],
-  
+export const baseTheme: LocationTheme = {
+    [TileType.GRASS]: undefined,
     [TileType.VOID]: undefined,
-  };
+    [TileType.WALL]: stack(basicWall, 16),
+
+    [TileType.FLOOR]: basicWall(),
+}
+
+export const tileToTexture: LocationTheme = {
+    ...baseTheme,
+}

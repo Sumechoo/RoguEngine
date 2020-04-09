@@ -1,10 +1,21 @@
 import { Level } from "../../Level";
 import { Vec3 } from "cannon";
 import { Vector3, Vec2 } from "three";
-import { TileType, TileFormat, TileConfig } from "./types";
-import { tileToTexture, mapFormatToObject } from "./config";
+import { TileType, TileFormat, TileConfig, Location, TileConfigArray } from "./types";
+import { mapFormatToObject } from "./config";
 import { spawnRoom, spawnWalls, spawnPaths, spawnGrass } from "./utils";
 import { getRandomItem } from "../../core/utils";
+import { city } from "./locations/city";
+
+function configToProperties (config: TileConfig, level = 0, x = 0, y = 0) {
+  return {
+    pos: new Vec3(x, level + (config.yShift || 0), y),
+    size: config.size || 1,
+    kinematic: true,
+    mat: config.material,
+    hollow: !!config.hollow,
+  }
+}
 
 export class Dungeon extends Level {
   private size = 50;
@@ -12,8 +23,12 @@ export class Dungeon extends Level {
 
   public static entityName = 'Dungeon';
 
+  private location?: Location;
+
   constructor() {
     super();
+
+    this.location = city;
 
     for(let i = 0; i < this.size; i++) {
       this.data[i] = [];
@@ -49,19 +64,10 @@ export class Dungeon extends Level {
     this.spawnPlayer(new Vector3(playerStart.x, 1, playerStart.y));
   }
 
-  spawnDecor(tileCfg: TileConfig, x: number, y: number, level = 0) {
-    if (!tileCfg.decoratorAssets) {
-      return;
-    }
+  spawnDecor(tileCfg: TileConfigArray, x: number, y: number, level = 0) {
 
-    const config = getRandomItem(tileCfg.decoratorAssets);
-    const tileProperties = {
-      pos: new Vec3(x, (config.yShift || 0) + level, y),
-      size: config.size,
-      kinematic: true,
-      mat: config.material,
-      hollow: !!config.hollow,
-    };
+    const config = getRandomItem(tileCfg);
+    const tileProperties = configToProperties(config, level, x, y);
     const decor = new mapFormatToObject[config.format || TileFormat.TILE](tileProperties);
   
     this.add(decor);
@@ -71,26 +77,14 @@ export class Dungeon extends Level {
     }
 
     if (config.decoratorAssets) {
-      this.spawnDecor(config, x, y, level + 1);
+      this.spawnDecor(config.decoratorAssets, x, y, level + 1 + (config.yShift || 0));
     }
   }
 
   afterInit() {
     this.data.forEach((row, x) => {
       row.forEach((tile, y) => {
-        const tileCfg = getRandomItem(tileToTexture[tile] || []);
-
-        if (tileCfg) {
-          this.add(new mapFormatToObject[TileFormat.TILE]({
-            pos: new Vec3(x, tileCfg.yShift || 0, y),
-            kinematic: true,
-            mat: tileCfg.material,
-          }));
-
-          if (tileCfg.decoratorAssets) {
-            this.spawnDecor(tileCfg, x, y, (tileCfg.yShift || 0) + 1);
-          }
-        }
+        this.spawnDecor(this.location && this.location.theme[tile] || [], x, y);
       });
     });
   }
@@ -99,7 +93,6 @@ export class Dungeon extends Level {
     this.beforeInit();
     this.afterInit();
 
-    // setTimeout(() => this.lazyMode = true, 3000);
     this.lazyMode = true;
   }
 }
