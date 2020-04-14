@@ -16,6 +16,7 @@ export interface PrimitiveProps {
     kinematic: boolean,
     mat: MeshPhysicalMaterial,
     hollow: boolean,
+    action?: () => void,
 }
 
 export const getDefaults: () => PrimitiveProps = () => ({

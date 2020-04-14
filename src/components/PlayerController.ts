@@ -8,6 +8,9 @@ import { SingletoneStore } from "./singletons/SingletoneStore";
 import { Plane } from "./gameobjects/primitives";
 import { Vector3ToVec } from "../utils";
 import { ASSETS } from "../assets/sprites";
+import { API } from "./singletons/API";
+import { Renderer } from "./singletons/Renderer";
+import { GameObject } from "./core";
 
 export interface AxisConfig {
   name: keyof IForce;
@@ -119,6 +122,20 @@ export class PlayerController implements Updateable {
 
     // this.buildBlockPlaceholder.transform.setPosition(new Vec3(0, forward.y / 2, -0.5));
     // this.buildBlockPlaceholder.update();
+    const rayResult = this.doRaycast()[0];
+
+    if (rayResult) {
+      const mesh = Renderer.getInstance().findByUid(rayResult.object.id);
+      const gameObject = mesh && mesh.parent as GameObject;
+      const hasAction = gameObject && gameObject.action;
+      const isSameAction = hasAction
+        ? GameState.getState().currentActionId === (gameObject && gameObject.id)
+        : GameState.getState().currentActionId === undefined;
+
+      if (!isSameAction) {
+        GameState.setState({currentActionId: hasAction ? gameObject && gameObject.id : undefined});
+      }
+    }
 
     const movementX = -(e.movementX / 200);
     const movementY = -(e.movementY / 200);
@@ -151,9 +168,24 @@ export class PlayerController implements Updateable {
       case " ":
         this.doJump();
         break;
+      case "f":
+        this.doAction();
+        break;
       case "Escape":
         GameState.setState({showDeveloperMenu:true});
         break;
+    }
+  }
+
+  private doAction() {
+    const id = GameState.getState().currentActionId;
+
+    if (id) {
+      const action = API.getInstance().actions[id];
+
+      if (action) {
+        action();
+      }
     }
   }
 

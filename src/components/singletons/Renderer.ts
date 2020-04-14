@@ -121,6 +121,10 @@ export class Renderer implements Updateable {
     this.scene.add(light, ambient);
   }
 
+  public findByUid(id: number) {
+    return this.scene.getObjectById(id);
+  }
+
   getDOMElement() {
     return this.renderer.domElement;
   }

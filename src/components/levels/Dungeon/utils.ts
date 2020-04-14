@@ -1,6 +1,7 @@
 import { TileType, Bounds, TileData, TileConfig } from "./types";
 import { Vec2 } from "three";
 import { Vec3 } from "cannon";
+import { PrimitiveProps } from "../../gameobjects/primitives";
 
 function isBoundaryIndex(index: number, bounds: Bounds) {
     return index === bounds.from || index === bounds.to - 1;
@@ -93,14 +94,19 @@ export function spawnPaths(data: TileType[][], roomCenters: Vec2[]) {
     }
 }
 
-export function configToProperties (config: TileConfig, level = 0, x = 0, y = 0) {
+export function configToProperties (config?: TileConfig, level = 0, x = 0, y = 0) {
+    if (!config) {
+        return;
+    }
+
     return {
         pos: new Vec3(x, level + (config.yShift || 0), y),
         size: config.size || 1,
         kinematic: true,
         mat: config.material,
         hollow: !!config.hollow,
-    }
+        action: config.action,
+    } as PrimitiveProps;
 }
 
 export function spawnWalls(data: TileType[][], walls: Vec2[]) {
@@ -109,6 +115,8 @@ export function spawnWalls(data: TileType[][], walls: Vec2[]) {
 
         if (data[x] && data[x][y] !== TileType.FLOOR) {
             data[x][y] = TileType.WALL;
+        } else if(data[x]) {
+            data[x][y] = TileType.DOOR;
         }
     });
 }

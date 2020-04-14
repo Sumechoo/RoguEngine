@@ -4,11 +4,34 @@ import { basicWall, stack, concrette } from "../builders";
 import { baseTheme } from "../config";
 import { initEmptyData, spawnRoom, spawnPaths, spawnWalls, spawnGrass } from "../utils";
 import { Vec2 } from "three";
+import { API } from "../../../singletons/API";
+import { Dungeon } from "..";
+import { GameState } from "../../../singletons/GameState";
+import { suburb } from "./suburb";
+
+function changeLocation() {
+    GameState.setState({location: suburb});
+    API.getInstance().loadLevel(Dungeon);
+}
 
 export const cityTheme: LocationTheme = {
     ...baseTheme,
     [TileType.WALL]: [
-        ...stack(basicWall, 5, concrette),
+        {
+            ...stack(basicWall, 5, concrette)[0],
+            yShift: 1,
+        }
+    ],
+    [TileType.DOOR]: [
+        {
+            material: ASSETS.door,
+            action: changeLocation,
+            yShift: 1,
+            decoratorAssets: [
+                ...stack(basicWall, 4, concrette),
+            ]
+        },
+        ...stack(basicWall, 6, concrette)
     ],
     [TileType.GRASS]: [
         {

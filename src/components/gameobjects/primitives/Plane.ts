@@ -22,6 +22,7 @@ export class Plane extends GameObject {
 
     this.add(body);
     this.body = body as MeshWithMaterial;
+    this.action = props.action;
     
     if (!props.hollow) {
       this.rigidbody = new Body({

@@ -4,6 +4,7 @@ import { Vec3, Body, Box } from "cannon";
 import { MeshWithMaterial } from "../../../types";
 import { ASSETS } from "../../../assets/sprites";
 import { PrimitiveProps, getDefaults } from ".";
+import { API } from "../../singletons/API";
 export class Cube extends GameObject {
   constructor(argProps?: Partial<PrimitiveProps>) {
     super();
@@ -24,6 +25,9 @@ export class Cube extends GameObject {
 
     this.add(body);
     this.body = body as MeshWithMaterial;
+    
+    this.action = props.action;
+    API.getInstance().actions[this.id] = props.action;
     
     if (!props.hollow) {
       this.rigidbody = new Body({

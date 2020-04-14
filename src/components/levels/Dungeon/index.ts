@@ -32,16 +32,19 @@ export class Dungeon extends Level {
   spawnDecor(tileCfg: TileConfigArray, x: number, y: number, level = 0) {
     const config = getRandomItem(tileCfg);
     const tileProperties = configToProperties(config, level, x, y);
-    const decor = new mapFormatToObject[config.format || TileFormat.TILE](tileProperties);
+
+    if (tileProperties) {
+      const decor = new mapFormatToObject[config.format || TileFormat.TILE](tileProperties);
   
-    this.add(decor);
-
-    if (config.randomShift) {
-      decor.transform.setRotation(new Vec3(0, Math.random() * 360, 0));
-    }
-
-    if (config.decoratorAssets) {
-      this.spawnDecor(config.decoratorAssets, x, y, level + 1 + (config.yShift || 0));
+      this.add(decor);
+  
+      if (config.randomShift) {
+        decor.transform.setRotation(new Vec3(0, Math.random() * 360, 0));
+      }
+  
+      if (config.decoratorAssets) {
+        this.spawnDecor(config.decoratorAssets, x, y, level + 1 + (config.yShift || 0));
+      }
     }
   }
 

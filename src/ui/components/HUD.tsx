@@ -20,6 +20,11 @@ const styles: Styles = {
         borderColor: 'orange',
         backgroundColor: 'yellow',
     },
+    interactText: {
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: 16,
+    }
 }
 
 interface ItemProps {
@@ -40,6 +45,7 @@ export const Item: React.FC<ItemProps> = (props) => {
 export const HUD: React.FC = () => {
     const items = useGlobalState('items');
     const activeItem = useGlobalState('activeItem');
+    const action = useGlobalState('currentActionId');
     const visualItems: Array<string> = [];
 
     for(let i = 0; i < HUD_MAX_ITEMS; i++) {
@@ -47,14 +53,17 @@ export const HUD: React.FC = () => {
     }
 
     return(
-        <div style={styles.mainContainer}>
-            {visualItems.map((item, index) => (
-                <Item
-                    key={index}
-                    item={item}
-                    active={index === activeItem}
-                />
-            ))}
+        <div>
+            {action && <span style={styles.interactText}>Press [F] to interact</span>}
+            <div style={styles.mainContainer}>
+                {visualItems.map((item, index) => (
+                    <Item
+                        key={index}
+                        item={item}
+                        active={index === activeItem}
+                    />
+                ))}
+            </div>
         </div>
     )
 }

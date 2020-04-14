@@ -5,6 +5,7 @@ import { Transform } from "./Transform";
 import { Level } from "../Level";
 import { Renderer } from "../singletons/Renderer";
 import { Vec3ToVector } from "../../utils";
+import { API } from "../singletons/API";
 
 export class GameObject extends Object3D implements Updateable {
   public rigidbody?: Body;
@@ -12,6 +13,8 @@ export class GameObject extends Object3D implements Updateable {
 
   public transform: Transform = new Transform();
   public levelRef?: Level;
+
+  public action?: () => void;
 
   private updatePosition() {
     const {x, y, z} = this.transform.position;
@@ -21,6 +24,10 @@ export class GameObject extends Object3D implements Updateable {
   private updateRotation() {
     const {x, y, z} = this.transform.rotation;
     this.rotation.set(x,y,z);
+  }
+
+  public setAction(action?: () => void) {
+    API.getInstance().actions[this.id] = action;
   }
 
   public update() {

@@ -32,6 +32,7 @@ export interface TileConfig {
     hollow?: boolean;
     format?: TileFormat;
     randomShift?: boolean;
+    action?: () => void;
 }
 
 export interface Bounds {

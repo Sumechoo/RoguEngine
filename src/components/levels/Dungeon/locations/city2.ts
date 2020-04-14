@@ -20,9 +20,6 @@ const cityTheme: LocationTheme = {
         {
             material: ASSETS.wall,
         },
-        {
-            material: ASSETS.wall,
-        }
     ],
   };
 

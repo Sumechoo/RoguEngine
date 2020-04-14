@@ -11,6 +11,7 @@ export interface IGameState {
   // developer params
   showDeveloperMenu: boolean;
   currentLevel?: Level;
+  currentActionId?: number;
 
   // actual game state
   location?: Location;
