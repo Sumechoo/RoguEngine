@@ -43,15 +43,15 @@ export const TopBar: FC = () => {
             {showMenu && <Contextual onClose={closeMenu} params={showMenu} />}
             <span style={styles.title}>Project Demo</span>
             {config.configItems.map((item) => <Button title={item.title} onClick={openMenu(item.menuItems)} />)}
-            <SegmentedControl 
+            {/* <SegmentedControl 
                 buttons={[
                     <Button title='Play' />,
                     <Button title='Publish' />,
                     <Button title='Settings' />,
                 ]}
-            />
+            /> */}
             <div style={styles.spacer} />
-            <SegmentedControl buttons={[<Button title='Help' />]} />
+            {/* <SegmentedControl buttons={[<Button title='Help' />]} /> */}
         </div>
     )
 }

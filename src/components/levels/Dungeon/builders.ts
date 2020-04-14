@@ -19,6 +19,8 @@ export const basicWall: Builder = () => {
 
 export const stack = (builder: Builder, depth = 3, helmet?: Builder) => {
     let i = 0;
+
+    depth++;
     
     const base = builder();
     const recursor = (target: TileConfigArray) => {

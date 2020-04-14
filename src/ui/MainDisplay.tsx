@@ -1,10 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { CSSProperties } from "react"
-import { Level } from '../components/Level';
-import { Editor } from '../components/levels/Editor';
 import { HUD } from './components/HUD';
 import { GameState } from '../components/singletons/GameState';
-import { GizmosEditor } from '../components/levels/GizmosEditor';
 
 const styles: {[key: string]: CSSProperties} = {
     container: {

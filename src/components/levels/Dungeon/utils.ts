@@ -1,8 +1,22 @@
-import { TileType, Bounds } from "./types";
+import { TileType, Bounds, TileData, TileConfig } from "./types";
 import { Vec2 } from "three";
+import { Vec3 } from "cannon";
 
 function isBoundaryIndex(index: number, bounds: Bounds) {
     return index === bounds.from || index === bounds.to - 1;
+}
+
+export function initEmptyData(size = 10): TileData {
+    const data: TileData = [];
+
+    for(let i = 0; i < size; i++) {
+        data[i] = [];
+        for(let j = 0; j < size; j++) {
+            data[i][j] = TileType.VOID;
+        }
+    }
+
+    return data;
 }
 
 export function spawnRoom(data: TileType[][], size: Vec2, position: Vec2) {
@@ -76,6 +90,16 @@ export function spawnPaths(data: TileType[][], roomCenters: Vec2[]) {
                 data[endNormalized.to][y] = TileType.FLOOR;
             }
         }
+    }
+}
+
+export function configToProperties (config: TileConfig, level = 0, x = 0, y = 0) {
+    return {
+        pos: new Vec3(x, level + (config.yShift || 0), y),
+        size: config.size || 1,
+        kinematic: true,
+        mat: config.material,
+        hollow: !!config.hollow,
     }
 }
 

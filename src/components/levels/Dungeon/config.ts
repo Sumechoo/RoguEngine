@@ -13,6 +13,7 @@ export const baseTheme: LocationTheme = {
     [TileType.WALL]: stack(basicWall, 16),
 
     [TileType.FLOOR]: basicWall(),
+    [TileType.DOOR]: stack(basicWall, 16),
 }
 
 export const tileToTexture: LocationTheme = {

@@ -5,62 +5,28 @@ import { baseTheme } from "../config";
 import { initEmptyData, spawnRoom, spawnPaths, spawnWalls, spawnGrass } from "../utils";
 import { Vec2 } from "three";
 
-export const cityTheme: LocationTheme = {
+const cityTheme: LocationTheme = {
     ...baseTheme,
     [TileType.WALL]: [
-        ...stack(basicWall, 5, concrette),
+        ...stack(basicWall, 2, concrette),
     ],
     [TileType.GRASS]: [
         {
             material: ASSETS.grass,
             yShift: 0.05,
-            hollow: false,
-            decoratorAssets: [
-                {
-                    material: ASSETS.bush,
-                    hollow: true,
-                    yShift: -0.4,
-                    size: 0.7,
-                    format: TileFormat.SPRITE,
-                    randomShift: true,
-                },
-                {
-                    material: ASSETS.tree,
-                    hollow: true,
-                    yShift: 0,
-                    size: 1.2,
-                    format: TileFormat.SPRITE,
-                    randomShift: true,
-                },
-            ],
         },
-        {
-            material: ASSETS.grass,
-            yShift: 0.05,
-        }
     ],
     [TileType.FLOOR]: [
         {
             material: ASSETS.wall,
-            hollow: false,
-            decoratorAssets: [
-                {
-                    material: ASSETS.bush,
-                    yShift: -0.4,
-                    format: TileFormat.SPRITE,
-                    hollow: true,
-                    randomShift: true,
-                }
-            ]
         },
         {
             material: ASSETS.wall,
-            hollow: false,
         }
     ],
   };
 
-export const city: Location = {
+export const city2: Location = {
     theme: cityTheme,
     spawner: () => {
         const thisSize = 50;

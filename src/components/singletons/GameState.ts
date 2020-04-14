@@ -1,4 +1,5 @@
 import { IGameState } from "../../types";
+import { city2 } from "../levels/Dungeon/locations/city2";
 
 export class GameState {
   protected static instance: GameState;
@@ -15,6 +16,8 @@ export class GameState {
       items: [],
       activeItem: 0,
       showDeveloperMenu: true,
+
+      location: city2,
     };
 
     GameState.instance = this;

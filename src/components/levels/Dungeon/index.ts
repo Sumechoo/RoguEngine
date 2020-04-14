@@ -1,25 +1,14 @@
 import { Level } from "../../Level";
 import { Vec3 } from "cannon";
-import { Vector3, Vec2 } from "three";
-import { TileType, TileFormat, TileConfig, Location, TileConfigArray } from "./types";
+import { Vector3 } from "three";
+import { TileFormat, Location, TileConfigArray, TileData } from "./types";
 import { mapFormatToObject } from "./config";
-import { spawnRoom, spawnWalls, spawnPaths, spawnGrass } from "./utils";
 import { getRandomItem } from "../../core/utils";
-import { city } from "./locations/city";
-
-function configToProperties (config: TileConfig, level = 0, x = 0, y = 0) {
-  return {
-    pos: new Vec3(x, level + (config.yShift || 0), y),
-    size: config.size || 1,
-    kinematic: true,
-    mat: config.material,
-    hollow: !!config.hollow,
-  }
-}
+import { configToProperties } from "./utils";
+import { GameState } from "../../singletons/GameState";
 
 export class Dungeon extends Level {
-  private size = 50;
-  private data: TileType[][] = [];
+  private data: TileData = [];
 
   public static entityName = 'Dungeon';
 
@@ -28,44 +17,19 @@ export class Dungeon extends Level {
   constructor() {
     super();
 
-    this.location = city;
-
-    for(let i = 0; i < this.size; i++) {
-      this.data[i] = [];
-      for(let j = 0; j < this.size; j++) {
-        this.data[i][j] = TileType.VOID;
-      }
-    }
+    this.location = GameState.getState().location;
   }
 
   beforeInit() {
-    const getRandom = () => Math.floor(Math.random() * this.size);
-    const walls: Vec2[] = [];
-    const centers: Vec2[] = [];
+    if (this.location) {
+      const {data, start} = this.location.spawner();
 
-    let playerStart: Vec2 = {x: 0, y: 0};
-
-    for(let i = 0; i < 30; i++) {
-      const loc: Vec2 = {x: getRandom(), y: getRandom()};
-      const size: Vec2 = {x: 6, y: 6};
-      const room = spawnRoom(this.data, size, loc)
-
-      walls.push(...room.walls);
-      centers.push(room.center);
-
-      if (i === 0) {
-        playerStart = {x: loc.x + 3, y: loc.y + 3};
-      }
-    }
-
-    spawnPaths(this.data, centers);
-    spawnWalls(this.data, walls);
-    spawnGrass(this.data);
-    this.spawnPlayer(new Vector3(playerStart.x, 1, playerStart.y));
+      this.data = data;
+      this.spawnPlayer(new Vector3(start.x, 1, start.y));
+    }    
   }
 
   spawnDecor(tileCfg: TileConfigArray, x: number, y: number, level = 0) {
-
     const config = getRandomItem(tileCfg);
     const tileProperties = configToProperties(config, level, x, y);
     const decor = new mapFormatToObject[config.format || TileFormat.TILE](tileProperties);
