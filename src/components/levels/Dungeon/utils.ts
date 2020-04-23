@@ -1,7 +1,9 @@
-import { TileType, Bounds, TileData, TileConfig } from "./types";
+import { TileType, Bounds, TileData, TileConfig, TileConfigArray } from "./types";
 import { Vec2 } from "three";
 import { Vec3 } from "cannon";
 import { PrimitiveProps } from "../../gameobjects/primitives";
+import { ASSETS } from "../../../assets/sprites";
+import { stack, concrette } from "./builders";
 
 function isBoundaryIndex(index: number, bounds: Bounds) {
     return index === bounds.from || index === bounds.to - 1;
@@ -13,14 +15,15 @@ export function initEmptyData(size = 10): TileData {
     for(let i = 0; i < size; i++) {
         data[i] = [];
         for(let j = 0; j < size; j++) {
-            data[i][j] = TileType.VOID;
+            data[i][j] = [];
         }
     }
 
     return data;
 }
 
-export function spawnRoom(data: TileType[][], size: Vec2, position: Vec2) {
+export function spawnRoom(data: TileData, size: Vec2, position: Vec2, cfg: {floor: TileConfigArray}) {
+    const {floor} = cfg;
     const walls: Array<Vec2> = [];
     const xBounds: Bounds = {
         from: position.x,
@@ -35,13 +38,13 @@ export function spawnRoom(data: TileType[][], size: Vec2, position: Vec2) {
         for (let y = yBounds.from; y < yBounds.to; y++) {
             const isBoundary = isBoundaryIndex(y, yBounds) || isBoundaryIndex(x, xBounds);
             
-            if (data[x] && data[x][y] === TileType.VOID) {
+            if (data[x] && data[x][y]) {
                 if (isBoundary) {
                     walls.push({
                         x, y,
-                    })
+                    });
                 } else {
-                    data[x][y] = TileType.FLOOR;
+                    data[x][y] = floor;
                 }
             }
         }
@@ -56,7 +59,7 @@ export function spawnRoom(data: TileType[][], size: Vec2, position: Vec2) {
     };
 }
 
-export function spawnPaths(data: TileType[][], roomCenters: Vec2[]) {
+export function spawnPaths(data: TileData, roomCenters: Vec2[]) {
     if (roomCenters.length < 2) {
         return;
     }
@@ -66,8 +69,6 @@ export function spawnPaths(data: TileType[][], roomCenters: Vec2[]) {
         const end = roomCenters[i + 1];
 
         if (!start || !end) {
-            console.info('something goes wrong', start, end);
-            
             return;
         }
 
@@ -82,13 +83,17 @@ export function spawnPaths(data: TileType[][], roomCenters: Vec2[]) {
 
         for(let x = startNormalized.from; x < endNormalized.to; x++) {
             if (data[x]) {
-                data[x][startNormalized.to] = TileType.FLOOR;
+                data[x][startNormalized.to] = [{
+                    material: ASSETS.wall,
+                }];;
             }
         }
 
         for(let y = startNormalized.to; y < endNormalized.from; y++) {
             if (data[endNormalized.to]) {
-                data[endNormalized.to][y] = TileType.FLOOR;
+                data[endNormalized.to][y] = [{
+                    material: ASSETS.wall,
+                }];;
             }
         }
     }
@@ -109,22 +114,24 @@ export function configToProperties (config?: TileConfig, level = 0, x = 0, y = 0
     } as PrimitiveProps;
 }
 
-export function spawnWalls(data: TileType[][], walls: Vec2[]) {
+export function spawnWalls(data: TileData, walls: Vec2[], cfg: {wall: TileConfigArray, door: TileConfigArray}) {
+    const {door, wall} = cfg;
+
     walls.forEach((item) => {
         const {x, y} = item;
 
-        if (data[x] && data[x][y] !== TileType.FLOOR) {
-            data[x][y] = TileType.WALL;
+        if (data[x] && data[x][y] && data[x][y].length === 0) {
+            data[x][y] = wall;
         } else if(data[x]) {
-            data[x][y] = TileType.DOOR;
+            data[x][y] = door;
         }
     });
 }
 
-export function spawnGrass(data: TileType[][]) {
+export function spawnGrass(data: TileData) {
     data.forEach((row, x) => row.forEach((tile, y) => {
-        if (tile === TileType.VOID) {
-            data[x][y] = TileType.GRASS
+        if (tile.length === 0) {
+            data[x][y] = [{material: ASSETS.grass}]
         }
     }));
 }

@@ -1,8 +1,8 @@
 import { MeshPhysicalMaterial, Vec2 } from "three";
 
-export type LocationTheme = Record<TileType, ReadonlyArray<TileConfig> | undefined>;
+export type LocationTheme = Record<string, TileConfigArray>;
 
-export type TileData = Array<Array<TileType>>;
+export type TileData = Array<Array<TileConfigArray>>;
 
 export type TileConfigArray = ReadonlyArray<TileConfig>;
 

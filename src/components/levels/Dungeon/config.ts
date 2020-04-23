@@ -9,8 +9,8 @@ export const mapFormatToObject: Record<TileFormat, Primitive> = {
 };
 
 export const baseTheme: LocationTheme = {
-    [TileType.GRASS]: undefined,
-    [TileType.VOID]: undefined,
+    [TileType.GRASS]: [{material: ASSETS.grass}],
+    [TileType.VOID]: [{material: ASSETS.grass}],
     [TileType.WALL]: stack(basicWall, 16),
 
     [TileType.FLOOR]: basicWall(),

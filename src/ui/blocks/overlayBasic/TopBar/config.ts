@@ -5,7 +5,6 @@ import { GizmosEditor, Editor, Columns, Dungeon, GameStateEditor, DickBench } fr
 import { API } from "../../../../components/singletons/API";
 import { GameState } from "../../../../components/singletons/GameState";
 import { city } from "../../../../components/levels/Dungeon/locations/city";
-import { city2 } from "../../../../components/levels/Dungeon/locations/city2";
 import { suburb } from "../../../../components/levels/Dungeon/locations/suburb";
 
 function getLevelsMenu() : MenuItem[] {
@@ -30,13 +29,6 @@ export const config: TopConfig = {
                     title: 'City demo',
                     action: () => {
                         GameState.setState({location: city});
-                        API.getInstance().loadLevel(Dungeon);
-                    }
-                },
-                {
-                    title: 'City 2 demo',
-                    action: () => {
-                        GameState.setState({location: city2});
                         API.getInstance().loadLevel(Dungeon);
                     }
                 },

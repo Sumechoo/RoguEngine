@@ -1,4 +1,4 @@
-import { Location, TileType, LocationTheme, TileFormat } from "../types";
+import { Location, LocationTheme, TileFormat } from "../types";
 import { ASSETS } from "../../../../assets/sprites";
 import { basicWall, stack, concrette } from "../builders";
 import { baseTheme } from "../config";
@@ -16,13 +16,13 @@ function changeLocation() {
 
 export const cityTheme: LocationTheme = {
     ...baseTheme,
-    [TileType.WALL]: [
+    wall: [
         {
             ...stack(basicWall, 5, concrette)[0],
             yShift: 1,
         }
     ],
-    [TileType.DOOR]: [
+    door: [
         {
             material: ASSETS.door,
             action: changeLocation,
@@ -33,7 +33,7 @@ export const cityTheme: LocationTheme = {
         },
         ...stack(basicWall, 6, concrette)
     ],
-    [TileType.GRASS]: [
+    grass: [
         {
             material: ASSETS.grass,
             yShift: 0.05,
@@ -62,7 +62,7 @@ export const cityTheme: LocationTheme = {
             yShift: 0.05,
         }
     ],
-    [TileType.FLOOR]: [
+    floor: [
         {
             material: ASSETS.wall,
             hollow: false,
@@ -97,7 +97,7 @@ export const city: Location = {
         for(let i = 0; i < 30; i++) {
           const loc: Vec2 = {x: getRandom(), y: getRandom()};
           const size: Vec2 = {x: 6, y: 6};
-          const room = spawnRoom(data, size, loc)
+          const room = spawnRoom(data, size, loc, {floor: cityTheme.floor})
     
           walls.push(...room.walls);
           centers.push(room.center);
@@ -108,7 +108,10 @@ export const city: Location = {
         }
     
         spawnPaths(data, centers);
-        spawnWalls(data, walls);
+        spawnWalls(data, walls, {
+            door: cityTheme.door,
+            wall: cityTheme.wall,
+        });
         spawnGrass(data);
 
         return {

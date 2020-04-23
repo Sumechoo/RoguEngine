@@ -50,8 +50,8 @@ export class Dungeon extends Level {
 
   afterInit() {
     this.data.forEach((row, x) => {
-      row.forEach((tile, y) => {
-        this.spawnDecor(this.location && this.location.theme[tile] || [], x, y);
+      row.forEach((config, y) => {
+        this.spawnDecor(config, x, y);
       });
     });
   }
@@ -59,6 +59,8 @@ export class Dungeon extends Level {
   init() {
     this.beforeInit();
     this.afterInit();
+
+    console.info(this.data);
 
     this.lazyMode = true;
   }
