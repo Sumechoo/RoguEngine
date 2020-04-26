@@ -13,6 +13,7 @@ export interface PrimitiveProps {
     pos: Vec3,
     rot: Vec3,
     size: number,
+    height: number,
     kinematic: boolean,
     mat: MeshPhysicalMaterial,
     hollow: boolean,
@@ -22,6 +23,7 @@ export interface PrimitiveProps {
 export const getDefaults: () => PrimitiveProps = () => ({
     kinematic: false,
     size: 1,
+    height: 1,
     mat: ASSETS.error,
     pos: Vec3.ZERO.clone(),
     rot: Vec3.ZERO.clone(),

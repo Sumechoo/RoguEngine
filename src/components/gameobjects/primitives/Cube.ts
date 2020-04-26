@@ -14,9 +14,12 @@ export class Cube extends GameObject {
       ...argProps,
     };
 
-    const {size, pos, mat} = props;
+    const {size, pos, mat, height} = props;
+    const targetHeight = height || size;
 
-    const geometry = new BoxGeometry(size, size, size);
+    pos.y = (targetHeight / 2);
+
+    const geometry = new BoxGeometry(size, targetHeight, size);
     const material = mat || ASSETS.error;
     const body = new Mesh(geometry, material);
 
@@ -33,7 +36,7 @@ export class Cube extends GameObject {
       this.rigidbody = new Body({
         mass: 1,
       });
-      this.rigidbody.addShape(new Box(new Vec3(size / 2, size / 2, size / 2)));
+      this.rigidbody.addShape(new Box(new Vec3(size / 2, targetHeight / 2, size / 2)));
       if(props.kinematic) {
         this.rigidbody.type = Body.KINEMATIC;
       }

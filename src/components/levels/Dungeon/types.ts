@@ -1,4 +1,5 @@
 import { MeshPhysicalMaterial, Vec2 } from "three";
+import { PrimitiveProps } from "../../gameobjects/primitives";
 
 export type LocationTheme = Record<string, TileConfigArray>;
 
@@ -23,12 +24,11 @@ export interface Location {
     spawner: Spawner;
 }
 
-export interface TileConfig {
+export interface TileConfig extends Partial<PrimitiveProps> {
     material: MeshPhysicalMaterial;
     probability?: number;
     decoratorAssets?: TileConfigArray;
     yShift?: number;
-    size?: number;
     hollow?: boolean;
     format?: TileFormat;
     randomShift?: boolean;

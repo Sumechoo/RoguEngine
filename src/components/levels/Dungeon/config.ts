@@ -1,4 +1,4 @@
-import { TileType, TileConfig, TileFormat, LocationTheme } from "./types";
+import { TileType, TileFormat, LocationTheme } from "./types";
 import {Primitive, Cube, Plane} from '../../gameobjects/primitives'
 import { basicWall, stack } from "./builders";
 import { ASSETS } from "../../../assets/sprites";
@@ -17,8 +17,4 @@ export const baseTheme: LocationTheme = {
     [TileType.DOOR]: stack(() => [{
         material: ASSETS.block,
     }], 7),
-}
-
-export const tileToTexture: LocationTheme = {
-    ...baseTheme,
 }

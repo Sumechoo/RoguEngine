@@ -29,7 +29,7 @@ export class Dungeon extends Level {
     }    
   }
 
-  spawnDecor(tileCfg: TileConfigArray, x: number, y: number, level = 0) {
+  spawnTile(tileCfg: TileConfigArray, x: number, y: number, level = 0) {
     const config = getRandomItem(tileCfg);
     const tileProperties = configToProperties(config, level, x, y);
 
@@ -43,7 +43,7 @@ export class Dungeon extends Level {
       }
   
       if (config.decoratorAssets) {
-        this.spawnDecor(config.decoratorAssets, x, y, level + 1 + (config.yShift || 0));
+        this.spawnTile(config.decoratorAssets, x, y, level + 1 + (config.yShift || 0));
       }
     }
   }
@@ -51,7 +51,7 @@ export class Dungeon extends Level {
   afterInit() {
     this.data.forEach((row, x) => {
       row.forEach((config, y) => {
-        this.spawnDecor(config, x, y);
+        this.spawnTile(config, x, y);
       });
     });
   }
@@ -59,8 +59,6 @@ export class Dungeon extends Level {
   init() {
     this.beforeInit();
     this.afterInit();
-
-    console.info(this.data);
 
     this.lazyMode = true;
   }

@@ -7,6 +7,7 @@ export function makeMaterial(t: string, transparent = false) {
     return new MeshPhysicalMaterial({ 
         map: texture,
         roughnessMap: texture,
+        bumpMap: texture,
         side: transparent ? DoubleSide : undefined,
         transparent,
     });

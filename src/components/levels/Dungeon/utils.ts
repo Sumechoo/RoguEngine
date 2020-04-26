@@ -1,9 +1,8 @@
-import { TileType, Bounds, TileData, TileConfig, TileConfigArray } from "./types";
+import { Bounds, TileData, TileConfig, TileConfigArray } from "./types";
 import { Vec2 } from "three";
 import { Vec3 } from "cannon";
 import { PrimitiveProps } from "../../gameobjects/primitives";
 import { ASSETS } from "../../../assets/sprites";
-import { stack, concrette } from "./builders";
 
 function isBoundaryIndex(index: number, bounds: Bounds) {
     return index === bounds.from || index === bounds.to - 1;
@@ -111,6 +110,7 @@ export function configToProperties (config?: TileConfig, level = 0, x = 0, y = 0
         mat: config.material,
         hollow: !!config.hollow,
         action: config.action,
+        height: config.height,
     } as PrimitiveProps;
 }
 
@@ -122,8 +122,8 @@ export function spawnWalls(data: TileData, walls: Vec2[], cfg: {wall: TileConfig
 
         if (data[x] && data[x][y] && data[x][y].length === 0) {
             data[x][y] = wall;
-        } else if(data[x]) {
-            data[x][y] = door;
+        } else if(tileHeight(data[x][y]) === 1) {
+            // data[x][y] = door;
         }
     });
 }
@@ -134,4 +134,12 @@ export function spawnGrass(data: TileData) {
             data[x][y] = [{material: ASSETS.grass}]
         }
     }));
+}
+
+export function tileHeight(tile: TileConfigArray): number {
+    if (!tile[0] || !tile[0].decoratorAssets) {
+        return 1;
+    }
+
+    return tile[0].decoratorAssets.length;
 }
