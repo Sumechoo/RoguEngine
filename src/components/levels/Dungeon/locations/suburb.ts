@@ -10,7 +10,6 @@ const theme: LocationTheme = {
         {
             ...concrette()[0],
             height: 4,
-            yShift: 1,
         }
         // ...stack(concrette, 2, concrette),
     ],
@@ -33,7 +32,6 @@ const theme: LocationTheme = {
                 {
                     material: ASSETS.wall,
                     yShift: 2,
-                    height: 3,
                 }
             ]
         },
@@ -60,18 +58,48 @@ export const suburb: Location = {
             }],
         }).walls);
 
-        data[7][7] = [{
+        data[8][5] = [{
             material: ASSETS.bricks,
-            yShift: 0.2,
+            height: 3,
             decoratorAssets: [{
-                material: ASSETS.antena,
-                format: TileFormat.SPRITE,
-                hollow: true,
+                material: ASSETS.error,
+                size: 1.01,
+                yShift: 1,
+                height: 0.5,
+            }],
+        }];
+        data[6][6] = [{
+            material: ASSETS.bricks,
+            decoratorAssets: [{
+                yShift: 1,
+                material: ASSETS.error,
+            }],
+        }];
+        data[6][7] = [{
+            material: ASSETS.bricks,
+            decoratorAssets: [{
+                material: ASSETS.error,
+                yShift: 1,
+                height: 0.5,
+            }],
+        }];
+        data[6][8] = [{
+            material: ASSETS.bricks,
+            decoratorAssets: [{
+                material: ASSETS.error,
+                yShift: 0.5,
+                height: 0.5,
+            }],
+        }];
+        data[6][9] = [{
+            material: ASSETS.bricks,
+            decoratorAssets: [{
+                material: ASSETS.error,
+                height: 0.5,
             }],
         }];
 
         spawnWalls(data, wallsToSpawn, {
-            door: [{material: ASSETS.error}],
             wall: theme.wall,
         });
 

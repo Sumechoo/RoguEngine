@@ -12,6 +12,7 @@ export interface IGameState {
   showDeveloperMenu: boolean;
   currentLevel?: Level;
   currentActionId?: number;
+  prod: boolean;
 
   // actual game state
   location?: Location;

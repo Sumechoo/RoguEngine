@@ -104,7 +104,7 @@ export function configToProperties (config?: TileConfig, level = 0, x = 0, y = 0
     }
 
     return {
-        pos: new Vec3(x, level + (config.yShift || 0), y),
+        pos: new Vec3(x, level + (config.yShift || 0) + (config.height || 1) / 2, y),
         size: config.size || 1,
         kinematic: true,
         mat: config.material,
@@ -114,16 +114,14 @@ export function configToProperties (config?: TileConfig, level = 0, x = 0, y = 0
     } as PrimitiveProps;
 }
 
-export function spawnWalls(data: TileData, walls: Vec2[], cfg: {wall: TileConfigArray, door: TileConfigArray}) {
-    const {door, wall} = cfg;
+export function spawnWalls(data: TileData, walls: Vec2[], cfg: {wall: TileConfigArray}) {
+    const {wall} = cfg;
 
     walls.forEach((item) => {
         const {x, y} = item;
 
         if (data[x] && data[x][y] && data[x][y].length === 0) {
             data[x][y] = wall;
-        } else if(tileHeight(data[x][y]) === 1) {
-            // data[x][y] = door;
         }
     });
 }

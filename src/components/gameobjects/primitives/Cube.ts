@@ -17,8 +17,6 @@ export class Cube extends GameObject {
     const {size, pos, mat, height} = props;
     const targetHeight = height || size;
 
-    pos.y = (targetHeight / 2);
-
     const geometry = new BoxGeometry(size, targetHeight, size);
     const material = mat || ASSETS.error;
     const body = new Mesh(geometry, material);

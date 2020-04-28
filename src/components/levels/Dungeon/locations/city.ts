@@ -18,7 +18,7 @@ export const cityTheme: LocationTheme = {
     ...baseTheme,
     wall: [
         {
-            ...stack(basicWall, 5, concrette)[0],
+            ...stack(basicWall, 50, concrette)[0],
             yShift: 1,
         }
     ],
@@ -109,7 +109,6 @@ export const city: Location = {
     
         spawnPaths(data, centers);
         spawnWalls(data, walls, {
-            door: cityTheme.door,
             wall: cityTheme.wall,
         });
         spawnGrass(data);

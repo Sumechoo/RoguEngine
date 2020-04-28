@@ -1,13 +1,11 @@
 import { IForce, Updateable, Object3dWithMaterial, GameInputEvent } from "../types";
 import { Vec3 } from "cannon";
-import { Camera, Raycaster, Vector3, Quaternion, Euler } from "three";
+import { Camera, Raycaster, Vector3 } from "three";
 import { GameState } from "./singletons/GameState";
 import { InputHandler } from "./singletons/InputHandler";
 import { isKeyboardEvent } from "../typeguards";
 import { SingletoneStore } from "./singletons/SingletoneStore";
 import { Plane } from "./gameobjects/primitives";
-import { Vector3ToVec } from "../utils";
-import { ASSETS } from "../assets/sprites";
 import { API } from "./singletons/API";
 import { Renderer } from "./singletons/Renderer";
 import { GameObject } from "./core";
@@ -52,11 +50,10 @@ export class PlayerController implements Updateable {
       pos: new Vec3(0.2, -0.1, -0.25),
       rot: new Vec3(-45, 0, 0),
       size: 0.25,
-      mat: ASSETS.hand,
       kinematic: true,
     });
 
-    this.camera.add(this.buildBlockPlaceholder);
+    // this.camera.add(this.buildBlockPlaceholder);
     this.buildBlockPlaceholder.transform.setRotation(new Vec3(45,45,45));
 
     if(this.body.rigidbody) {
@@ -95,21 +92,21 @@ export class PlayerController implements Updateable {
   private listenClick = () => {
     const currentLevel = GameState.getState().currentLevel;
 
-    if (currentLevel) {
-      const position = new Vector3();
-      const rotation = new Quaternion();
-      this.buildBlockPlaceholder.getWorldPosition(position);
-      this.buildBlockPlaceholder.getWorldQuaternion(rotation);
-      const cube = new Plane({
-        mat: ASSETS.pen,
-        size: 0.25,
-      });
+    // if (currentLevel) {
+    //   const position = new Vector3();
+    //   const rotation = new Quaternion();
+    //   this.buildBlockPlaceholder.getWorldPosition(position);
+    //   this.buildBlockPlaceholder.getWorldQuaternion(rotation);
+    //   const cube = new Plane({
+    //     mat: ASSETS.pen,
+    //     size: 0.25,
+    //   });
 
-      cube.transform.setPosition(Vector3ToVec(position));
-      cube.transform.setRotation(Vector3ToVec(new Euler().setFromQuaternion(rotation).toVector3()));
+    //   cube.transform.setPosition(Vector3ToVec(position));
+    //   cube.transform.setRotation(Vector3ToVec(new Euler().setFromQuaternion(rotation).toVector3()));
 
-      currentLevel.add(cube);
-    }
+    //   currentLevel.add(cube);
+    // }
   }
 
   private listenMouse = (e: GameInputEvent) => {

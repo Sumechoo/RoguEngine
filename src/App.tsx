@@ -7,6 +7,8 @@ import { GameState } from "./components/singletons/GameState";
 import { SingletoneStore } from "./components/singletons/SingletoneStore";
 import { Overlay } from "./ui/components/Overlay";
 import { API } from "./components/singletons/API";
+import { Dungeon } from "./components/levels";
+import { techDemos } from "./components/levels/Dungeon/locations/techDemos";
 
 const styles: Styles = {
   main: {
@@ -31,8 +33,8 @@ const styles: Styles = {
   }
 };
 
-const renderer = new Renderer();
 new GameState();
+const renderer = new Renderer();
 new SingletoneStore();
 new API();
 
@@ -49,6 +51,7 @@ animate(0);
 export default function App() {
   const displayRef = useRef<HTMLDivElement>(null);
   const [Ui, setUi] = useState<UIScope<any> | undefined>();
+  const {prod} = GameState.getState();
 
   useEffect(() => {
     if (displayRef.current !== null) {
@@ -67,6 +70,17 @@ export default function App() {
   useEffect(() => {
     const api = API.getInstance();
     api.loadLevel = loadLevel;
+
+    if (prod) {
+      GameState.setState({location: techDemos});
+      api.loadLevel(Dungeon);
+      
+      document.addEventListener('click', () => {
+        (document.body as any).requestPointerLock()
+      });
+      // setTimeout(() => (, 0);
+    }
+
     return () => {api.loadLevel = () => {}};
   }, [loadLevel])
 
@@ -74,6 +88,7 @@ export default function App() {
     <div style={styles.backdrop} >
       <div style={styles.main} >
         <Overlay
+          prod={prod}
           bottom={<span>HELPER</span>}
           right={Ui && <Ui.Component {...Ui.props} />}
           renderer={<div style={styles.displayContainer} ref={displayRef}>

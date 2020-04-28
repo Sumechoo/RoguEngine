@@ -43,7 +43,7 @@ export class Dungeon extends Level {
       }
   
       if (config.decoratorAssets) {
-        this.spawnTile(config.decoratorAssets, x, y, level + 1 + (config.yShift || 0));
+        this.spawnTile(config.decoratorAssets, x, y, level + (config.yShift || 0) + (config.height || 1));
       }
     }
   }

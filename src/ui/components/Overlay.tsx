@@ -21,7 +21,7 @@ const styles: Styles = {
     },
     padPlaceholder: {
         flex: 1,
-    }
+    },
 }
 
 interface Props {
@@ -30,6 +30,8 @@ interface Props {
     left?: ReactNode;
     right?: ReactNode;
     renderer: ReactNode;
+
+    prod?: boolean;
 }
 
 export const Overlay: FC<Props> = (props) => {
@@ -38,20 +40,27 @@ export const Overlay: FC<Props> = (props) => {
         bottom,
         left,
         right,
+        prod,
         renderer,
     } = props;
+
+    if (prod) {
+        return (
+            <div>
+                {renderer}
+            </div>
+        )
+    }
     
     return (
-        <Fragment>
-            <div>
-                {top || <TopBar />}
-                <div style={styles.middleContainer}>
-                    <div style={styles.padPlaceholder}>{left}</div>
-                    <div style={styles.renderer}>{renderer}</div>
-                    <div style={styles.padPlaceholder}>{right}</div>
-                </div>
-                {bottom}
+        <div>
+            {top || <TopBar />}
+            <div style={styles.middleContainer}>
+                <div style={styles.padPlaceholder}>{left}</div>
+                <div style={styles.renderer}>{renderer}</div>
+                <div style={styles.padPlaceholder}>{right}</div>
             </div>
-        </Fragment>
+            {bottom}
+        </div>
     )
 }

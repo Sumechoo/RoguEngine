@@ -25,11 +25,13 @@ export class Renderer implements Updateable {
     this.renderer = new WebGLRenderer();
     this.composer = new EffectComposer(this.renderer);
 
-    const {outerHeight, outerWidth} = window;
+    const {innerHeight, outerWidth} = window;
 
-    this.aspect = outerWidth / outerHeight;
+    this.aspect = outerWidth / innerHeight;
 
-    this.renderer.setSize(outerWidth / 1.2, outerHeight / 1.2);
+    const rendererDivider = GameState.getState().prod ? 1 : 1.2;
+
+    this.renderer.setSize(outerWidth / rendererDivider, innerHeight / rendererDivider);
     this.renderer.setClearColor(0xcccccc);
 
     this.renderer.shadowMap.type = PCFSoftShadowMap;
@@ -41,7 +43,7 @@ export class Renderer implements Updateable {
     this.scene = new Scene();
     this.scene.fog = new FogExp2( 0xaaaaaa, 0.05 );
 
-    this.composer.setSize(outerWidth / 2, outerHeight / 2);
+    this.composer.setSize(outerWidth / 2, innerHeight / 2);
 
     if (Renderer.instance !== undefined) {
       throw new Error("Renderer instance allready exist");

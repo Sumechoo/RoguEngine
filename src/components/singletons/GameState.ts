@@ -16,6 +16,7 @@ export class GameState {
       items: [],
       activeItem: 0,
       showDeveloperMenu: true,
+      prod: true,
 
       location: city,
     };
