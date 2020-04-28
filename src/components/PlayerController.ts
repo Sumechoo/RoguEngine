@@ -34,6 +34,8 @@ export class PlayerController implements Updateable {
 
   private buildBlockPlaceholder: Object3dWithMaterial;
 
+  private canJump = true;
+
   private speed: IForce = {
     x: 0,
     y: 0,
@@ -202,8 +204,10 @@ export class PlayerController implements Updateable {
   private doJump() {
     const {rigidbody} = this.body;
 
-    if (rigidbody) {
+    if (rigidbody && this.canJump) {
+      this.canJump = false;
       rigidbody.velocity.y += 0.1;
+      setTimeout(() => this.canJump = true, 600);
     }
   }
 

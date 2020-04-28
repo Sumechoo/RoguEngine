@@ -35,7 +35,7 @@ export class Level extends Object3D implements Updateable, Initable {
     this.add(playerComponents.body);
     this.objects.push(playerComponents.controller);
 
-    playerComponents.body.transform.setPosition(new Vec3(point.x, point.y, point.z));
+    playerComponents.body.transform.setPosition(new Vec3(point.x, point.y + 1, point.z));
   }
 
   public update(frameNum: number) {

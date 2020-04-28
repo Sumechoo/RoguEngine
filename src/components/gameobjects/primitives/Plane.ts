@@ -13,7 +13,10 @@ export class Plane extends GameObject {
       ...argProps,
     };
 
-    const geometry = new PlaneGeometry(props.size, props.size, 1);
+    const {size, height} = props;
+    const targetHeight = height || size;
+
+    const geometry = new PlaneGeometry(props.size, targetHeight, 1);
     const material = props.mat;
     const body = new Mesh(geometry, material);
 

@@ -1,8 +1,12 @@
-import { Location, TileType, LocationTheme, TileFormat } from "../types";
+import { Location, TileType, LocationTheme, TileFormat, TileConfigArray } from "../types";
 import { ASSETS } from "../../../../assets/sprites";
 import { stack, concrette } from "../builders";
 import { baseTheme } from "../config";
 import { initEmptyData, spawnRoom, spawnWalls } from "../utils";
+import { API } from "../../../singletons/API";
+import { suburb } from "./suburb";
+import { Dungeon } from "..";
+import { GameState } from "../../../singletons/GameState";
 
 const theme: LocationTheme = {
     ...baseTheme,
@@ -11,7 +15,7 @@ const theme: LocationTheme = {
     ],
     floor: [
         {
-            material: ASSETS.wall,
+            material: ASSETS.wood,
             decoratorAssets: [
                 {
                     material: ASSETS.wall,
@@ -52,13 +56,39 @@ export const techDemos: Location = {
                 }]
             }],
         }];
+
+        const tableConfig: TileConfigArray = [{
+            material: ASSETS.wood,
+            decoratorAssets: [{
+                material: ASSETS.wood,
+                size: 0.1,
+                height: 0.3,
+                decoratorAssets: [{
+                    material: ASSETS.wood,
+                    size: 1,
+                    height: 0.04,
+                    decoratorAssets: [{
+                        material: ASSETS.wall,
+                        yShift: 1.66,
+                    }]
+                }]
+            }]
+        }];
+
+        const goOutside = () => {
+            GameState.setState({location: suburb});
+            API.getInstance().loadLevel(Dungeon);
+        }
     
         const {center, walls} = spawnRoom(data, {x: 6, y: 9}, {x: 0, y: 0}, roomCfg);
         wallsToSpawn.push(...walls);
 
-        data[0][2] = createDoor(() => alert('Action!'));
+        data[0][2] = createDoor(goOutside);
         data[0][4] = createDoor();
         data[0][6] = createDoor();
+
+        data[2][7] = tableConfig;
+        data[3][7] = tableConfig;
 
         spawnWalls(data, wallsToSpawn, {
             wall: theme.wall,

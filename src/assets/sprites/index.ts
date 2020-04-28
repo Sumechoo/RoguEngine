@@ -11,6 +11,9 @@ import window from './window.png';
 import antena from './antena.png';
 import grass from './grass.png';
 import door from './door.png';
+import web from './web.png';
+import wood from './wood.png';
+import beton from './beton.png';
 import tree_big from './tree_big.png';
 
 import { makeMaterial } from './utils';
@@ -27,6 +30,9 @@ export const ASSETS = {
     tree: makeMaterial(tree, true),
     tree_big: makeMaterial(tree_big, true),
     hand: makeMaterial(hand, true),
+    web: makeMaterial(web, true),
+    wood: makeMaterial(wood),
+    beton: makeMaterial(beton),
     antena: makeMaterial(antena, true),
     door: makeMaterial(door),
     

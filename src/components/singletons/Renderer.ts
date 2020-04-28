@@ -1,6 +1,6 @@
 import { WebGLRenderer, Camera, Scene, DirectionalLight, Euler, AmbientLight, PCFSoftShadowMap, Vector2, FogExp2 } from "three";
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
-import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
+import { SSAOPass } from 'three/examples/jsm/postprocessing/SSAOPass';
 import { SAOPass } from 'three/examples/jsm/postprocessing/SAOPass';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { Updateable } from "../../types";
@@ -63,7 +63,7 @@ export class Renderer implements Updateable {
       return;
     }
 
-    this.renderer.render(this.scene, this.camera);
+    this.composer.render(this.scene, this.camera);
     this.physics.step(1);
     level.update(frame);
   }
@@ -93,34 +93,33 @@ export class Renderer implements Updateable {
 
       SAO.params = {
         ...SAO.params,
-        saoBlur: 0.1,
-        saoIntensity: 0.001,
+        saoBlur: 0.5,
+        saoIntensity: 0.0007,
         saoKernelRadius: 128,
-        saoBias: 10,
-        saoBlurDepthCutoff: 0.01,
+        saoBias: 20,
+        saoBlurDepthCutoff: 0.02,
       };
 
-      this.composer.addPass(new UnrealBloomPass(new Vector2(256, 256), 0.25, 1, 0.3));
       this.composer.addPass(new RenderPass(this.scene, this.camera));
-      this.composer.addPass(SAO);
+      // this.composer.addPass(SAO);
     }
 
     this.renderer.shadowMapEnabled = false;
 
-    const light = new DirectionalLight(0xFFBD6D, 1);
-    const ambient = new AmbientLight(0x12345678, 1);
+    // const light = new DirectionalLight(0xFFBD6D, 1);
+    const ambient = new AmbientLight(0x12345678, 2);
 
-    light.castShadow = true;
-    light.shadow.bias = 0;
-    light.shadowMapHeight = 2048;
-    light.shadowMapWidth = 2048;
-    light.position.x = -4;
-    light.position.z = 4;
-    light.position.y = 10;
+    // light.castShadow = true;
+    // light.shadow.bias = 0;
+    // light.shadowMapHeight = 2048;
+    // light.shadowMapWidth = 2048;
+    // light.position.x = -4;
+    // light.position.z = 4;
+    // light.position.y = 10;
 
-    light.setRotationFromEuler(new Euler(45,45,45));
+    // light.setRotationFromEuler(new Euler(45,45,45));
 
-    this.scene.add(light, ambient);
+    this.scene.add(ambient);
   }
 
   public findByUid(id: number) {

@@ -9,6 +9,7 @@ import { Overlay } from "./ui/components/Overlay";
 import { API } from "./components/singletons/API";
 import { Dungeon } from "./components/levels";
 import { techDemos } from "./components/levels/Dungeon/locations/techDemos";
+import { suburb } from "./components/levels/Dungeon/locations/suburb";
 
 const styles: Styles = {
   main: {
@@ -72,13 +73,12 @@ export default function App() {
     api.loadLevel = loadLevel;
 
     if (prod) {
-      GameState.setState({location: techDemos});
+      GameState.setState({location: suburb});
       api.loadLevel(Dungeon);
       
       document.addEventListener('click', () => {
         (document.body as any).requestPointerLock()
       });
-      // setTimeout(() => (, 0);
     }
 
     return () => {api.loadLevel = () => {}};

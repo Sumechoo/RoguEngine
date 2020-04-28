@@ -1,7 +1,6 @@
 import { Level } from "../Level";
 import { GameState } from "./GameState";
 import { GameObject } from "../core";
-import { Renderer } from "./Renderer";
 
 export class API {
   protected static instance: API;
@@ -28,8 +27,6 @@ export class API {
     if (!levelRef) {
       return;
     }
-
-    // console.info('UUIDs:', Renderer.getInstance().findByUid());
 
     return levelRef.children.find((item) => item.uuid === uuid) as GameObject;
   }
