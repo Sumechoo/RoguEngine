@@ -77,7 +77,9 @@ export default function App() {
       api.loadLevel(Dungeon);
       
       document.addEventListener('click', () => {
-        (document.body as any).requestPointerLock()
+        if (!GameState.getState().inventoryCandidate) {
+          (document.body as any).requestPointerLock();
+        }
       });
     }
 

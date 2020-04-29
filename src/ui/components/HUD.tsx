@@ -1,6 +1,7 @@
 import React from 'react';
 import { Styles } from '../../types';
 import { useGlobalState } from '../hooks';
+import { InventoryWindow } from './InventoryWindow';
 
 export const HUD_MAX_ITEMS = 8;
 
@@ -23,7 +24,29 @@ const styles: Styles = {
     interactText: {
         color: 'white',
         fontWeight: 'bold',
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
         fontSize: 16,
+        opacity: 0.8,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    dot: {
+        backgroundColor: 'rgba(255,255,255,0.6)',
+        width: 15,
+        height: 15,
+        borderRadius: '50%',
+        marginRight: 5,
+    },
+    region: {
+        position: 'absolute',
+        bottom: 50,
+        left: 30,
+        color: 'white',
+        fontSize: 70,
+        opacity: 0.5,
     }
 }
 
@@ -43,7 +66,7 @@ export const Item: React.FC<ItemProps> = (props) => {
 }
 
 export const HUD: React.FC = () => {
-    const items = useGlobalState('items');
+    const items = useGlobalState('inventory');
     const activeItem = useGlobalState('activeItem');
     const action = useGlobalState('currentActionId');
     const visualItems: Array<string> = [];
@@ -54,7 +77,15 @@ export const HUD: React.FC = () => {
 
     return(
         <div>
-            {action && <span style={styles.interactText}>Press [F] to interact</span>}
+            {action && <div style={styles.interactText}>
+                <div style={styles.dot}/>
+                Press [F] to interact
+            </div>}
+            <div style={styles.region}>
+                Region: 1st floor
+                Time: 14:88 pm
+            </div>
+            <InventoryWindow />
             <div style={styles.mainContainer}>
                 {visualItems.map((item, index) => (
                     <Item

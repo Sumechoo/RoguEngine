@@ -20,7 +20,7 @@ export class Plane extends GameObject {
     const material = props.mat;
     const body = new Mesh(geometry, material);
 
-    body.castShadow = true;
+    body.castShadow = false;
     body.receiveShadow = true;
 
     this.add(body);

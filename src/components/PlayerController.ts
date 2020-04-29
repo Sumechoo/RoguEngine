@@ -15,11 +15,11 @@ export interface AxisConfig {
   value: number;
 }
 
-export const ConfigMap: Record<string, AxisConfig> = {
-  'w': {name: 'z', value: -1},
-  's': {name: 'z', value: 1},
-  'a': {name: 'x', value: -1},
-  'd': {name: 'x', value: 1},
+export const ConfigMap: Record<number, AxisConfig> = {
+  87: {name: 'z', value: -1},
+  83: {name: 'z', value: 1},
+  65: {name: 'x', value: -1},
+  68: {name: 'x', value: 1},
 };
 
 export class PlayerController implements Updateable {
@@ -112,7 +112,7 @@ export class PlayerController implements Updateable {
   }
 
   private listenMouse = (e: GameInputEvent) => {
-    if (isKeyboardEvent(e)) {
+    if (isKeyboardEvent(e) || GameState.getState().inventoryCandidate) {
       return;
     }
 
@@ -156,21 +156,21 @@ export class PlayerController implements Updateable {
       return;
     }
 
-    if (e.key !== ' ' && !isNaN(Number(e.key))) {
+    if (e.keyCode !== 32 && !isNaN(Number(e.key))) {
       GameState.setState({activeItem: Number(e.key) - 1});
     }
 
-    const cfg = ConfigMap[e.key];
+    const cfg = ConfigMap[e.keyCode];
     this.mutateAxis(cfg);
 
-    switch (e.key) {
-      case " ":
+    switch (e.keyCode) {
+      case 32:
         this.doJump();
         break;
-      case "f":
+      case 70:
         this.doAction();
         break;
-      case "Escape":
+      case 27:
         GameState.setState({showDeveloperMenu:true});
         break;
     }
@@ -216,7 +216,7 @@ export class PlayerController implements Updateable {
       return;
     }
 
-    let cfg = ConfigMap[e.key];
+    let cfg = ConfigMap[e.keyCode];
     this.nillAxis(cfg);
   }
 

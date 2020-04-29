@@ -2,15 +2,15 @@ import React from 'react';
 import { GameState } from '../../components/singletons/GameState';
 
 const addItem = () => {
-    const {items} = GameState.getState();
+    const {inventory} = GameState.getState();
 
-    items.push('new item');
+    inventory.push('new item');
 
-    GameState.setState({items});
+    GameState.setState({inventory});
 };
 
 const clearItems = () => {
-    GameState.setState({items: []});
+    GameState.setState({inventory: []});
 }
 
 export const GameStateEditorUI: React.FC = () => {

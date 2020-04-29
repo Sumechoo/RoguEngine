@@ -53,9 +53,25 @@ export const suburb: Location = {
             GameState.setState({location: techDemos});
             API.getInstance().loadLevel(Dungeon);
         };
+        const openInvenory = () => {
+            GameState.setState({
+                inventoryCandidate: [],
+            });
+        }
 
-        const {walls} = spawnRoom(data, {x: 20, y: 20}, {x: 0, y: 0}, {
-            floor: theme.grass,
+        const {walls} = spawnRoom(data, {x: 20, y: 10}, {x: 0, y: 0}, {
+            floor: [
+                ...theme.grass,
+                {
+                    material: ASSETS.bricks,
+                    decoratorAssets: [{
+                        material: ASSETS.block,
+                        size: 0.3,
+                        height: 0.5,
+                        action: openInvenory,
+                    }]
+                }
+            ],
         });
 
         for (let i = 2; i <= 17; i++) {
@@ -104,7 +120,7 @@ export const suburb: Location = {
 
         return {
             data,
-            start: {x: 10, y: 10},
+            start: {x: 10, y: 5},
         };
     },
 }

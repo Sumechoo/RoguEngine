@@ -1,4 +1,4 @@
-import { WebGLRenderer, Camera, Scene, DirectionalLight, Euler, AmbientLight, PCFSoftShadowMap, Vector2, FogExp2 } from "three";
+import { WebGLRenderer, Camera, Scene, DirectionalLight, Euler, AmbientLight, PCFSoftShadowMap, Vector2, FogExp2, Vector3 } from "three";
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
 import { SSAOPass } from 'three/examples/jsm/postprocessing/SSAOPass';
 import { SAOPass } from 'three/examples/jsm/postprocessing/SAOPass';
@@ -8,6 +8,8 @@ import { Level } from "../Level";
 import { World, NaiveBroadphase } from "cannon";
 import { GameState } from "./GameState";
 
+const sunPositor = new Vector3();
+
 export class Renderer implements Updateable {
   protected static instance: Renderer;
 
@@ -16,6 +18,7 @@ export class Renderer implements Updateable {
 
   protected scene: Scene;
   protected camera?: Camera;
+  protected sun?: DirectionalLight;
 
   private composer: any;
 
@@ -32,7 +35,7 @@ export class Renderer implements Updateable {
     const rendererDivider = GameState.getState().prod ? 1 : 1.2;
 
     this.renderer.setSize(outerWidth / rendererDivider, innerHeight / rendererDivider);
-    this.renderer.setClearColor(0xcccccc);
+    this.renderer.setClearColor(0xccccff);
 
     this.renderer.shadowMap.type = PCFSoftShadowMap;
 
@@ -63,9 +66,19 @@ export class Renderer implements Updateable {
       return;
     }
 
-    this.composer.render(this.scene, this.camera);
+    this.renderer.render(this.scene, this.camera);
     this.physics.step(1);
     level.update(frame);
+
+    if (this.camera && this.sun) {
+      const cameraPosition = this.camera.localToWorld(this.camera.position.clone());
+      this.sun.position.set(
+        cameraPosition.x + 40,
+        cameraPosition.y + 10,
+        cameraPosition.z + 20,
+      );
+      this.sun.target = this.camera;
+    }
   }
 
   setActiveCamera(camera: Camera) {
@@ -101,25 +114,24 @@ export class Renderer implements Updateable {
       };
 
       this.composer.addPass(new RenderPass(this.scene, this.camera));
-      // this.composer.addPass(SAO);
+      this.composer.addPass(SAO);
     }
 
-    this.renderer.shadowMapEnabled = false;
+    this.renderer.shadowMapEnabled = true;
 
-    // const light = new DirectionalLight(0xFFBD6D, 1);
-    const ambient = new AmbientLight(0x12345678, 2);
+    const light = new DirectionalLight(0xFFBD6D, 1.4);
+    const ambient = new AmbientLight(0x12345678, 1);
 
-    // light.castShadow = true;
-    // light.shadow.bias = 0;
-    // light.shadowMapHeight = 2048;
-    // light.shadowMapWidth = 2048;
-    // light.position.x = -4;
-    // light.position.z = 4;
-    // light.position.y = 10;
+    light.castShadow = true;
+    light.shadow.bias = 0;
+    light.shadowMapHeight = 1024;
+    light.shadowMapWidth = 1024;
 
-    // light.setRotationFromEuler(new Euler(45,45,45));
+    light.setRotationFromEuler(new Euler(45,45,45));
 
-    this.scene.add(ambient);
+    this.scene.add(ambient, light);
+
+    this.sun = light;
   }
 
   public findByUid(id: number) {

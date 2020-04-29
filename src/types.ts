@@ -5,7 +5,6 @@ import { Level } from "./components/Level";
 import { Location } from "./components/levels/Dungeon/types";
 
 export interface IGameState {
-  items: Array<string>;
   activeItem: number;
 
   // developer params
@@ -16,6 +15,8 @@ export interface IGameState {
 
   // actual game state
   location?: Location;
+  inventory: Array<string>;
+  inventoryCandidate?: Array<string>;
 }
 
 export type GameInputEvent = MouseEvent | KeyboardEvent;

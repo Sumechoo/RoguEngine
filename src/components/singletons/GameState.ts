@@ -13,7 +13,7 @@ export class GameState {
     }
 
     this.state = {
-      items: [],
+      inventory: [],
       activeItem: 0,
       showDeveloperMenu: true,
       prod: true,
