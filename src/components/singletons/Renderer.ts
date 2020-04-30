@@ -1,14 +1,12 @@
 import { WebGLRenderer, Camera, Scene, DirectionalLight, Euler, AmbientLight, PCFSoftShadowMap, Vector2, FogExp2, Vector3 } from "three";
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
-import { SSAOPass } from 'three/examples/jsm/postprocessing/SSAOPass';
 import { SAOPass } from 'three/examples/jsm/postprocessing/SAOPass';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { Updateable } from "../../types";
 import { Level } from "../Level";
-import { World, NaiveBroadphase } from "cannon";
+import { World, NaiveBroadphase, Vec3 } from "cannon";
 import { GameState } from "./GameState";
-
-const sunPositor = new Vector3();
+import { Sky } from 'three/examples/jsm/objects/Sky.js';
 
 export class Renderer implements Updateable {
   protected static instance: Renderer;
@@ -35,7 +33,8 @@ export class Renderer implements Updateable {
     const rendererDivider = GameState.getState().prod ? 1 : 1.2;
 
     this.renderer.setSize(outerWidth / rendererDivider, innerHeight / rendererDivider);
-    this.renderer.setClearColor(0xccccff);
+    // this.renderer.setClearColor(0xccccff);
+    this.renderer.autoClear = false;
 
     this.renderer.shadowMap.type = PCFSoftShadowMap;
 
@@ -73,9 +72,9 @@ export class Renderer implements Updateable {
     if (this.camera && this.sun) {
       const cameraPosition = this.camera.localToWorld(this.camera.position.clone());
       this.sun.position.set(
-        cameraPosition.x + 40,
-        cameraPosition.y + 10,
-        cameraPosition.z + 20,
+        cameraPosition.x + 20,
+        cameraPosition.y + 6,
+        cameraPosition.z + 10,
       );
       this.sun.target = this.camera;
     }
@@ -124,12 +123,34 @@ export class Renderer implements Updateable {
 
     light.castShadow = true;
     light.shadow.bias = 0;
-    light.shadowMapHeight = 1024;
-    light.shadowMapWidth = 1024;
+    light.shadowMapHeight = 2048;
+    light.shadowMapWidth = 2048;
 
     light.setRotationFromEuler(new Euler(45,45,45));
 
-    this.scene.add(ambient, light);
+    const sky = new Sky();
+    sky.scale.setScalar( 1000 );
+
+    const uniforms = sky.material.uniforms;
+
+    const effectController = {
+      turbidity: 10,
+      rayleigh: 2,
+      mieCoefficient: 0.005,
+      mieDirectionalG: 0.8,
+      luminance: 1,
+      inclination: 0.49,
+      azimuth: 0.25,
+    };
+
+    uniforms[ "turbidity" ].value = effectController.turbidity;
+    uniforms[ "rayleigh" ].value = effectController.rayleigh;
+    uniforms[ "mieCoefficient" ].value = effectController.mieCoefficient;
+    uniforms[ "mieDirectionalG" ].value = effectController.mieDirectionalG;
+    uniforms[ "luminance" ].value = effectController.luminance;
+    uniforms[ "sunPosition" ].value.copy( new Vec3(20, 6, 10) );
+
+    this.scene.add(ambient, light, sky);
 
     this.sun = light;
   }

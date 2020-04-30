@@ -2,6 +2,7 @@ import React, { useEffect, useCallback } from 'react';
 import { Styles } from '../../types';
 import { useGlobalState } from '../hooks';
 import { GameState } from '../../components/singletons/GameState';
+import { API } from '../../components/singletons/API';
 
 const styles: Styles = {
     body: {
@@ -18,6 +19,7 @@ const styles: Styles = {
 export const InventoryWindow: React.FC = () => {
     const inventoryCandidate = useGlobalState('inventoryCandidate');
     const closeWindow = useCallback(() => {
+        API.lockMouse();
         GameState.setState({inventoryCandidate: undefined});
     }, []);
 

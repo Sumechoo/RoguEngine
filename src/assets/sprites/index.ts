@@ -14,6 +14,8 @@ import door from './door.png';
 import web from './web.png';
 import wood from './wood.png';
 import beton from './beton.png';
+import garbage from './garbage.png';
+import trashCan from './trashCan.png';
 import tree_big from './tree_big.png';
 
 import { makeMaterial } from './utils';
@@ -31,7 +33,9 @@ export const ASSETS = {
     tree_big: makeMaterial(tree_big, true),
     hand: makeMaterial(hand, true),
     web: makeMaterial(web, true),
+    garbage: makeMaterial(garbage, true),
     wood: makeMaterial(wood),
+    trashCan: makeMaterial(trashCan),
     beton: makeMaterial(beton),
     antena: makeMaterial(antena, true),
     door: makeMaterial(door),

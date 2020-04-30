@@ -21,6 +21,14 @@ export class API {
     return API.instance;
   }
 
+  public static lockMouse() {
+    (document.body as any).requestPointerLock();
+  }
+
+  public static unlockMouse() {
+    (document as any).exitPointerLock();
+  }
+
   public static findObjectByUID(uuid: string) {
     const levelRef = GameState.getState().currentLevel;
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { Styles } from '../../types';
 import { useGlobalState } from '../hooks';
 import { InventoryWindow } from './InventoryWindow';
+import { Objectives } from './Objectives';
 
 export const HUD_MAX_ITEMS = 8;
 
@@ -40,14 +41,6 @@ const styles: Styles = {
         borderRadius: '50%',
         marginRight: 5,
     },
-    region: {
-        position: 'absolute',
-        bottom: 50,
-        left: 30,
-        color: 'white',
-        fontSize: 70,
-        opacity: 0.5,
-    }
 }
 
 interface ItemProps {
@@ -81,11 +74,9 @@ export const HUD: React.FC = () => {
                 <div style={styles.dot}/>
                 Press [F] to interact
             </div>}
-            <div style={styles.region}>
-                Region: 1st floor
-                Time: 14:88 pm
-            </div>
+            <Objectives />
             <InventoryWindow />
+            
             <div style={styles.mainContainer}>
                 {visualItems.map((item, index) => (
                     <Item

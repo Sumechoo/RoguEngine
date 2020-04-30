@@ -32,14 +32,22 @@ const theme: LocationTheme = {
             material: ASSETS.grass,
             decoratorAssets: [{
                 material: ASSETS.bush,
-                size: 1.5,
-                height: 0.5,
+                size: 0.7,
+                height: 0.4,
                 format: TileFormat.SPRITE,
                 hollow: true,
                 randomShift: true,
+                decoratorAssets: [{
+                    material: ASSETS.bush,
+                    size: 0.7,
+                    height: 0.5,
+                    format: TileFormat.SPRITE,
+                    hollow: true,
+                    randomShift: true,
+                    yShift: -0.4,
+                }]
             }]
         },
-        {material: ASSETS.grass},
         {material: ASSETS.grass},
         {material: ASSETS.grass},
     ],
@@ -54,6 +62,7 @@ export const suburb: Location = {
             API.getInstance().loadLevel(Dungeon);
         };
         const openInvenory = () => {
+            API.unlockMouse();
             GameState.setState({
                 inventoryCandidate: [],
             });
@@ -63,12 +72,24 @@ export const suburb: Location = {
             floor: [
                 ...theme.grass,
                 {
-                    material: ASSETS.bricks,
+                    material: ASSETS.grass,
                     decoratorAssets: [{
-                        material: ASSETS.block,
-                        size: 0.3,
-                        height: 0.5,
-                        action: openInvenory,
+                        material: ASSETS.garbage,
+                        hollow: true,
+                        size: 0.9,
+                        height: 0.005,
+                        decoratorAssets: [{
+                            material: ASSETS.trashCan,
+                            size: 0.5,
+                            height: 0.5,
+                            action: openInvenory,
+                            decoratorAssets: [{
+                                material: ASSETS.garbage,
+                                hollow: true,
+                                height: 0.005,
+                                size: 0.5,
+                            }]
+                        }]
                     }]
                 }
             ],
@@ -105,6 +126,11 @@ export const suburb: Location = {
                     material: ASSETS.bricks,
                     height: 0.4,
                     size: 1.8,
+                    decoratorAssets: [{
+                        material: ASSETS.antena,
+                        format: TileFormat.SPRITE,
+                        randomShift: true,
+                    }]
                 }] : undefined,
             }], 6);
         }

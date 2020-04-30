@@ -78,7 +78,7 @@ export default function App() {
       
       document.addEventListener('click', () => {
         if (!GameState.getState().inventoryCandidate) {
-          (document.body as any).requestPointerLock();
+          API.lockMouse();
         }
       });
     }

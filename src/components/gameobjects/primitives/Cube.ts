@@ -21,7 +21,7 @@ export class Cube extends GameObject {
     const material = mat || ASSETS.error;
     const body = new Mesh(geometry, material);
 
-    body.castShadow = true;
+    body.castShadow = !props.hollow;
     body.receiveShadow = true;
 
     this.add(body);
