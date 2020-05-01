@@ -1,10 +1,9 @@
 import { TileConfigArray, Builder } from "./types";
-import { ASSETS } from "../../../assets/sprites";
 
 export const concrette: Builder = () => {
     return [
         {
-            material: ASSETS.bricks,
+            material: 'bricks',
         }
     ]
 }
@@ -12,7 +11,7 @@ export const concrette: Builder = () => {
 export const basicWall: Builder = () => {
     return [
         {
-            material: ASSETS.window,
+            material: 'window',
         }
     ]
 }

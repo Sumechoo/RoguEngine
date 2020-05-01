@@ -16,6 +16,8 @@ export class Level extends Object3D implements Updateable, Initable {
 
   public lazyMode = false;
 
+  protected currentPlayer?: Player;
+
   constructor() {
     super();
 
@@ -30,6 +32,7 @@ export class Level extends Object3D implements Updateable, Initable {
 
   protected spawnPlayer = (point = new Vector3(0,0,0)) => {
     const playerObject = new Player();
+    this.currentPlayer = playerObject;
     const playerComponents = playerObject.getPlayerConponents();
 
     this.add(playerComponents.body);

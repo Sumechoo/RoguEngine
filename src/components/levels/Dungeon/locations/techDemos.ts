@@ -15,10 +15,10 @@ const theme: LocationTheme = {
     ],
     floor: [
         {
-            material: ASSETS.wood,
+            material: 'wood',
             decoratorAssets: [
                 {
-                    material: ASSETS.wall,
+                    material: 'wall',
                     yShift: 2,
                 }
             ]
@@ -33,21 +33,21 @@ export const techDemos: Location = {
         const wallsToSpawn = [];
         const roomCfg = {floor: theme.floor};
 
-        const createDoor = (action?: () => void) => [{
-            material: ASSETS.bricks,
+        const createDoor = (action?: () => void) : TileConfigArray => [{
+            material: 'bricks',
             size: 1.2,
             decoratorAssets: [{
-                material: ASSETS.door,
+                material: 'door',
                 action,
                 decoratorAssets: [{
-                    material: ASSETS.bricks,
+                    material: 'bricks',
                     decoratorAssets: !action ? [{
-                        material: ASSETS.bricks,
+                        material: 'bricks',
                         height: 0.3,
                         yShift: -1.9,
                         size: 1.1,
                         decoratorAssets: [{
-                            material: ASSETS.bricks,
+                            material: 'bricks',
                             height: 0.3,
                             size: 1.1,
                             yShift: 0.05,
@@ -58,17 +58,17 @@ export const techDemos: Location = {
         }];
 
         const tableConfig: TileConfigArray = [{
-            material: ASSETS.wood,
+            material: 'wood',
             decoratorAssets: [{
-                material: ASSETS.wood,
+                material: 'wood',
                 size: 0.1,
                 height: 0.3,
                 decoratorAssets: [{
-                    material: ASSETS.wood,
+                    material: 'wood',
                     size: 1,
                     height: 0.04,
                     decoratorAssets: [{
-                        material: ASSETS.wall,
+                        material: 'wall',
                         yShift: 1.66,
                     }]
                 }]

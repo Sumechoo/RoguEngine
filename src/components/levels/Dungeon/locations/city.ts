@@ -24,7 +24,7 @@ export const cityTheme: LocationTheme = {
     ],
     door: [
         {
-            material: ASSETS.door,
+            material: 'door',
             action: changeLocation,
             yShift: 1,
             decoratorAssets: [
@@ -35,12 +35,12 @@ export const cityTheme: LocationTheme = {
     ],
     grass: [
         {
-            material: ASSETS.grass,
+            material: 'grass',
             yShift: 0.05,
             hollow: false,
             decoratorAssets: [
                 {
-                    material: ASSETS.bush,
+                    material: 'bush',
                     hollow: true,
                     yShift: -0.4,
                     size: 0.7,
@@ -48,7 +48,7 @@ export const cityTheme: LocationTheme = {
                     randomShift: true,
                 },
                 {
-                    material: ASSETS.tree,
+                    material: 'tree',
                     hollow: true,
                     yShift: 0,
                     size: 1.2,
@@ -58,17 +58,17 @@ export const cityTheme: LocationTheme = {
             ],
         },
         {
-            material: ASSETS.grass,
+            material: 'grass',
             yShift: 0.05,
         }
     ],
     floor: [
         {
-            material: ASSETS.wall,
+            material: 'wall',
             hollow: false,
             decoratorAssets: [
                 {
-                    material: ASSETS.bush,
+                    material: 'bush',
                     yShift: -0.4,
                     format: TileFormat.SPRITE,
                     hollow: true,
@@ -77,7 +77,7 @@ export const cityTheme: LocationTheme = {
             ]
         },
         {
-            material: ASSETS.wall,
+            material: 'wall',
             hollow: false,
         }
     ],

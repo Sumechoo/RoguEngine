@@ -2,7 +2,7 @@ import { Location, LocationTheme, TileFormat } from "../types";
 import { ASSETS } from "../../../../assets/sprites";
 import { concrette, stackSeparate } from "../builders";
 import { baseTheme } from "../config";
-import { initEmptyData, spawnRoom, spawnWalls } from "../utils";
+import { initEmptyData, spawnRoom, spawnWalls, replaceEmptiness, spawnPaths } from "../utils";
 import { GameState } from "../../../singletons/GameState";
 import { API } from "../../../singletons/API";
 import { Dungeon } from "..";
@@ -18,9 +18,9 @@ const theme: LocationTheme = {
     ],
     grass: [
         {
-            material: ASSETS.grass,
+            material: 'grass',
             decoratorAssets: [{
-                material: ASSETS.tree_big,
+                material: 'tree_big',
                 size: 1.5,
                 height: 3,
                 format: TileFormat.SPRITE,
@@ -29,16 +29,16 @@ const theme: LocationTheme = {
             }]
         },
         {
-            material: ASSETS.grass,
+            material: 'grass',
             decoratorAssets: [{
-                material: ASSETS.bush,
+                material: 'bush',
                 size: 0.7,
                 height: 0.4,
                 format: TileFormat.SPRITE,
                 hollow: true,
                 randomShift: true,
                 decoratorAssets: [{
-                    material: ASSETS.bush,
+                    material: 'bush',
                     size: 0.7,
                     height: 0.5,
                     format: TileFormat.SPRITE,
@@ -48,15 +48,15 @@ const theme: LocationTheme = {
                 }]
             }]
         },
-        {material: ASSETS.grass},
-        {material: ASSETS.grass},
+        {material: 'grass'},
+        {material: 'grass'},
     ],
   };
 
 export const suburb: Location = {
     theme: theme,
     spawner: () => {
-        const data = initEmptyData(50);
+        const data = initEmptyData(21);
         const gotoIndoor = () => {
             GameState.setState({location: techDemos});
             API.getInstance().loadLevel(Dungeon);
@@ -64,7 +64,7 @@ export const suburb: Location = {
         const openInvenory = () => {
             API.unlockMouse();
             GameState.setState({
-                inventoryCandidate: [],
+                inventoryCandidate: ['SOME ITEM'],
             });
         }
 
@@ -72,19 +72,19 @@ export const suburb: Location = {
             floor: [
                 ...theme.grass,
                 {
-                    material: ASSETS.grass,
+                    material: 'grass',
                     decoratorAssets: [{
-                        material: ASSETS.garbage,
+                        material: 'garbage',
                         hollow: true,
                         size: 0.9,
                         height: 0.005,
                         decoratorAssets: [{
-                            material: ASSETS.trashCan,
+                            material: 'trashCan',
                             size: 0.5,
                             height: 0.5,
                             action: openInvenory,
                             decoratorAssets: [{
-                                material: ASSETS.garbage,
+                                material: 'garbage',
                                 hollow: true,
                                 height: 0.005,
                                 size: 0.5,
@@ -99,9 +99,9 @@ export const suburb: Location = {
             for(let j = 2; j < 6; j++) {
                 const bulb = j === 5 && i % 4 === 0;
                 data[i][j] = [{
-                    material: ASSETS.wall,
+                    material: 'wall',
                     decoratorAssets: bulb ? [{
-                        material: ASSETS.wall,
+                        material: 'wall',
                         size: 0.06,
                         height: 3,
                     }] : undefined,
@@ -111,7 +111,7 @@ export const suburb: Location = {
 
         spawnWalls(data, walls, {
             wall: [{
-                material: ASSETS.beton,
+                material:'beton',
                 yShift: 1,
             }]
         });
@@ -119,15 +119,15 @@ export const suburb: Location = {
         for (let i = 0; i <= 20; i++) {
             const balcony = i % 4 === 0;
             data[i][1] = stackSeparate(() => [{
-                material: balcony ? ASSETS.bricks : ASSETS.window,
+                material: balcony ? 'bricks' : 'window',
                 size: balcony ? 1.4 : 1,
                 height: 1,
                 decoratorAssets: balcony ? [{
-                    material: ASSETS.bricks,
+                    material: 'bricks',
                     height: 0.4,
                     size: 1.8,
                     decoratorAssets: [{
-                        material: ASSETS.antena,
+                        material: 'antena',
                         format: TileFormat.SPRITE,
                         randomShift: true,
                     }]
@@ -136,13 +136,23 @@ export const suburb: Location = {
         }
 
         data[10][1] = [{
-            material: ASSETS.door,
+            material: 'door',
             yShift: 1,
             action: gotoIndoor,
             decoratorAssets: stackSeparate(() => [{
-                material: ASSETS.window,
+                material: 'window',
             }], 4),
-        }]
+        }];
+
+        spawnPaths(data, [{x: 11, y: 1}, {x: 20, y: 1}]);
+
+        spawnPaths(data, [{x: 0, y: 20}, {x: 21, y: 20}]);
+        spawnPaths(data, [{x: 0, y: 19}, {x: 21, y: 19}]);
+        spawnPaths(data, [{x: 0, y: 18}, {x: 21, y: 18}]);
+
+        console.info('DATA:', gotoIndoor.toString());
+
+        replaceEmptiness(data);
 
         return {
             data,

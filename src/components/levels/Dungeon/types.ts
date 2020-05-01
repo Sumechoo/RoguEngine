@@ -1,5 +1,6 @@
 import { MeshPhysicalMaterial, Vec2 } from "three";
 import { PrimitiveProps } from "../../gameobjects/primitives";
+import { ASSETS } from "../../../assets/sprites";
 
 export type LocationTheme = Record<string, TileConfigArray>;
 
@@ -25,7 +26,7 @@ export interface Location {
 }
 
 export interface TileConfig extends Partial<PrimitiveProps> {
-    material: MeshPhysicalMaterial;
+    material: keyof typeof ASSETS;
     probability?: number;
     decoratorAssets?: TileConfigArray;
     yShift?: number;

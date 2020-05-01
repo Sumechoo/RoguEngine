@@ -8,6 +8,12 @@ function isBoundaryIndex(index: number, bounds: Bounds) {
     return index === bounds.from || index === bounds.to - 1;
 }
 
+export function iterateData(data: TileData, callback: (tile: TileConfigArray, x: number, y: number) => void) {
+    data.forEach((row, x) => row.forEach((tile, y) => {
+        callback(tile, x, y);
+    }));
+} 
+
 export function initEmptyData(size = 10): TileData {
     const data: TileData = [];
 
@@ -19,6 +25,16 @@ export function initEmptyData(size = 10): TileData {
     }
 
     return data;
+}
+
+export function replaceEmptiness(data: TileData) {
+    iterateData(data, (tile, x, y) => {
+        if (tile.length === 0) {
+            data[x][y] = [{
+                material: 'grass',
+            }];
+        }
+    })
 }
 
 export function spawnRoom(data: TileData, size: Vec2, position: Vec2, cfg: {floor: TileConfigArray}) {
@@ -83,7 +99,7 @@ export function spawnPaths(data: TileData, roomCenters: Vec2[]) {
         for(let x = startNormalized.from; x < endNormalized.to; x++) {
             if (data[x]) {
                 data[x][startNormalized.to] = [{
-                    material: ASSETS.wall,
+                    material: 'wall',
                 }];;
             }
         }
@@ -91,7 +107,7 @@ export function spawnPaths(data: TileData, roomCenters: Vec2[]) {
         for(let y = startNormalized.to; y < endNormalized.from; y++) {
             if (data[endNormalized.to]) {
                 data[endNormalized.to][y] = [{
-                    material: ASSETS.wall,
+                    material: 'wall',
                 }];;
             }
         }
@@ -107,7 +123,7 @@ export function configToProperties (config?: TileConfig, level = 0, x = 0, y = 0
         pos: new Vec3(x, level + (config.yShift || 0) + (config.height || 1) / 2, y),
         size: config.size || 1,
         kinematic: true,
-        mat: config.material,
+        mat: ASSETS[config.material],
         hollow: !!config.hollow,
         action: config.action,
         height: config.height,
@@ -129,7 +145,7 @@ export function spawnWalls(data: TileData, walls: Vec2[], cfg: {wall: TileConfig
 export function spawnGrass(data: TileData) {
     data.forEach((row, x) => row.forEach((tile, y) => {
         if (tile.length === 0) {
-            data[x][y] = [{material: ASSETS.grass}]
+            data[x][y] = [{material: 'grass'}]
         }
     }));
 }

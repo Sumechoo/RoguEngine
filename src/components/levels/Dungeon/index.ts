@@ -1,10 +1,10 @@
 import { Level } from "../../Level";
 import { Vec3 } from "cannon";
-import { Vector3 } from "three";
+import { Vector3, Vec2 } from "three";
 import { TileFormat, Location, TileConfigArray, TileData } from "./types";
 import { mapFormatToObject } from "./config";
 import { getRandomItem } from "../../core/utils";
-import { configToProperties } from "./utils";
+import { configToProperties, iterateData } from "./utils";
 import { GameState } from "../../singletons/GameState";
 
 export class Dungeon extends Level {
@@ -13,6 +13,7 @@ export class Dungeon extends Level {
   public static entityName = 'Dungeon';
 
   private location?: Location;
+  private regionShift: Vec2 = {x: 0, y: 0};
 
   constructor() {
     super();
@@ -49,10 +50,8 @@ export class Dungeon extends Level {
   }
 
   afterInit() {
-    this.data.forEach((row, x) => {
-      row.forEach((config, y) => {
-        this.spawnTile(config, x, y);
-      });
+    iterateData(this.data, (tile, x, y) => {
+      this.spawnTile(tile, x + this.regionShift.x, y + this.regionShift.y);
     });
   }
 
@@ -62,4 +61,21 @@ export class Dungeon extends Level {
 
     this.lazyMode = true;
   }
+
+  // update(f: number) {
+  //   super.update(f);
+
+  //   // console.info('player:', this.currentPlayer);
+
+  //   if (this.currentPlayer) {
+  //     const location = this.currentPlayer.getPlayerConponents().body.transform.position;
+
+  //     // console.info('loc:', location.x);
+
+  //     if (location.x > this.regionShift.x + 20) {
+  //       this.regionShift = {x: this.regionShift.x + 20, y: 0};
+  //       this.afterInit();
+  //     }
+  //   }
+  // }
 }
